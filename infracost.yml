@@ -5,9 +5,5 @@ version: 0.1
 
 projects:
   - name: "Google Kubernetes Engine - Default"
-    path: test/fixtures/regional_kubernetes_engine
-    usage_file: test/fixtures/regional_kubernetes_engine/infracost-usage.yml
-
-  - name: "Google Kubernetes Engine - Shared VPC"
-    path: test/fixtures/shared_vpc_kubernetes_engine
-    usage_file: test/fixtures/shared_vpc_kubernetes_engine/infracost-usage.yml
+    path: test/fixtures/default_kubernetes_engine
+    usage_file: test/fixtures/default_kubernetes_engine/infracost-usage.yml
