@@ -1,0 +1,33 @@
+# Test Kitchen
+# https://docs.chef.io/workstation/config_yml_kitchen
+
+driver:
+  name: terraform
+
+platforms:
+  - name: gcp
+
+provisioner:
+  name: terraform
+
+transport:
+  command_timeout: 1800
+  name: terraform
+
+verifier:
+  color: true
+  name: terraform
+
+suites:
+  - name: default_kubernetes_engine
+    transport:
+      root_module_directory: test/fixtures/default_kubernetes_engine
+    verifier:
+      systems:
+        - name: inspec_gcp
+          backend: gcp
+          controls:
+            - container_cluster
+            - container_node_pool
+            - kms_crypto_key
+            - service_account
