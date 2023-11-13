@@ -9,6 +9,10 @@ output "service_account_gke_operations_email" {
   value = module.regional.service_account_gke_operations_email
 }
 
+output "kms_key_ring_cluster_database_encryption_name" {
+  value = module.regional.kms_key_ring_cluster_database_encryption_name
+}
+
 output "kms_crypto_key_cluster_database_encryption_name" {
   value = module.regional.kms_crypto_key_cluster_database_encryption_name
 }

@@ -29,4 +29,5 @@ suites:
           controls:
             - container_cluster
             - container_node_pool
-            - project_iam_binding
+            - kms_crypto_key
+            - service_account

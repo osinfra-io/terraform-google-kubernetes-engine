@@ -1,12 +1,17 @@
 # Chef InSpec
 # https://www.chef.io/inspec
 
-# Since this is the default test, we want to test as much as possible here and not be redundant in the other tests.
+# Since this is the default test, we want to test as much as possible here and not be redundant in
+# the other tests.
 
-cluster_name = input('cluster_name')
+container_cluster_prefix = 'kitchen'
+kms_crypto_key_cluster_database_encryption_name = \
+  input('kms_crypto_key_cluster_database_encryption_name')
+kms_key_ring_cluster_database_encryption_name = \
+  input('kms_key_ring_cluster_database_encryption_name')
+location = 'us-east1'
+project_id = 'testing-kitchen-tfbd-sb'
 service_account_gke_operations_email = input('service_account_gke_operations_email')
-location = input('location')
-project_id = input('project_id')
 
 control 'container_cluster' do
   title 'Container Cluster'
@@ -14,7 +19,8 @@ control 'container_cluster' do
   # Container Cluster Resource
   # https://docs.chef.io/inspec/resources/google_container_cluster
 
-  describe google_container_cluster(project: project_id, location: location, name: cluster_name) do
+  describe google_container_cluster(project: project_id, location: location,
+                                    name: "#{container_cluster_prefix}-#{location}") do
     it { should exist }
     its('network') { should eq 'kitchen-vpc' }
     its('private_cluster_config.enable_private_nodes') { should == true }
@@ -29,12 +35,14 @@ control 'container_node_pool' do
   # Container Node Pool
   # https://docs.chef.io/inspec/resources/google_container_node_pool
 
-  describe google_container_node_pool(project: project_id, location: location, cluster_name: cluster_name,
+  describe google_container_node_pool(project: project_id, location: location,
+                                      cluster_name: "#{container_cluster_prefix}-#{location}",
                                       nodepool_name: 'default-pool') do
     it { should_not exist }
   end
 
-  describe google_container_node_pool(project: project_id, location: location, cluster_name: cluster_name,
+  describe google_container_node_pool(project: project_id, location: location,
+                                      cluster_name: "#{container_cluster_prefix}-#{location}",
                                       nodepool_name: 'standard-pool') do
     it { should exist }
     its('autoscaling.max_node_count') { should eq 3 }
@@ -53,24 +61,22 @@ control 'kms_crypto_key' do
   # KMS Crypto Key Resource
   # https://docs.chef.io/inspec/resources/google_kms_crypto_key
 
-  describe google_kms_crypto_key(project: project_id, location: location, key_ring_name: 'kitchen-key-ring',
-                                 name: 'kitchen-crypto-key') do
+  describe google_kms_crypto_key(project: project_id, location: location,
+                                 key_ring_name: kms_key_ring_cluster_database_encryption_name,
+                                 name: kms_crypto_key_cluster_database_encryption_name) do
     it { should exist }
     its('primary_state') { should eq 'ENABLED' }
   end
 end
 
-control 'project_iam_binding' do
-  title 'Project IAM Binding'
+control 'service_account' do
+  title 'Service Account'
 
-  # Project IAM Binding Resource
-  # https://docs.chef.io/inspec/resources/google_project_iam_binding
+  # Service Account Resource
+  # https://docs.chef.io/inspec/resources/google_service_account
 
-  describe google_project_iam_binding(project: project_id,
-                                      role: 'organizations/938022021827/roles/compute_security_k8s') do
+  describe google_service_account(project: project_id,
+                                  name: service_account_gke_operations_email) do
     it { should exist }
-    its('members') do
-      should include 'serviceAccount:service-486128476137@container-engine-robot.iam.gserviceaccount.com'
-    end
   end
 end
