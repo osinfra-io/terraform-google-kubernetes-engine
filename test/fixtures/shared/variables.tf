@@ -5,6 +5,7 @@ variable "host_project_id" {
   type    = string
   default = "testing-kitchen-tfd2-sb"
 }
+
 variable "master_ipv4_cidr_block" {
   type    = string
   default = "10.61.224.0/28"

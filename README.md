@@ -1,17 +1,16 @@
 # <img align="left" width="45" height="45" src="https://user-images.githubusercontent.com/1610100/195462632-f70a64d6-7811-4da3-aa82-c65cbbb74754.png"> Google Cloud Platform - Kubernetes Engine Terraform Module
 
-**[GitHub Actions](https://github.com/osinfra-io/terraform-google-project/actions):**
+**[GitHub Actions](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions):**
 
-[![Kitchen Tests](https://github.com/osinfra-io/terraform-google-project/actions/workflows/kitchen.yml/badge.svg)](https://github.com/osinfra-io/terraform-google-project/actions/workflows/kitchen.yml) [![CodeQL](https://github.com/osinfra-io/terraform-google-project/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/osinfra-io/terraform-google-project/actions/workflows/github-code-scanning/codeql) [![Dependabot](https://github.com/osinfra-io/terraform-google-project/actions/workflows/dependabot.yml/badge.svg)](https://github.com/osinfra-io/terraform-google-project/actions/workflows/dependabot.yml)
+[![Kitchen Tests](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/kitchen.yml/badge.svg)](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/kitchen.yml) [![CodeQL](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/github-code-scanning/codeql) [![Dependabot](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/dependabot.yml/badge.svg)](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/dependabot.yml)
 
 **[Infracost](https://www.infracost.io):**
 
-[![infracost](https://img.shields.io/endpoint?label=Default%20Project&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8/branch/43abfb4e-f8de-4d81-b98d-de0438843e47/terraform-google-project%2520-%2520Default%2520Project)](https://dashboard.infracost.io/org/osinfra-io/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8) [![infracost](https://img.shields.io/endpoint?label=Logging%20Project&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8/branch/43abfb4e-f8de-4d81-b98d-de0438843e47/terraform-google-project%2520-%2520Logging%2520Project)](https://dashboard.infracost.io/org/osinfra-io/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8)
+[![infracost](https://img.shields.io/endpoint?label=Default%20Project&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8/branch/43abfb4e-f8de-4d81-b98d-de0438843e47/terraform-google-kubernetes-engine%2520-%2520Default%2520Project)](https://dashboard.infracost.io/org/osinfra-io/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8) [![infracost](https://img.shields.io/endpoint?label=Logging%20Project&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8/branch/43abfb4e-f8de-4d81-b98d-de0438843e47/terraform-google-kubernetes-engine%2520-%2520Logging%2520Project)](https://dashboard.infracost.io/org/osinfra-io/repos/f8112db9-d028-45e6-86f5-c35c48a7c0b8)
 
 Monthly cost estimates for this module based on these usage values:
 
-- [default project](test/fixtures/default_project/infracost-usage.yml)
-- [logging project](test/fixtures/logging_project/infracost-usage.yml)
+- [default kubernetes engine](test/fixtures/default_kubernetes_engine/infracost-usage.yml)
 
 ## Repository Description
 
@@ -23,7 +22,7 @@ Terraform **example** module for a Google Cloud Platform Kubernetes engine clust
 
 You can check the [test/fixtures](test/fixtures/) directory for example configurations. These fixtures set up the system for testing by providing all the necessary code to initialize it, thus creating good examples to base your configurations on.
 
-Google project services must be enabled before using this module. As a best practice these should be defined in the [terraform-google-project](https://github.com/osinfra-io/terraform-google-project) module.  The following services are required:
+Google project services must be enabled before using this module. As a best practice these should be defined in the [terraform-google-project](https://github.com/osinfra-io/terraform-google-project) module. The following services are required:
 
 - container.googleapis.com
 - cloudkms.googleapis.com
@@ -35,9 +34,11 @@ Here is an example of a basic configuration:
 
 ```hcl
 module "kubernetes-engine" {
-  source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine?ref=v0.0.0"
+  source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
   cluster_prefix                 = "example-k8s-cluster"
+  cluster_secondary_range_name   = "example-k8s-pods-us-east1"
+  host_project_id                = "example-host-project"
   network                        = "example-vpc"
 
   node_pools = {
@@ -46,9 +47,11 @@ module "kubernetes-engine" {
     }
   }
 
+  master_ipv4_cidr_block         = "10.61.224.0/28"
   project_id                     = "example-project"
   project_number                 = "123456789"
   region                         = "us-east1"
+  services_secondary_range_name  = "kitchen-k8s-services-us-east1"
   subnet                         = "example-subnet-us-east1"
 }
 ```
@@ -76,12 +79,10 @@ See the documentation for setting up a local development environment [here](http
 
 Links to documentation and other resources required to develop and iterate in this repository successfully.
 
-- [apis](https://cloud.google.com/apis/docs/overview)
-- [audit logs](https://cloud.google.com/logging/docs/audit)
-- [logging metrics](https://cloud.google.com/logging/docs/logs-based-metrics)
-- [logging routing](https://cloud.google.com/logging/docs/routing/overview)
-- [monitoring alerts](https://cloud.google.com/monitoring/alerts)
-- [project](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
+- [kubernetes engine](https://cloud.google.com/kubernetes-engine/docs)
+  - [node pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
+- [shared vpc](https://cloud.google.com/vpc/docs/shared-vpc)
+  - [cluster creation](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc)
 
 ### 🔍 Tests
 

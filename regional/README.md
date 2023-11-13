@@ -64,6 +64,5 @@ No modules.
 | <a name="output_container_cluster_id"></a> [container\_cluster\_id](#output\_container\_cluster\_id) | The unique identifier for the cluster |
 | <a name="output_container_cluster_name"></a> [container\_cluster\_name](#output\_container\_cluster\_name) | The name of the cluster, unique within the project and location |
 | <a name="output_kms_crypto_key_cluster_database_encryption_name"></a> [kms\_crypto\_key\_cluster\_database\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_database\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the secrets |
-| <a name="output_project_id"></a> [project\_id](#output\_project\_id) | The ID of the project in which the resource belongs |
 | <a name="output_service_account_gke_operations_email"></a> [service\_account\_gke\_operations\_email](#output\_service\_account\_gke\_operations\_email) | The email address of the Kubernetes minimum privilege service account for the cluster |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

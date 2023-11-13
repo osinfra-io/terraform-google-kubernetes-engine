@@ -31,8 +31,3 @@ output "service_account_gke_operations_email" {
   description = "The email address of the Kubernetes minimum privilege service account for the cluster"
   value       = google_service_account.gke_operations.email
 }
-
-output "project_id" {
-  description = "The ID of the project in which the resource belongs"
-  value       = var.project_id
-}
