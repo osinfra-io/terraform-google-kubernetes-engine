@@ -13,6 +13,8 @@ module "regional" {
 
   source = "../../../regional"
 
+  cost_center = "x000"
+
   cluster_autoscaling = {
     enabled = true
   }

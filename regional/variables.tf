@@ -28,6 +28,11 @@ variable "cluster_secondary_range_name" {
   type        = string
 }
 
+variable "cost_center" {
+  description = "The cost center to use for resource labels"
+  type        = string
+}
+
 variable "enable_deletion_protection" {
   description = "Whether or not to enable deletion protection on the cluster"
   type        = bool
@@ -46,7 +51,7 @@ variable "kubernetes_daily_maintenance_window" {
 }
 
 variable "labels" {
-  description = "The Kubernetes labels (key/value pairs) to be applied to each node"
+  description = "A map of key/value pairs to assign to the resources being created"
   type        = map(string)
   default     = {}
 }

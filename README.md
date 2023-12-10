@@ -6,7 +6,7 @@
 
 **[Infracost](https://www.infracost.io):**
 
-[![infracost](https://img.shields.io/endpoint?label=Default%20Kubernetes&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d/Google%2520Kubernetes%2520Engine%2520-%2520Default)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
+[![infracost](https://img.shields.io/endpoint?label=default_kubernetes_engine&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d/default_kubernetes_engine)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
 
 Monthly cost estimates for this module based on these usage values:
 
@@ -36,6 +36,7 @@ Here is an example of a basic configuration:
 module "kubernetes-engine" {
   source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
+  cost_center                    = "x000"
   cluster_prefix                 = "example-k8s-cluster"
   cluster_secondary_range_name   = "example-k8s-pods-us-east1"
   host_project_id                = "example-host-project"
