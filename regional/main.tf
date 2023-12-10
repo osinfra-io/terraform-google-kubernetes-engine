@@ -210,7 +210,7 @@ resource "google_container_node_pool" "this" {
 
 resource "google_kms_crypto_key" "cluster_database_encryption" {
   key_ring        = google_kms_key_ring.cluster_database_encryption.id
-  labels          = var.labels
+  labels          = local.labels
   name            = "cluster-database-encryption-${random_id.this.hex}"
   rotation_period = "604800s"
 

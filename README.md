@@ -36,6 +36,7 @@ Here is an example of a basic configuration:
 module "kubernetes-engine" {
   source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
+  cost_center                    = "x000"
   cluster_prefix                 = "example-k8s-cluster"
   cluster_secondary_range_name   = "example-k8s-pods-us-east1"
   host_project_id                = "example-host-project"
