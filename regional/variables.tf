@@ -51,7 +51,7 @@ variable "kubernetes_daily_maintenance_window" {
 }
 
 variable "labels" {
-  description = "A set of key/value pairs to assign to the resources being created"
+  description = "A map of key/value pairs to assign to the resources being created"
   type        = map(string)
   default     = {}
 }
