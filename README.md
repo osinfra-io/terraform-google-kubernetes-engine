@@ -20,21 +20,21 @@ Terraform **example** module for a Google Cloud Platform Kubernetes engine clust
 
 ## 🔩 Usage
 
-You can check the [test/fixtures](test/fixtures/) directory for example configurations. These fixtures set up the system for testing by providing all the necessary initial code, thus creating good examples to base your configurations on.
+You can check the [test/fixtures](test/fixtures/) directory for example configurations. These fixtures set up the system for testing by providing all the necessary initial code, thus creating good examples on which to base your configurations.
 
 Google project services must be enabled before using this module. As a best practice, these should be defined in the [terraform-google-project](https://github.com/osinfra-io/terraform-google-project) module. The following services are required:
 
 - container.googleapis.com
 - cloudkms.googleapis.com
 
-> NOTE: The `google-beta` provider is required for the autoscaling profile feature.
+> NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
 Here is an example of a basic configuration:
 
 ```hcl
 module "kubernetes-engine" {
-  source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
+  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
   cost_center                    = "x000"
   cluster_prefix                 = "example-k8s-cluster"
