@@ -9,3 +9,6 @@ projects:
     - path: test/fixtures/default_kubernetes_engine
       name: "default_kubernetes_engine"
       usage_file: test/fixtures/default_kubernetes_engine/infracost-usage.yml
+    - path: test/fixtures/default_onboarding
+      name: "default_onboarding"
+      usage_file: test/fixtures/default_onboarding/infracost-usage.yml

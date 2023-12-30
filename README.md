@@ -30,11 +30,29 @@ Google project services must be enabled before using this module. As a best prac
 > NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
-Here is an example of a basic configuration:
+Here is an example of a basic configuration; these would be in three different `main.tf` files running separately in their workflows. For example, the global configuration would run first, and then the regional configuration would run.
+
+`global/onboarding/main.tf`:
+
+```hcl
+module "team_a" {
+  source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//global/onboarding?ref=v0.0.0"
+
+  namespaces = [
+    "team-a-namespace-a",
+    "team-a-namespace-b",
+  ]
+
+  namespace_admin       = "team-a"
+  project_id            = var.project_id
+}
+```
+
+`regional/infra/main.tf`:
 
 ```hcl
 module "kubernetes-engine" {
-  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
+  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional/infra?ref=v0.0.0"
 
   cost_center                    = "x000"
   cluster_prefix                 = "example-k8s-cluster"
@@ -54,6 +72,27 @@ module "kubernetes-engine" {
   region                         = "us-east1"
   services_secondary_range_name  = "kitchen-k8s-services-us-east1"
   subnet                         = "example-subnet-us-east1"
+}
+```
+
+`regional/onboarding/main.tf`:
+
+```hcl
+module "team_a" {
+  source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional/onboarding?ref=v0.0.0"
+
+  namespaces = {
+    team-a-namespace-a = {
+      istio_injection = enabled
+    }
+
+    # Defaults to disabled
+
+    team-a-namespace-b = {}
+  }
+
+  namespace_admin       = "team-a"
+  project_id            = var.project_id
 }
 ```
 
@@ -82,6 +121,8 @@ Links to documentation and other resources required to develop and iterate in th
 
 - [kubernetes engine](https://cloud.google.com/kubernetes-engine/docs)
   - [node pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
+  - [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
+  - [workload identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
 - [shared vpc](https://cloud.google.com/vpc/docs/shared-vpc)
   - [cluster creation](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc)
 
@@ -102,7 +143,11 @@ bundle exec kitchen verify
 ```
 
 ```none
-bundle exec kitchen destroy
+bundle exec kitchen destroy default-onboarding-gcp
+```
+
+```none
+bundle exec kitchen destroy default-kubernetes-engine-gcp
 ```
 
 ## 📓 Terraform Documentation

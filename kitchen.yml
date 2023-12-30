@@ -30,4 +30,10 @@ suites:
             - container_cluster
             - container_node_pool
             - kms_crypto_key
+            - project_iam_binding
             - service_account
+            - service_account_key
+
+  - name: default_onboarding
+    transport:
+      root_module_directory: test/fixtures/default_onboarding
