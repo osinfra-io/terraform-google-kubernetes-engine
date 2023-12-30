@@ -6,12 +6,12 @@
 
 # https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc
 
-module "regional" {
+module "test_kubernetes_engine" {
 
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test
   # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
-  source = "../../../regional"
+  source = "../../../regional/infra"
 
   cost_center = "x000"
 
@@ -44,4 +44,40 @@ module "regional" {
   region                        = var.region
   services_secondary_range_name = "kitchen-k8s-services-${var.region}"
   subnet                        = "kitchen-subnet-${var.region}"
+}
+
+module "test_onboarding" {
+
+  # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
+  # source = "github.com/osinfra-io/terraform-google-kubernetes-onboarding//global?ref=v0.0.0"
+
+  source = "../../../global/onboarding"
+
+  namespaces = {
+    foo = {}
+    bar = {}
+  }
+
+  project_id      = var.project_id
+  namespace_admin = "test"
+}
+
+module "test_onboarding_service_account" {
+
+  # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
+  # source = "github.com/osinfra-io/terraform-google-kubernetes-onboarding//global?ref=v0.0.0"
+
+  source = "../../../global/onboarding"
+
+  # This test is using a service account that is not a service account that is created by the module. For example, teams
+  # may want to use a service account they already use for existing workflows.
+
+  google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+
+  namespaces = {
+    cat = {}
+    dog = {}
+  }
+
+  project_id = var.project_id
 }

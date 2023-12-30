@@ -25,15 +25,15 @@ resource_type_default_usage:
   ## The following usage values apply to individual resources and override any value defined in the resource_type_default_usage section.
   ## All values are commented-out, you can uncomment resources and customize as needed.
   ##
-  # module.regional.google_container_node_pool.this["standard-pool"]:
+  # module.test_kubernetes_engine.google_container_node_pool.this["standard-pool"]:
     # nodes: 0 # Node count per zone for the node pool
-  # module.regional.google_container_cluster.this:
+  # module.test_kubernetes_engine.google_container_cluster.this:
     # autopilot_vcpu_count: 0.0 # Number of vCPUs used by Autopilot pods. Only relevant for Autopilot mode.
     # autopilot_memory_gb: 0.0 # Total memory used by Autopilot pods. Only relevant for Autopilot mode.
     # autopilot_ephemeral_storage_gb: 0.0 # Total ephemeral storage used by Autopilot pods. Only relevant for Autopilot mode.
     # nodes: 0 # Node count per zone for the default node pool. Only relevant for Standard mode.
     # node_pool[0]:
       # nodes: 0 # Node count per zone for the first node pool. Only relevant for Standard mode.
-  # module.regional.google_kms_crypto_key.cluster_database_encryption:
+  # module.test_kubernetes_engine.google_kms_crypto_key.cluster_database_encryption:
     # key_versions: 0 # Number of key versions.
     # monthly_key_operations: 0 # Monthly number of key operations.
