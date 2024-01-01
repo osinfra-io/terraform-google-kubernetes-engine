@@ -16,6 +16,10 @@ resource "google_container_cluster" "this" {
 
   provider = google-beta
 
+  authenticator_groups_config {
+    security_group = "gke-security-groups@osinfra.io"
+  }
+
   cluster_autoscaling {
     autoscaling_profile = var.cluster_autoscaling.autoscaling_profile
     enabled             = var.cluster_autoscaling.enabled
@@ -55,7 +59,6 @@ resource "google_container_cluster" "this" {
   enable_shielded_nodes       = true
   datapath_provider           = "ADVANCED_DATAPATH"
   deletion_protection         = var.enable_deletion_protection
-
 
   # If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value
   # of at least 1, alongside setting remove_default_node_pool to true.

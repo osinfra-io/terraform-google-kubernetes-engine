@@ -50,7 +50,7 @@ module "test_onboarding" {
   namespace_admin = "test"
 }
 
-module "test__onboarding_service_account" {
+module "test_onboarding_service_account" {
 
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
   # source = "git@github.com:osinfra-io/terraform-google-kubernetes-onboarding//regional?ref=v0.0.0"
