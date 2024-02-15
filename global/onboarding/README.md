@@ -11,7 +11,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.10.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.15.0 |
 
 ## Modules
 
@@ -35,6 +35,7 @@ No modules.
 | <a name="input_namespace_admin"></a> [namespace\_admin](#input\_namespace\_admin) | The namespace administrator service account name, required if google\_service\_account is not set | `string` | `""` | no |
 | <a name="input_namespaces"></a> [namespaces](#input\_namespaces) | A map of namespaces | <pre>map(object({<br>    istio_injection = optional(string, "disabled")<br>  }))</pre> | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs | `string` | n/a | yes |
+| <a name="input_vpc_host_project_id"></a> [vpc\_host\_project\_id](#input\_vpc\_host\_project\_id) | The project ID and number of the GKE Hub host project | <pre>map(object({<br>    project_number = string<br>  }))</pre> | `{}` | no |
 
 ## Outputs
 

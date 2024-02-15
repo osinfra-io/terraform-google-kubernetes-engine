@@ -1,6 +1,14 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
+variable "vpc_host_project_id" {
+  description = "The project ID and number of the GKE Hub host project"
+  type = map(object({
+    project_number = string
+  }))
+  default = {}
+}
+
 variable "google_service_account" {
   description = "The optional email address of the pre-existing Google service account to use for the namespace administrator"
   type        = string
