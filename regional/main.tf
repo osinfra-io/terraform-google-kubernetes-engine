@@ -242,6 +242,7 @@ resource "google_container_node_pool" "this" {
 resource "google_gke_hub_feature" "multi_cluster_ingress" {
   count = var.enable_gke_hub_host ? 1 : 0
 
+  labels   = local.labels
   location = "global"
   name     = "multiclusteringress"
   project  = var.project_id
@@ -257,6 +258,7 @@ resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
   count = var.enable_gke_hub_host ? 1 : 0
 
   name     = "multiclusterservicediscovery"
+  labels   = local.labels
   location = "global"
   project  = var.project_id
 
@@ -274,6 +276,7 @@ resource "google_gke_hub_membership" "host" {
     }
   }
 
+  labels        = local.labels
   membership_id = google_container_cluster.this.name
   project       = var.project_id
 }
@@ -283,16 +286,17 @@ resource "google_gke_hub_membership" "host" {
 resource "google_gke_hub_membership" "clusters" {
   for_each = var.enable_gke_hub_host ? var.gke_hub_memberships : {}
 
+  authority {
+    issuer = "https://container.googleapis.com/v1/${each.value.cluster_id}"
+  }
+
   endpoint {
     gke_cluster {
       resource_link = each.value.cluster_id
     }
   }
 
-  authority {
-    issuer = "https://container.googleapis.com/v1/${each.value.cluster_id}"
-  }
-
+  labels        = local.labels
   membership_id = each.key
   project       = var.project_id
 }
