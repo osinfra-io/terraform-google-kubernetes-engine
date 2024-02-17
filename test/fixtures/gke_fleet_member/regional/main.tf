@@ -11,8 +11,8 @@ module "test_gke_fleet_service" {
     enabled = true
   }
 
-  cluster_prefix               = "fleet-service"
-  cluster_secondary_range_name = "fleet-service-k8s-pods-${var.region}"
+  cluster_prefix               = "fleet-member"
+  cluster_secondary_range_name = "fleet-member-k8s-pods-${var.region}"
   enable_deletion_protection   = false
 
   labels = {
@@ -23,9 +23,9 @@ module "test_gke_fleet_service" {
 
   network                       = "kitchen-vpc"
   master_ipv4_cidr_block        = "10.61.224.16/28"
-  project_id                    = "test-gke-fleet-service-tf3e-sb"
+  project_id                    = "test-gke-fleet-member-tfc5-sb"
   region                        = var.region
-  services_secondary_range_name = "fleet-service-k8s-services-${var.region}"
-  subnet                        = "fleet-service-${var.region}"
+  services_secondary_range_name = "fleet-member-k8s-services-${var.region}"
+  subnet                        = "fleet-member-${var.region}"
   vpc_host_project_id           = var.vpc_host_project_id
 }

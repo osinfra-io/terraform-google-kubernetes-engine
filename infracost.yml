@@ -9,6 +9,6 @@ projects:
     - path: test/fixtures/gke_fleet_host
       name: "gke_fleet_host"
       usage_file: test/fixtures/gke_fleet_host/infracost-usage.yml
-    - path: test/fixtures/gke_fleet_service
-      name: "gke_fleet_service"
-      usage_file: test/fixtures/gke_fleet_service/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_member
+      name: "gke_fleet_member"
+      usage_file: test/fixtures/gke_fleet_member/infracost-usage.yml

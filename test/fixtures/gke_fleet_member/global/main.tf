@@ -6,5 +6,5 @@ module "test" {
   source = "../../../../global"
 
   gke_fleet_host_project_id = "test-gke-fleet-host-tf64-sb"
-  project_id                = "test-gke-fleet-service-tf3e-sb"
+  project_id                = "test-gke-fleet-member-tfc5-sb"
 }

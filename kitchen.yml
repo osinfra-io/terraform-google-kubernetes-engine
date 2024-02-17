@@ -58,17 +58,17 @@ suites:
         - name: inspec_gcp
           backend: gcp
 
-  - name: gke_fleet_service_global
+  - name: gke_fleet_member_global
     transport:
-      root_module_directory: test/fixtures/gke_fleet_service/global
+      root_module_directory: test/fixtures/gke_fleet_member/global
     verifier:
       systems:
         - name: inspec_gcp
           backend: gcp
 
-  - name: gke_fleet_service_regional
+  - name: gke_fleet_member_regional
     transport:
-      root_module_directory: test/fixtures/gke_fleet_service/regional
+      root_module_directory: test/fixtures/gke_fleet_member/regional
     verifier:
       systems:
         - name: inspec_gcp

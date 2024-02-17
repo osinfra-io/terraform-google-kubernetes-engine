@@ -51,20 +51,50 @@ jobs:
       # https://github.com/marketplace/actions/kitchen-terraform-github-action
 
       - name: Converge
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.0
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
         with:
           kitchen-command: converge
           kitchen-instance: gke-fleet-host-regional-gcp
 
+      - name: Converge
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-global-gcp
+
+      - name: Converge
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-global-onboarding-gcp
+
+      - name: Converge
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-regional-onboarding-gcp
+
+      - name: Converge
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-member-global-gcp
+
+      - name: Converge
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-member-regional-gcp
+
       # No support for WIF: https://github.com/inspec/inspec-gcp/issues/437
 
-      # - name: Verify
-      #   uses: osinfra-io/github-kitchen-terraform-action@v2.5.0
-      #   with:
-      #     kitchen-command: verify
+      - name: Verify
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: verify
 
       - name: Destroy
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.0
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
         with:
           kitchen-command: destroy

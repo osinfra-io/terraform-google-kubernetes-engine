@@ -10,8 +10,3 @@ variable "region" {
   type    = string
   default = "us-east1"
 }
-
-variable "project_id" {
-  type    = string
-  default = "test-gke-fleet-service-tf3e-sb"
-}
