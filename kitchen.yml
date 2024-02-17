@@ -26,6 +26,8 @@ suites:
       systems:
         - name: inspec_gcp
           backend: gcp
+          controls:
+            - project_iam_binding
 
   - name: gke_fleet_host_regional
     transport:
@@ -45,18 +47,10 @@ suites:
   - name: gke_fleet_host_global_onboarding
     transport:
       root_module_directory: test/fixtures/gke_fleet_host/global_onboarding
-    verifier:
-      systems:
-        - name: inspec_gcp
-          backend: gcp
 
   - name: gke_fleet_host_regional_onboarding
     transport:
       root_module_directory: test/fixtures/gke_fleet_host/regional_onboarding
-    verifier:
-      systems:
-        - name: inspec_gcp
-          backend: gcp
 
   - name: gke_fleet_member_global
     transport:
@@ -65,11 +59,9 @@ suites:
       systems:
         - name: inspec_gcp
           backend: gcp
+          controls:
+            - project_iam_binding
 
   - name: gke_fleet_member_regional
     transport:
       root_module_directory: test/fixtures/gke_fleet_member/regional
-    verifier:
-      systems:
-        - name: inspec_gcp
-          backend: gcp

@@ -14,7 +14,7 @@ module "test" {
     }
   }
 
-  project_id      = "test-gke-fleet-host-tf64-sb"
+  project_id      = var.project_id
   namespace_admin = "test"
 }
 
@@ -32,5 +32,5 @@ module "test_service_account" {
     dog = {}
   }
 
-  project_id = "test-gke-fleet-host-tf64-sb"
+  project_id = var.project_id
 }

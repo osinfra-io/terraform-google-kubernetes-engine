@@ -47,7 +47,7 @@ module "test" {
     }
   }
 
-  project_id      = "test-gke-fleet-host-tf64-sb"
+  project_id      = var.project_id
   namespace_admin = "test"
 }
 
@@ -65,7 +65,7 @@ module "test_service_account" {
     dog = {}
   }
 
-  project_id = "test-gke-fleet-host-tf64-sb"
+  project_id = var.project_id
 }
 
 # This is a test to validate workload identity. It's not needed for the module to work.

@@ -1,5 +1,5 @@
 output "project_id" {
-  value = "test-gke-fleet-host-tf64-sb"
+  value = var.project_id
 }
 
 output "workload_identity_service_account_emails" {

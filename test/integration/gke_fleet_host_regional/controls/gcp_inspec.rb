@@ -25,7 +25,7 @@ control 'container_cluster' do
     its('network') { should eq 'kitchen-vpc' }
     its('private_cluster_config.enable_private_nodes') { should == true }
     its('status') { should eq 'RUNNING' }
-    its('subnetwork') { should eq 'kitchen-subnet-us-east1' }
+    its('subnetwork') { should eq 'fleet-host-us-east1' }
   end
 end
 
@@ -68,6 +68,7 @@ control 'kms_crypto_key' do
     its('primary_state') { should eq 'ENABLED' }
   end
 end
+
 control 'project_iam_binding' do
   title 'Project IAM Binding'
 
