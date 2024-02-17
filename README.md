@@ -26,39 +26,39 @@ Google project services must be enabled before using this module. As a best prac
 
 - container.googleapis.com
 - cloudkms.googleapis.com
+- cloudresourcemanager.googleapis.com
+- gkehub.googleapis.com (If project is a GKE Fleet host project)
+- multiclusteringress.googleapis.com (If project is a GKE Fleet host project)
+- multiclusterservicediscovery.googleapis.com (If project is a GKE Fleet host project or service project)
+- trafficdirector.googleapis.com (If project is a GKE Fleet host project or service project)
 
 > NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
-Here is an example of a basic configuration; these would be in three different `main.tf` files running separately in their workflows. For example, the global configuration would run first, and then the regional configuration followed by the onboarding configuration.
+Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first (if the cluster is a GKE fleet service cluster), and then the regional configuration followed by the onboarding configuration.
 
-`global/onboarding/main.tf`:
-
-```hcl
-module "team_a" {
-  source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//global/onboarding?ref=v0.0.0"
-
-  namespaces = [
-    "team-a-namespace-a",
-    "team-a-namespace-b",
-  ]
-
-  namespace_admin       = "team-a"
-  project_id            = var.project_id
-}
-```
-
-`regional/infra/main.tf`:
+`global/main.tf`:
 
 ```hcl
 module "kubernetes-engine" {
-  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional/infra?ref=v0.0.0"
+  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//global?ref=v0.0.0"
+
+  project_id               = "example-project"
+  vpc_host_project_id      = "example-gke-fleet-host-project"
+}
+```
+
+`regional/main.tf`:
+
+```hcl
+module "kubernetes-engine" {
+  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
   cost_center                    = "x000"
   cluster_prefix                 = "example-k8s-cluster"
   cluster_secondary_range_name   = "example-k8s-pods-us-east1"
-  host_project_id                = "example-host-project"
   network                        = "example-vpc"
+  vpc_host_project_id            = "example-vpc-host-project"
 
   node_pools = {
     standard-pool = {
@@ -75,6 +75,22 @@ module "kubernetes-engine" {
 }
 ```
 
+`global/onboarding/main.tf`:
+
+```hcl
+module "team_a" {
+  source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//global/onboarding?ref=v0.0.0"
+
+  namespaces = [
+    "team-a-namespace-a",
+    "team-a-namespace-b",
+  ]
+
+  namespace_admin = "team-a"
+  project_id = "example-project"
+}
+```
+
 `regional/onboarding/main.tf`:
 
 ```hcl
@@ -86,13 +102,11 @@ module "team_a" {
       istio_injection = enabled
     }
 
-    # Defaults to disabled
-
     team-a-namespace-b = {}
   }
 
-  namespace_admin       = "team-a"
-  project_id            = var.project_id
+  namespace_admin = "team-a"
+  project_id = "example-project"
 }
 ```
 
@@ -143,13 +157,36 @@ bundle exec kitchen verify
 ```
 
 ```none
-bundle exec kitchen destroy default-onboarding-gcp
+bundle exec kitchen destroy
 ```
 
 ```none
-bundle exec kitchen destroy default-kubernetes-engine-gcp
+bundle exec kitchen destroy
+```
+
+```none
+bundle exec kitchen destroy
+```
+
+```none
+bundle exec kitchen destroy
+```
+
+```none
+bundle exec kitchen destroy
+```
+
+```none
+bundle exec kitchen destroy
+```
+
+```none
+bundle exec kitchen destroy
 ```
 
 ## 📓 Terraform Documentation
 
+- [global](global/README.md)
+- [global/onboarding](global/onboarding/README.md)
 - [regional](regional/README.md)
+- [regional/onboarding](regional/onboarding/README.md)

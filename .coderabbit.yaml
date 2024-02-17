@@ -1,6 +1,7 @@
 # CodeRabbit Configuration File
-# yaml-language-server: $schema=https://coderabbit.ai/integrations/coderabbit-overrides.v2.json
 # https://coderabbit.ai/docs/get-started/customize-coderabbit
+
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/coderabbit-overrides.v2.json
 
 early_access: true
 reviews:

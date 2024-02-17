@@ -1,7 +1,6 @@
 # Google Project IAM Member Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
 
-
 resource "google_project_iam_member" "container_deployer" {
   member  = "serviceAccount:${local.google_service_account}"
   project = var.project_id

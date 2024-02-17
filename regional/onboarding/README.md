@@ -11,8 +11,8 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.10.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.24.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.13.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.25.2 |
 
 ## Modules
 
@@ -43,4 +43,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_project_id"></a> [project\_id](#output\_project\_id) | The project ID |
+| <a name="output_workload_identity_service_account_emails"></a> [workload\_identity\_service\_account\_emails](#output\_workload\_identity\_service\_account\_emails) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

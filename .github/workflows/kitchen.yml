@@ -20,13 +20,117 @@ permissions:
 
 jobs:
   kitchen_terraform:
-    name: "Tests"
-    uses: osinfra-io/github-terraform-gcp-called-workflows/.github/workflows/kitchen-terraform.yml@v0.1.9
+    name: Kitchen-Terraform
+    runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]' && github.actor != 'osinfra-sa'
 
-    with:
-      service_account: "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
-      workload_identity_provider: "projects/746490462722/locations/global/workloadIdentityPools/github-actions/providers/github-actions-oidc"
+    steps:
 
-    secrets:
-      billing_account: ${{ secrets.BILLING_ACCOUNT }}
+      # Uncomment to enable GitHub Security Lab Action Permissions Monitor
+
+      # - name: Actions permissions monitor
+      #   uses: GitHubSecurityLab/actions-permissions/monitor@v1.0.0
+
+      # GitHub - Checkout
+      # https://github.com/marketplace/actions/checkout
+
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      # Google Cloud Platform - Authenticate to Google Cloud
+      # https://github.com/marketplace/actions/authenticate-to-google-cloud
+
+      - name: Authenticate
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          create_credentials_file: true
+          service_account: plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com
+          workload_identity_provider: projects/746490462722/locations/global/workloadIdentityPools/github-actions/providers/github-actions-oidc
+
+      # Kitchen Terraform
+      # https://github.com/marketplace/actions/kitchen-terraform-github-action
+
+      - name: "Converge: gke-fleet-host-global-gcp"
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-global-gcp
+
+      - name: "Converge: gke-fleet-host-regional-onboarding-gcp"
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-regional-gcp
+
+      - name: "Converge: gke-fleet-host-global-onboarding-gcp"
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-global-onboarding-gcp
+
+      - name: "Converge: gke-fleet-host-regional-onboarding-gcp"
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-regional-onboarding-gcp
+
+      - name: "Converge: gke-fleet-member-global-gcp"
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-member-global-gcp
+
+      - name: "Converge: gke-fleet-member-regional-gcp"
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-member-regional-gcp
+
+      # No support for WIF: https://github.com/inspec/inspec-gcp/issues/437
+
+      # - name: Verify
+      #   uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+      #   with:
+      #     kitchen-command: verify
+
+      - name: "Destroy: gke-fleet-member-regional-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-member-regional-gcp
+
+      - name: "Destroy: gke-fleet-member-global-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-member-global-gcp
+
+      - name: "Destroy: gke-fleet-host-regional-onboarding-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-regional-onboarding-gcp
+
+      - name: "Destroy: gke-fleet-host-global-onboarding-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-global-onboarding-gcp
+
+      - name: "Destroy: gke-fleet-host-global-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-global-gcp
+
+      - name: "Destroy: gke-fleet-host-regional-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-regional-gcp

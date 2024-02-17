@@ -19,9 +19,17 @@ verifier:
   name: terraform
 
 suites:
-  - name: default_kubernetes_engine
+  - name: gke_fleet_host_global
     transport:
-      root_module_directory: test/fixtures/default_kubernetes_engine
+      root_module_directory: test/fixtures/gke_fleet_host/global
+    verifier:
+      systems:
+        - name: inspec_gcp
+          backend: gcp
+
+  - name: gke_fleet_host_regional
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_host/regional
     verifier:
       systems:
         - name: inspec_gcp
@@ -34,6 +42,34 @@ suites:
             - service_account
             - service_account_key
 
-  - name: default_onboarding
+  - name: gke_fleet_host_global_onboarding
     transport:
-      root_module_directory: test/fixtures/default_onboarding
+      root_module_directory: test/fixtures/gke_fleet_host/global_onboarding
+    verifier:
+      systems:
+        - name: inspec_gcp
+          backend: gcp
+
+  - name: gke_fleet_host_regional_onboarding
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_host/regional_onboarding
+    verifier:
+      systems:
+        - name: inspec_gcp
+          backend: gcp
+
+  - name: gke_fleet_member_global
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_member/global
+    verifier:
+      systems:
+        - name: inspec_gcp
+          backend: gcp
+
+  - name: gke_fleet_member_regional
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_member/regional
+    verifier:
+      systems:
+        - name: inspec_gcp
+          backend: gcp
