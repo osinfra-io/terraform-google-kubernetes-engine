@@ -22,6 +22,7 @@ jobs:
   kitchen_terraform:
     name: Kitchen-Terraform
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.actor != 'osinfra-sa'
 
     steps:
 
