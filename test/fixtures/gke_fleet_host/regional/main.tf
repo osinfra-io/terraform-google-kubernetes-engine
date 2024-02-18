@@ -1,4 +1,4 @@
-module "test_gke_fleet_host" {
+module "test" {
 
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test
   # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
@@ -16,11 +16,17 @@ module "test_gke_fleet_host" {
   enable_deletion_protection   = false
   enable_gke_hub_host          = true
 
-  # gke_hub_memberships = {
-  #   "fleet-service-us-east4" = {
-  #     cluster_id = "projects/test-gke-fleet-service-tf3e-sb/locations/us-east4/clusters/fleet-service-us-east4"
-  #   }
-  # }
+  # This code is managed by the test/test.sh script
+
+  ### START GKE HUB MEMBERSHIPS ###
+  #
+  #  gke_hub_memberships = {
+  #    "fleet-member-us-east4" = {
+  #      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
+  #    }
+  #  }
+  #
+  ### END GKE HUB MEMBERSHIPS ###
 
   labels = {
     env    = "sb"
@@ -37,7 +43,7 @@ module "test_gke_fleet_host" {
   }
 
   master_ipv4_cidr_block        = "10.61.224.0/28"
-  project_id                    = "test-gke-fleet-host-tf64-sb"
+  project_id                    = var.project_id
   region                        = var.region
   services_secondary_range_name = "fleet-host-k8s-services-${var.region}"
   subnet                        = "fleet-host-${var.region}"

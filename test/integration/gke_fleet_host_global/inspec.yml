@@ -1,7 +1,7 @@
 # Chef Inspec
 # https://docs.chef.io/inspec/profiles/#inspecyml
 
-name: gke_fleet_host_regional
+name: gke_fleet_host_global
 
 # Profile Dependencies
 # https://docs.chef.io/inspec/profiles/#profile-dependencies

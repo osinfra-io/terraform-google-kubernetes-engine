@@ -5,5 +5,5 @@ module "test" {
 
   source = "../../../../global"
 
-  project_id = "test-gke-fleet-host-tf64-sb"
+  project_id = var.project_id
 }

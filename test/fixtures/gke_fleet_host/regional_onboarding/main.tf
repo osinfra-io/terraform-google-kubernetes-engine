@@ -38,6 +38,8 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
+  namespace_admin = "test"
+
   namespaces = {
     foo = {
       istio_injection = "enabled"
@@ -47,8 +49,7 @@ module "test" {
     }
   }
 
-  project_id      = "test-gke-fleet-host-tf64-sb"
-  namespace_admin = "test"
+  project_id = var.project_id
 }
 
 module "test_service_account" {
@@ -65,7 +66,7 @@ module "test_service_account" {
     dog = {}
   }
 
-  project_id = "test-gke-fleet-host-tf64-sb"
+  project_id = var.project_id
 }
 
 # This is a test to validate workload identity. It's not needed for the module to work.

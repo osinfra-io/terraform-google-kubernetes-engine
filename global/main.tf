@@ -37,7 +37,7 @@ resource "google_project_iam_member" "multi_cluster_service_agent" {
 # Because this scenario uses workload identity federation for GKE, each project's MCS Importer GKE service
 # account needs the Network User role for its own project.
 
-# These resources needs the clusters created first, so new infrastructure builds will fail on the global run.
+# These resources needs a clusters created first, so new infrastructure builds will fail on the global run.
 # As a W/A run the regional infrastructure first and then the global infrastructure.
 
 resource "google_project_iam_member" "host_project_network_viewer" {
@@ -49,7 +49,7 @@ resource "google_project_iam_member" "host_project_network_viewer" {
 }
 
 resource "google_project_iam_member" "service_project_network_viewer" {
-  count = var.gke_fleet_host_project_id != null ? 0 : 1
+  count = var.gke_fleet_host_project_id == null ? 1 : 0
 
   member  = "serviceAccount:${var.project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
   project = var.project_id

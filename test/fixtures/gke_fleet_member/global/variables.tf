@@ -6,7 +6,7 @@ variable "gke_fleet_host_project_id" {
   default = "test-gke-fleet-host-tf64-sb"
 }
 
-variable "region" {
+variable "project_id" {
   type    = string
-  default = "us-east1"
+  default = "test-gke-fleet-member-tfc5-sb"
 }

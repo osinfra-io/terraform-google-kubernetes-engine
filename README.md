@@ -6,11 +6,16 @@
 
 **[Infracost](https://www.infracost.io):**
 
-[![infracost](https://img.shields.io/endpoint?label=default_kubernetes_engine&url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d/default_kubernetes_engine)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
+[![infracost](https://img.shields.io/endpoint?url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
 
 Monthly cost estimates for this module based on these usage values:
 
-- [default kubernetes engine](test/fixtures/default_kubernetes_engine/infracost-usage.yml)
+- [gke_fleet_host/global](test/fixtures/gke_fleet_host/global/infracost-usage.yml)
+- [gke_fleet_host/regional](test/fixtures/gke_fleet_host/regional/infracost-usage.yml)
+- [gke_fleet_host/global_onboarding](test/fixtures/gke_fleet_host/global_onboarding/infracost-usage.yml)
+- [gke_fleet_host/regional_onboarding](test/fixtures/gke_fleet_host/regional_onboarding/infracost-usage.yml)
+- [gke_fleet_member/global](test/fixtures/gke_fleet_member/global/infracost-usage.yml)
+- [gke_fleet_member/regional](test/fixtures/gke_fleet_member/regional/infracost-usage.yml)
 
 ## Repository Description
 
@@ -35,7 +40,9 @@ Google project services must be enabled before using this module. As a best prac
 > NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
-Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first (if the cluster is a GKE fleet service cluster), and then the regional configuration followed by the onboarding configuration.
+Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first  and then the regional configuration followed by the onboarding configuration.
+
+### Fleet Host
 
 `global/main.tf`:
 
@@ -44,7 +51,6 @@ module "kubernetes-engine" {
   source = "github.com/osinfra-io/terraform-google-kubernetes-engine//global?ref=v0.0.0"
 
   project_id               = "example-project"
-  vpc_host_project_id      = "example-gke-fleet-host-project"
 }
 ```
 
@@ -55,10 +61,17 @@ module "kubernetes-engine" {
   source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
 
   cost_center                    = "x000"
-  cluster_prefix                 = "example-k8s-cluster"
+  cluster_prefix                 = "example-fleet-host-cluster"
   cluster_secondary_range_name   = "example-k8s-pods-us-east1"
+  enable_gke_hub_host          = true
+
+  gke_hub_memberships = {
+    "example-member-us-east1" = {
+      cluster_id = "projects/example-member-project/locations/us-east1/clusters/example-fleet-member-us-east4"
+    }
+  }
+
   network                        = "example-vpc"
-  vpc_host_project_id            = "example-vpc-host-project"
 
   node_pools = {
     standard-pool = {
@@ -68,10 +81,10 @@ module "kubernetes-engine" {
 
   master_ipv4_cidr_block         = "10.61.224.0/28"
   project_id                     = "example-project"
-  project_number                 = "123456789"
   region                         = "us-east1"
-  services_secondary_range_name  = "kitchen-k8s-services-us-east1"
+  services_secondary_range_name  = "example-k8s-services-us-east1"
   subnet                         = "example-subnet-us-east1"
+  vpc_host_project_id            = "example-vpc-host-project"
 }
 ```
 
@@ -81,12 +94,13 @@ module "kubernetes-engine" {
 module "team_a" {
   source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//global/onboarding?ref=v0.0.0"
 
+  namespace_admin = "team-a"
+
   namespaces = [
     "team-a-namespace-a",
-    "team-a-namespace-b",
+    "team-a-namespace-b"
   ]
 
-  namespace_admin = "team-a"
   project_id = "example-project"
 }
 ```
@@ -97,6 +111,8 @@ module "team_a" {
 module "team_a" {
   source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional/onboarding?ref=v0.0.0"
 
+  namespace_admin = "team-a"
+
   namespaces = {
     team-a-namespace-a = {
       istio_injection = enabled
@@ -105,7 +121,6 @@ module "team_a" {
     team-a-namespace-b = {}
   }
 
-  namespace_admin = "team-a"
   project_id = "example-project"
 }
 ```
@@ -149,39 +164,7 @@ bundle install
 ```
 
 ```none
-bundle exec kitchen converge
-```
-
-```none
-bundle exec kitchen verify
-```
-
-```none
-bundle exec kitchen destroy
-```
-
-```none
-bundle exec kitchen destroy
-```
-
-```none
-bundle exec kitchen destroy
-```
-
-```none
-bundle exec kitchen destroy
-```
-
-```none
-bundle exec kitchen destroy
-```
-
-```none
-bundle exec kitchen destroy
-```
-
-```none
-bundle exec kitchen destroy
+test/test.sh
 ```
 
 ## 📓 Terraform Documentation
