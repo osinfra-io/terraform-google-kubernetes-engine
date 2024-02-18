@@ -38,6 +38,8 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
+  namespace_admin = "test"
+
   namespaces = {
     foo = {
       istio_injection = "enabled"
@@ -47,8 +49,7 @@ module "test" {
     }
   }
 
-  project_id      = var.project_id
-  namespace_admin = "test"
+  project_id = var.project_id
 }
 
 module "test_service_account" {
