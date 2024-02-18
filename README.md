@@ -204,8 +204,16 @@ You'll need to be a member of the [platform-contributors](https://groups.google.
 bundle install
 ```
 
+#### Converge and Verify
+
 ```none
 test/test.sh
+```
+
+#### Destroy
+
+```none
+test/test.sh -d
 ```
 
 ## 📓 Terraform Documentation
