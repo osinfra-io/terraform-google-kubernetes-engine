@@ -32,13 +32,15 @@ bundle exec kitchen converge gke-fleet-host-regional-gcp
 bundle exec kitchen verify
 
 # Run destroy on all instances sequentially
-kitchen destroy \
-  "gke-fleet-host-regional-onboarding-gcp" \
-  "gke-fleet-host-global-onboarding-gcp" \
-  "gke-fleet-member-regional-gcp" \
-  "gke-fleet-member-global-gcp" \
-  "gke-fleet-host-regional-gcp" \
-  "gke-fleet-host-global-gcp"
+if [ "$1" == "-d" ]; then
+  kitchen destroy \
+    "gke-fleet-host-regional-onboarding-gcp" \
+    "gke-fleet-host-global-onboarding-gcp" \
+    "gke-fleet-member-regional-gcp" \
+    "gke-fleet-member-global-gcp" \
+    "gke-fleet-host-regional-gcp" \
+    "gke-fleet-host-global-gcp"
 
 # Comment the fleet membership for the member cluster
-sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^/  #/}' test/fixtures/gke_fleet_host/regional/main.tf
+if [ "$1" == "-d" ]; then
+  sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^/  #/}' test/fixtures/gke_fleet_host/regional/main.tf

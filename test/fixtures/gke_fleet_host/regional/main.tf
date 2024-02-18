@@ -19,13 +19,13 @@ module "test" {
   # This code is managed by the test/test.sh script
 
   ### START GKE HUB MEMBERSHIPS ###
-  #
-  #  gke_hub_memberships = {
-  #    "fleet-member-us-east4" = {
-  #      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
-  #    }
-  #  }
-  #
+
+  gke_hub_memberships = {
+    "fleet-member-us-east4" = {
+      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
+    }
+  }
+
   ### END GKE HUB MEMBERSHIPS ###
 
   labels = {

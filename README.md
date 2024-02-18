@@ -40,7 +40,7 @@ Google project services must be enabled before using this module. As a best prac
 > NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
-Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first  and then the regional configuration followed by the onboarding configuration.
+Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first  and then the regional configuration followed by the onboarding configurations.
 
 ### Fleet Host
 
