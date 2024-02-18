@@ -6,9 +6,21 @@
 
 version: 0.1
 projects:
-    - path: test/fixtures/gke_fleet_host
-      name: "gke_fleet_host"
-      usage_file: test/fixtures/gke_fleet_host/infracost-usage.yml
-    - path: test/fixtures/gke_fleet_member
-      name: "gke_fleet_member"
-      usage_file: test/fixtures/gke_fleet_member/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_host/global
+      name: gke_fleet_host_global
+      usage_file: test/fixtures/gke_fleet_host/global/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_host/global_onboarding
+      name: gke_fleet_host_global_onboarding
+      usage_file: test/fixtures/gke_fleet_host/global_onboarding/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_host/regional
+      name: gke_fleet_host_regional
+      usage_file: test/fixtures/gke_fleet_host/regional/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_host/regional_onboarding
+      name: gke_fleet_host_regional_onboarding
+      usage_file: test/fixtures/gke_fleet_host/regional_onboarding/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_member/global
+      name: gke_fleet_member_global
+      usage_file: test/fixtures/gke_fleet_member/global/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_member/regional
+      name: gke_fleet_member_regional
+      usage_file: test/fixtures/gke_fleet_member/regional/infracost-usage.yml
