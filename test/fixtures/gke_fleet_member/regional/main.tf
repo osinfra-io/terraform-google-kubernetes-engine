@@ -21,10 +21,17 @@ module "test" {
     team   = "kitchen"
   }
 
-  network                       = "kitchen-vpc"
-  master_ipv4_cidr_block        = "10.61.224.16/28"
-  project_id                    = var.project_id
-  region                        = var.region
+  network                = "kitchen-vpc"
+  master_ipv4_cidr_block = "10.61.224.16/28"
+  project_id             = var.project_id
+  region                 = var.region
+
+  resource_labels = {
+    env    = "sb"
+    region = var.region
+    team   = "kitchen"
+  }
+
   services_secondary_range_name = "fleet-member-k8s-services-${var.region}"
   subnet                        = "fleet-member-${var.region}"
   vpc_host_project_id           = var.vpc_host_project_id

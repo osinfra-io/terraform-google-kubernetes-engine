@@ -86,6 +86,11 @@ resource "google_container_cluster" "this" {
     enabled = true
   }
 
+  database_encryption {
+    key_name = google_kms_crypto_key.cluster_database_encryption.id
+    state    = "ENCRYPTED"
+  }
+
   enable_intranode_visibility = true
   enable_shielded_nodes       = true
   datapath_provider           = "ADVANCED_DATAPATH"
@@ -155,11 +160,6 @@ resource "google_container_cluster" "this" {
 
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
-  }
-
-  database_encryption {
-    key_name = google_kms_crypto_key.cluster_database_encryption.id
-    state    = "ENCRYPTED"
   }
 
   private_cluster_config {
