@@ -42,8 +42,15 @@ module "test" {
     }
   }
 
-  master_ipv4_cidr_block        = "10.61.224.0/28"
-  project_id                    = var.project_id
+  master_ipv4_cidr_block = "10.61.224.0/28"
+  project_id             = var.project_id
+
+  resource_labels = {
+    env    = "sb"
+    region = var.region
+    team   = "kitchen"
+  }
+
   region                        = var.region
   services_secondary_range_name = "fleet-host-k8s-services-${var.region}"
   subnet                        = "fleet-host-${var.region}"

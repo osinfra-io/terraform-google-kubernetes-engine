@@ -20,10 +20,6 @@ variable "namespaces" {
     istio_injection = optional(string, "disabled")
   }))
 
-  # Even though this change doesn't help us to fail fast in all conditions,
-  # it will fail with a useful error message on terraform plan. The terraform
-  # validate command is intended for static validation of the configuration.
-
   validation {
     condition     = alltrue([for k in keys(var.namespaces) : length(k) <= 20])
     error_message = "Each namespace name must not contain more than 20 characters."

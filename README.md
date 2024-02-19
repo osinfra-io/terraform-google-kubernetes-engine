@@ -29,18 +29,18 @@ You can check the [test/fixtures](test/fixtures/) directory for example configur
 
 Google project services must be enabled before using this module. As a best practice, these should be defined in the [terraform-google-project](https://github.com/osinfra-io/terraform-google-project) module. The following services are required:
 
-- container.googleapis.com
-- cloudkms.googleapis.com
-- cloudresourcemanager.googleapis.com
-- gkehub.googleapis.com (If project is a GKE Fleet host project)
-- multiclusteringress.googleapis.com (If project is a GKE Fleet host project)
-- multiclusterservicediscovery.googleapis.com (If project is a GKE Fleet host project or service project)
-- trafficdirector.googleapis.com (If project is a GKE Fleet host project or service project)
+- `container.googleapis.com`
+- `cloudkms.googleapis.com`
+- `cloudresourcemanager.googleapis.com`
+- `gkehub.googleapis.com` (Only needed if project is a GKE Fleet host project)
+- `multiclusteringress.googleapis.com` (Only needed if project is a GKE Fleet host project)
+- `multiclusterservicediscovery.googleapis.com`
+- `trafficdirector.googleapis.com`
 
 > NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
-Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first  and then the regional configuration followed by the onboarding configuration.
+Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their own workflows. For example, the global configuration would run first  and then the regional configuration followed by the onboarding configurations.
 
 ### Fleet Host
 
@@ -80,13 +80,54 @@ module "kubernetes-engine" {
   }
 
   master_ipv4_cidr_block         = "10.61.224.0/28"
-  project_id                     = "example-project"
+  project_id                     = "example-fleet-host-project"
   region                         = "us-east1"
   services_secondary_range_name  = "example-k8s-services-us-east1"
   subnet                         = "example-subnet-us-east1"
   vpc_host_project_id            = "example-vpc-host-project"
 }
 ```
+
+### Fleet Member
+
+`global/main.tf`:
+
+```hcl
+module "kubernetes-engine" {
+  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//global?ref=v0.0.0"
+
+  gke_fleet_host_project_id = "example-fleet-host-project"
+  project_id                = "example-fleet-member-project"
+}
+```
+
+`regional/main.tf`:
+
+```hcl
+module "kubernetes-engine" {
+  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
+
+  cost_center                    = "x000"
+  cluster_prefix                 = "example-fleet-member-cluster"
+  cluster_secondary_range_name   = "example-k8s-pods-us-east4"
+  network                        = "example-vpc"
+
+  node_pools = {
+    standard-pool = {
+      machine_type = "g1-small"
+    }
+  }
+
+  master_ipv4_cidr_block         = "10.61.224.16/28"
+  project_id                     = "example-fleet-member-project"
+  region                         = "us-east4"
+  services_secondary_range_name  = "example-k8s-services-us-east4"
+  subnet                         = "example-subnet-us-east4"
+  vpc_host_project_id            = "example-vpc-host-project"
+}
+```
+
+### Onboarding
 
 `global/onboarding/main.tf`:
 
@@ -163,8 +204,16 @@ You'll need to be a member of the [platform-contributors](https://groups.google.
 bundle install
 ```
 
+#### Converge and Verify
+
 ```none
 test/test.sh
+```
+
+#### Destroy
+
+```none
+test/test.sh -d
 ```
 
 ## 📓 Terraform Documentation
