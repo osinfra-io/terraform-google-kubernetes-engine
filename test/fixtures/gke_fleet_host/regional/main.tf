@@ -29,9 +29,10 @@ module "test" {
   ### END GKE HUB MEMBERSHIPS ###
 
   labels = {
-    env    = "sb"
-    region = var.region
-    team   = "kitchen"
+    env        = "sb"
+    region     = var.region
+    repository = "terraform-google-kubernetes-engine"
+    team       = "kitchen"
   }
 
   network = "kitchen-vpc"
@@ -46,9 +47,10 @@ module "test" {
   project_id             = var.project_id
 
   resource_labels = {
-    env    = "sb"
-    region = var.region
-    team   = "kitchen"
+    env        = "sb"
+    region     = var.region
+    repository = "terraform-google-kubernetes-engine"
+    team       = "kitchen"
   }
 
   region                        = var.region

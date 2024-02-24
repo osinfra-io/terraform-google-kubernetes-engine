@@ -16,9 +16,10 @@ module "test" {
   enable_deletion_protection   = false
 
   labels = {
-    env    = "sb"
-    region = var.region
-    team   = "kitchen"
+    env        = "sb"
+    region     = var.region
+    repository = "terraform-google-kubernetes-engine"
+    team       = "kitchen"
   }
 
   network                = "kitchen-vpc"
@@ -27,9 +28,10 @@ module "test" {
   region                 = var.region
 
   resource_labels = {
-    env    = "sb"
-    region = var.region
-    team   = "kitchen"
+    env        = "sb"
+    region     = var.region
+    repository = "terraform-google-kubernetes-engine"
+    team       = "kitchen"
   }
 
   services_secondary_range_name = "fleet-member-k8s-services-${var.region}"
