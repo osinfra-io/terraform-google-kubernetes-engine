@@ -52,6 +52,10 @@ suites:
     transport:
       root_module_directory: test/fixtures/gke_fleet_host/regional_onboarding
 
+  - name: gke_fleet_host_global_istio
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_host/global_istio
+
   - name: gke_fleet_host_regional_istio
     transport:
       root_module_directory: test/fixtures/gke_fleet_host/regional_istio
