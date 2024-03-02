@@ -26,7 +26,8 @@ if [ ! $1 ]; then
     "gke-fleet-host-global-istio-gcp" \
     "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-member-global-gcp" \
-    "gke-fleet-member-regional-gcp"
+    "gke-fleet-member-regional-gcp" \
+    "gke-fleet-member-regional-istio-gcp"
 
   # Uncomment the fleet membership for the member cluster
   sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^\s*#//}' test/fixtures/gke_fleet_host/regional/main.tf
@@ -41,6 +42,7 @@ fi
 # Run destroy on all instances sequentially
 if [ "$1" = "-d" ]; then
   kitchen destroy \
+    "gke-fleet-member-regional-istio-gcp" \
     "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-host-global-istio-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \

@@ -12,7 +12,7 @@ variable "cluster_prefix" {
 variable "enable_istio_gateway" {
   description = "Enable the Istio gateway, used for ingress traffic into the mesh"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "environment" {

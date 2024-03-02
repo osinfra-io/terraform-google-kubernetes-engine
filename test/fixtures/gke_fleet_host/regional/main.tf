@@ -20,14 +20,14 @@ module "test" {
   # This code is managed by the test/test.sh script do not modify it unless your are updating the test
 
   ### START GKE HUB MEMBERSHIPS ###
-
-
-  gke_hub_memberships = {
-    "fleet-member-us-east4" = {
-      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
-    }
-  }
-
+  #
+  #
+  #  gke_hub_memberships = {
+  #    "fleet-member-us-east4" = {
+  #      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
+  #    }
+  #  }
+  #
   ### END GKE HUB MEMBERSHIPS ###
 
   labels = {
@@ -62,10 +62,10 @@ module "test" {
 }
 
 
-resource "google_artifact_registry_repository_iam_binding" "docker_virtual_readers" {
+resource "google_artifact_registry_repository_iam_member" "docker_virtual_readers" {
   location   = "us"
   project    = var.vpc_host_project_id
   repository = "projects/test-vpc-host-tf12-sb/locations/us/repositories/test-virtual"
   role       = "roles/artifactregistry.reader"
-  members    = ["serviceAccount:${module.test.service_account_gke_operations_email}"]
+  member     = "serviceAccount:${module.test.service_account_gke_operations_email}"
 }

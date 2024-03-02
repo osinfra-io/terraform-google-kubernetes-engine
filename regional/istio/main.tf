@@ -2,6 +2,9 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_global_address
 
 resource "google_compute_global_address" "istio_gateway" {
+  count = var.enable_istio_gateway ? 1 : 0
+
+
   name    = "istio-gateway-${var.region}"
   project = var.project_id
 }
@@ -15,7 +18,7 @@ resource "google_dns_record_set" "istio_gateway" {
   managed_zone = each.value.managed_zone
   name         = "${each.key}."
   project      = each.value.project
-  rrdatas      = [google_compute_global_address.istio_gateway.address]
+  rrdatas      = [google_compute_global_address.istio_gateway[0].address]
   ttl          = 300
   type         = "A"
 }
@@ -139,7 +142,7 @@ resource "kubernetes_ingress_v1" "istio_gateway" {
 
     annotations = {
       "kubernetes.io/ingress.allow-http"            = "false"
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.istio_gateway.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.istio_gateway[0].name
       "networking.gke.io/v1beta1.FrontendConfig"    = kubernetes_manifest.istio_gateway_frontendconfig[0].manifest.metadata.name
       "networking.gke.io/managed-certificates"      = kubernetes_manifest.istio_gateway_managed_certificate[0].manifest.metadata.name
     }

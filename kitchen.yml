@@ -73,3 +73,15 @@ suites:
   - name: gke_fleet_member_regional
     transport:
       root_module_directory: test/fixtures/gke_fleet_member/regional
+
+  - name: gke_fleet_member_global_onboarding
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_member/global_onboarding
+
+  - name: gke_fleet_member_regional_onboarding
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_member/regional_onboarding
+
+  - name: gke_fleet_member_regional_istio
+    transport:
+      root_module_directory: test/fixtures/gke_fleet_member/regional_istio

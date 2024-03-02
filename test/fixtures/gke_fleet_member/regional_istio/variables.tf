@@ -3,5 +3,10 @@
 
 variable "project_id" {
   type    = string
-  default = "test-gke-fleet-host-tf64-sb"
+  default = "test-gke-fleet-member-tfc5-sb"
+}
+
+variable "region" {
+  type    = string
+  default = "us-east4"
 }

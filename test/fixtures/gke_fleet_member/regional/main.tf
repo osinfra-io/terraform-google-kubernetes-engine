@@ -38,3 +38,11 @@ module "test" {
   subnet                        = "fleet-member-${var.region}"
   vpc_host_project_id           = var.vpc_host_project_id
 }
+
+resource "google_artifact_registry_repository_iam_member" "docker_virtual_readers" {
+  location   = "us"
+  project    = var.vpc_host_project_id
+  repository = "projects/test-vpc-host-tf12-sb/locations/us/repositories/test-virtual"
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:${module.test.service_account_gke_operations_email}"
+}
