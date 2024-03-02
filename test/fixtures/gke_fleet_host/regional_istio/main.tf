@@ -51,13 +51,20 @@ module "test" {
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
   # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional/istio?ref=v0.0.0"
 
-  source = "../../../../regional/istio"
+  source               = "../../../../regional/istio"
+  artifact_registry    = "us-docker.pkg.dev/test-vpc-host-tf12-sb/test-virtual"
+  cluster_prefix       = "fleet-host"
+  enable_istio_gateway = true
 
-  artifact_registry = "my-reg"
-  cluster_prefix    = "fleet-host"
+  istio_gateway_dns = {
+    "gateway.test.gcp.osinfra.io" = {
+      managed_zone = "test-gcp-osinfra-io"
+      project      = var.dns_project_id
+    }
+  }
 
   istio_gateway_ssl = [
-    "my.domain.com"
+    "gateway.test.gcp.osinfra.io"
   ]
 
   project_id = var.project_id

@@ -1,6 +1,18 @@
 variable "artifact_registry" {
   description = "The registry to pull the images from"
   type        = string
+  default     = "us-docker.pkg.dev/plt-lz-services-tf79-prod/platform-docker-virtual"
+}
+
+variable "cluster_prefix" {
+  description = "Prefix for your cluster name"
+  type        = string
+}
+
+variable "enable_istio_gateway" {
+  description = "Enable the Istio gateway, used for ingress traffic into the mesh"
+  type        = bool
+  default     = true
 }
 
 variable "environment" {
@@ -9,24 +21,36 @@ variable "environment" {
   default     = "sb"
 }
 
-variable "cluster_prefix" {
-  description = "Prefix for your cluster name"
-  type        = string
-}
-
 variable "gateway_autoscale_min" {
   description = "The minimum number of gateway replicas to run"
   type        = number
   default     = 1
 }
 
+variable "istio_chart_repository" {
+  description = "The repository to pull the Istio Helm chart from"
+  type        = string
+  default     = "https://istio-release.storage.googleapis.com/charts"
+}
+
+variable "istio_gateway_dns" {
+  description = "Map of attributes for the Istio gateway domain names"
+  type = map(object({
+    managed_zone = string
+    project      = string
+  }))
+  default = {}
+}
+
 variable "istio_gateway_ssl" {
   description = "List of domain names for the Istio gateway SSL SAN certificate"
   type        = list(string)
+  default     = []
 }
 
 # If you're changing the version of Istio here, make sure to update the version in the script
-# tools/crds-upgrade.sh as well.
+# tools/crds-upgrade.sh as well. Helm does not upgrade or delete CRDs when performing an upgrade.
+# Because of this restriction, an additional step is required when upgrading Istio with Helm.
 
 variable "istio_version" {
   description = "The version of istio to install"

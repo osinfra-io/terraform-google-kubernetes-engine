@@ -20,6 +20,7 @@ if [ ! $1 ]; then
     "gke-fleet-host-regional-gcp" \
     "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
+    "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-member-global-gcp" \
     "gke-fleet-member-regional-gcp"
 
@@ -36,6 +37,7 @@ fi
 # Run destroy on all instances sequentially
 if [ "$1" = "-d" ]; then
   kitchen destroy \
+    "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
     "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-member-regional-gcp" \

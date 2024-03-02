@@ -62,8 +62,13 @@ module "test_service_account" {
   google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 
   namespaces = {
-    cat = {}
-    dog = {}
+    istio-ingress = {
+      istio_injection = "enabled"
+    }
+
+    istio-system = {}
+    cat          = {}
+    dog          = {}
   }
 
   project_id = var.project_id

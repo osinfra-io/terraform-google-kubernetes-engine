@@ -5,5 +5,13 @@ module "test" {
 
   source = "../../../../global"
 
+  istio_gateway_ssl = [
+    # Common Name:
+    "gateway.test.gcp.osinfra.io",
+
+    # Subject Alternative Names:
+    "stream-team.test.gcp.osinfra.io"
+  ]
+
   project_id = var.project_id
 }

@@ -16,16 +16,18 @@ module "test" {
   enable_deletion_protection   = false
   enable_gke_hub_host          = true
 
-  # This code is managed by the test/test.sh script
+
+  # This code is managed by the test/test.sh script do not modify it unless your are updating the test
 
   ### START GKE HUB MEMBERSHIPS ###
-  #
-  #  gke_hub_memberships = {
-  #    "fleet-member-us-east4" = {
-  #      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
-  #    }
-  #  }
-  #
+
+
+  gke_hub_memberships = {
+    "fleet-member-us-east4" = {
+      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
+    }
+  }
+
   ### END GKE HUB MEMBERSHIPS ###
 
   labels = {
@@ -57,4 +59,13 @@ module "test" {
   services_secondary_range_name = "fleet-host-k8s-services-${var.region}"
   subnet                        = "fleet-host-${var.region}"
   vpc_host_project_id           = var.vpc_host_project_id
+}
+
+
+resource "google_artifact_registry_repository_iam_binding" "docker_virtual_readers" {
+  location   = "us"
+  project    = var.vpc_host_project_id
+  repository = "projects/test-vpc-host-tf12-sb/locations/us/repositories/test-virtual"
+  role       = "roles/artifactregistry.reader"
+  members    = ["serviceAccount:${module.test.service_account_gke_operations_email}"]
 }
