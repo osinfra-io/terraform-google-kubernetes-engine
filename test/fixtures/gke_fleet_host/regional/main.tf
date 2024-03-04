@@ -21,7 +21,6 @@ module "test" {
 
   ### START GKE HUB MEMBERSHIPS ###
   #
-  #
   #  gke_hub_memberships = {
   #    "fleet-member-us-east4" = {
   #      cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"

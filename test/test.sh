@@ -27,6 +27,8 @@ if [ ! $1 ]; then
     "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-member-global-gcp" \
     "gke-fleet-member-regional-gcp" \
+    "gke-fleet-member-global-onboarding-gcp" \
+    "gke-fleet-member-regional-onboarding-gcp" \
     "gke-fleet-member-regional-istio-gcp"
 
   # Uncomment the fleet membership for the member cluster
@@ -45,6 +47,8 @@ if [ "$1" = "-d" ]; then
     "gke-fleet-member-regional-istio-gcp" \
     "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-host-global-istio-gcp" \
+    "gke-fleet-member-regional-onboarding-gcp" \
+    "gke-fleet-member-global-onboarding-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
     "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-member-regional-gcp" \
