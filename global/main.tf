@@ -2,15 +2,41 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project#google_project
 
 data "google_project" "fleet_host" {
-  count = var.gke_fleet_host_project_id != null ? 1 : 0
+  count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   project_id = var.gke_fleet_host_project_id
+}
+
+# Google Compute Global Address Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_global_address
+
+resource "google_compute_global_address" "istio_gateway_mci" {
+  count = var.gke_fleet_host_project_id == "" ? 1 : 0
+
+  name    = "istio-gateway-mci"
+  project = var.project_id
+}
+
+# DNS Record Set Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set
+
+resource "google_dns_record_set" "istio_gateway" {
+  for_each = var.mci_istio_gateway_dns
+
+  managed_zone = each.value.managed_zone
+  name         = "${each.key}."
+  project      = each.value.project
+  rrdatas      = [google_compute_global_address.istio_gateway_mci[0].address]
+  ttl          = 300
+  type         = "A"
 }
 
 # Google Compute SSL Policy Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_ssl_policy
 
 resource "google_compute_ssl_policy" "default" {
+  count = var.gke_fleet_host_project_id == "" ? 1 : 0
+
   name            = "default"
   min_tls_version = "TLS_1_2"
   profile         = "MODERN"
@@ -26,7 +52,7 @@ resource "google_compute_ssl_policy" "default" {
 # Create IAM binding granting the fleet host project's GKE Hub service account the GKE Service Agent role on the service cluster's project.
 
 resource "google_project_iam_member" "gke_hub_service_agent" {
-  count = var.gke_fleet_host_project_id != null ? 1 : 0
+  count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   member  = "serviceAccount:service-${data.google_project.fleet_host[count.index].number}@gcp-sa-gkehub.iam.gserviceaccount.com"
   project = var.project_id
@@ -36,7 +62,7 @@ resource "google_project_iam_member" "gke_hub_service_agent" {
 # Create IAM binding granting the fleet host project's MCS service account the MCS Service Agent role on the service cluster's project.
 
 resource "google_project_iam_member" "multi_cluster_service_agent" {
-  count = var.gke_fleet_host_project_id != null ? 1 : 0
+  count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   member  = "serviceAccount:service-${data.google_project.fleet_host[count.index].number}@gcp-sa-mcsd.iam.gserviceaccount.com"
   project = var.project_id
@@ -51,7 +77,7 @@ resource "google_project_iam_member" "multi_cluster_service_agent" {
 # As a W/A run the regional infrastructure first and then the global infrastructure.
 
 resource "google_project_iam_member" "host_project_network_viewer" {
-  count = var.gke_fleet_host_project_id != null ? 1 : 0
+  count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   member  = "serviceAccount:${var.gke_fleet_host_project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
   project = var.project_id
@@ -59,9 +85,41 @@ resource "google_project_iam_member" "host_project_network_viewer" {
 }
 
 resource "google_project_iam_member" "service_project_network_viewer" {
-  count = var.gke_fleet_host_project_id == null ? 1 : 0
+  count = var.gke_fleet_host_project_id == "" ? 1 : 0
 
   member  = "serviceAccount:${var.project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
   project = var.project_id
   role    = "roles/compute.networkViewer"
+}
+
+#### ONBOARD
+# Google Project IAM Member Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
+
+resource "google_project_iam_member" "container_deployer" {
+  member  = "serviceAccount:${var.google_service_account}"
+  project = var.project_id
+  role    = "organizations/163313809793/roles/container.deployer"
+}
+
+# Google Service Account Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
+
+resource "google_service_account" "kubernetes_workload_identity" {
+  for_each = var.namespaces
+
+  account_id   = "${each.key}-k8s-wif"
+  display_name = "Kubernetes Workload Identity Service Account"
+  project      = var.project_id
+}
+
+# Google Service Account IAM Member Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam#google_service_account_iam_member
+
+resource "google_service_account_iam_member" "workload_identity" {
+  for_each = var.namespaces
+
+  member             = "serviceAccount:${var.project_id}.svc.id.goog[${each.key}/workload-identity]"
+  role               = "roles/iam.workloadIdentityUser"
+  service_account_id = google_service_account.kubernetes_workload_identity[each.key].name
 }

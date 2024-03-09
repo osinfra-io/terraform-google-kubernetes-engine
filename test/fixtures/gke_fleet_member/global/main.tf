@@ -6,5 +6,6 @@ module "test" {
   source = "../../../../global"
 
   gke_fleet_host_project_id = var.gke_fleet_host_project_id
+  google_service_account    = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
   project_id                = var.project_id
 }

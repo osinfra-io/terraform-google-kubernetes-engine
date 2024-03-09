@@ -21,13 +21,11 @@ if [ ! $1 ]; then
   kitchen converge \
     "gke-fleet-host-global-gcp" \
     "gke-fleet-host-regional-gcp" \
-    "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
-    "gke-fleet-host-global-istio-gcp" \
+    "gke-fleet-host-regional-mci-gcp" \
     "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-member-global-gcp" \
     "gke-fleet-member-regional-gcp" \
-    "gke-fleet-member-global-onboarding-gcp" \
     "gke-fleet-member-regional-onboarding-gcp" \
     "gke-fleet-member-regional-istio-gcp"
 
@@ -46,11 +44,9 @@ if [ "$1" = "-d" ]; then
   kitchen destroy \
     "gke-fleet-member-regional-istio-gcp" \
     "gke-fleet-host-regional-istio-gcp" \
-    "gke-fleet-host-global-istio-gcp" \
+    "gke-fleet-host-regional-mci-gcp" \
     "gke-fleet-member-regional-onboarding-gcp" \
-    "gke-fleet-member-global-onboarding-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
-    "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-member-regional-gcp" \
     "gke-fleet-member-global-gcp" \
     "gke-fleet-host-regional-gcp" \

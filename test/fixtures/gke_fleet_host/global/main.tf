@@ -5,13 +5,34 @@ module "test" {
 
   source = "../../../../global"
 
-  istio_gateway_ssl = [
-    # Common Name:
-    "gateway.test.gcp.osinfra.io",
+  google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 
-    # Subject Alternative Names:
-    "stream-team.test.gcp.osinfra.io"
-  ]
+  mci_istio_gateway_dns = {
+    "gateway.test.gcp.osinfra.io" = {
+      managed_zone = "test-gcp-osinfra-io"
+      project      = var.dns_project_id
+    }
+    "stream-team.test.gcp.osinfra.io" = {
+      managed_zone = "test-gcp-osinfra-io"
+      project      = var.dns_project_id
+    }
+  }
+
+  namespaces = {
+    bar = {
+      istio_injection = "disabled"
+    }
+
+    foo = {
+      istio_injection = "enabled"
+    }
+
+    istio-ingress = {
+      istio_injection = "enabled"
+    }
+
+    istio-system = {}
+  }
 
   project_id = var.project_id
 }

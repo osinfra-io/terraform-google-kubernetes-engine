@@ -33,19 +33,13 @@ variable "istio_chart_repository" {
   default     = "https://istio-release.storage.googleapis.com/charts"
 }
 
-variable "istio_gateway_dns" {
-  description = "Map of attributes for the Istio gateway domain names"
+variable "ingress_istio_gateway_dns" {
+  description = "Map of attributes for the ingress Istio gateway domain names, it is also used to create the managed certificate resource"
   type = map(object({
     managed_zone = string
     project      = string
   }))
   default = {}
-}
-
-variable "istio_gateway_ssl" {
-  description = "List of domain names for the Istio gateway SSL SAN certificate"
-  type        = list(string)
-  default     = []
 }
 
 # If you're changing the version of Istio here, make sure to update the version in the script

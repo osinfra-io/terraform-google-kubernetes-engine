@@ -56,16 +56,16 @@ module "test" {
   cluster_prefix       = "fleet-host"
   enable_istio_gateway = true
 
-  istio_gateway_dns = {
-    "gateway.test.gcp.osinfra.io" = {
+  ingress_istio_gateway_dns = {
+    "gateway-us-east1.test.gcp.osinfra.io" = {
+      managed_zone = "test-gcp-osinfra-io"
+      project      = var.dns_project_id
+    }
+    "stream-team-us-east1.test.gcp.osinfra.io" = {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id
     }
   }
-
-  istio_gateway_ssl = [
-    "gateway.test.gcp.osinfra.io"
-  ]
 
   project_id = var.project_id
   region     = var.region

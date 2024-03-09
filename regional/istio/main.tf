@@ -13,7 +13,7 @@ resource "google_compute_global_address" "istio_gateway" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set
 
 resource "google_dns_record_set" "istio_gateway" {
-  for_each = var.istio_gateway_dns
+  for_each = var.ingress_istio_gateway_dns
 
   managed_zone = each.value.managed_zone
   name         = "${each.key}."
@@ -147,6 +147,7 @@ resource "kubernetes_ingress_v1" "istio_gateway" {
       "networking.gke.io/managed-certificates"      = kubernetes_manifest.istio_gateway_managed_certificate[0].manifest.metadata.name
     }
   }
+
   spec {
     rule {
       http {
@@ -179,14 +180,14 @@ resource "kubernetes_manifest" "istio_gateway_backendconfig" {
   count = var.enable_istio_gateway ? 1 : 0
 
   manifest = {
-    "apiVersion" = "cloud.google.com/v1"
-    "kind"       = "BackendConfig"
-    "metadata" = {
-      "name"      = "istio-gateway-backend"
-      "namespace" = "istio-ingress"
+    apiVersion = "cloud.google.com/v1"
+    kind       = "BackendConfig"
+    metadata = {
+      name      = "istio-gateway-backend"
+      namespace = "istio-ingress"
     }
-    "spec" = {
-      "healthCheck" = {
+    spec = {
+      healthCheck = {
         checkIntervalSec   = "5"
         healthyThreshold   = "1"
         port               = "15021"
@@ -203,16 +204,16 @@ resource "kubernetes_manifest" "istio_gateway_frontendconfig" {
   count = var.enable_istio_gateway ? 1 : 0
 
   manifest = {
-    "apiVersion" = "networking.gke.io/v1beta1"
-    "kind"       = "FrontendConfig"
-    "metadata" = {
-      "name"      = "istio-gateway-frontend"
-      "namespace" = "istio-ingress"
+    apiVersion = "networking.gke.io/v1beta1"
+    kind       = "FrontendConfig"
+    metadata = {
+      name      = "istio-gateway-frontend"
+      namespace = "istio-ingress"
     }
-    "spec" = {
-      "sslPolicy" = "default"
-      "redirectToHttps" = {
-        "enabled" = true
+    spec = {
+      sslPolicy = "default"
+      redirectToHttps = {
+        enabled = true
       }
     }
   }
@@ -222,14 +223,14 @@ resource "kubernetes_manifest" "istio_gateway_managed_certificate" {
   count = var.enable_istio_gateway ? 1 : 0
 
   manifest = {
-    "apiVersion" = "networking.gke.io/v1"
-    "kind"       = "ManagedCertificate"
-    "metadata" = {
-      "name"      = "istio-gateway-tls"
-      "namespace" = "istio-ingress"
+    apiVersion = "networking.gke.io/v1"
+    kind       = "ManagedCertificate"
+    metadata = {
+      name      = "istio-gateway-tls"
+      namespace = "istio-ingress"
     }
-    "spec" = {
-      "domains" = var.istio_gateway_ssl
+    spec = {
+      domains = local.istio_gateway_domains
     }
   }
 }

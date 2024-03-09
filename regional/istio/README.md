@@ -42,9 +42,8 @@ No modules.
 | <a name="input_enable_istio_gateway"></a> [enable\_istio\_gateway](#input\_enable\_istio\_gateway) | Enable the Istio gateway, used for ingress traffic into the mesh | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment suffix for example: `sb` (Sandbox), `nonprod` (Non-Production), `prod` (Production) | `string` | `"sb"` | no |
 | <a name="input_gateway_autoscale_min"></a> [gateway\_autoscale\_min](#input\_gateway\_autoscale\_min) | The minimum number of gateway replicas to run | `number` | `1` | no |
+| <a name="input_ingress_istio_gateway_dns"></a> [ingress\_istio\_gateway\_dns](#input\_ingress\_istio\_gateway\_dns) | Map of attributes for the ingress Istio gateway domain names, it is also used to create the managed certificate resource | <pre>map(object({<br>    managed_zone = string<br>    project      = string<br>  }))</pre> | `{}` | no |
 | <a name="input_istio_chart_repository"></a> [istio\_chart\_repository](#input\_istio\_chart\_repository) | The repository to pull the Istio Helm chart from | `string` | `"https://istio-release.storage.googleapis.com/charts"` | no |
-| <a name="input_istio_gateway_dns"></a> [istio\_gateway\_dns](#input\_istio\_gateway\_dns) | Map of attributes for the Istio gateway domain names | <pre>map(object({<br>    managed_zone = string<br>    project      = string<br>  }))</pre> | `{}` | no |
-| <a name="input_istio_gateway_ssl"></a> [istio\_gateway\_ssl](#input\_istio\_gateway\_ssl) | List of domain names for the Istio gateway SSL SAN certificate | `list(string)` | `[]` | no |
 | <a name="input_istio_version"></a> [istio\_version](#input\_istio\_version) | The version of istio to install | `string` | `"1.20.3"` | no |
 | <a name="input_pilot_autoscale_min"></a> [pilot\_autoscale\_min](#input\_pilot\_autoscale\_min) | The minimum number of pilot replicas to run | `number` | `1` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs | `string` | n/a | yes |

@@ -44,17 +44,13 @@ suites:
             - service_account
             - service_account_key
 
-  - name: gke_fleet_host_global_onboarding
-    transport:
-      root_module_directory: test/fixtures/gke_fleet_host/global_onboarding
-
   - name: gke_fleet_host_regional_onboarding
     transport:
       root_module_directory: test/fixtures/gke_fleet_host/regional_onboarding
 
-  - name: gke_fleet_host_global_istio
+  - name: gke_fleet_host_regional_mci
     transport:
-      root_module_directory: test/fixtures/gke_fleet_host/global_istio
+      root_module_directory: test/fixtures/gke_fleet_host/regional_mci
 
   - name: gke_fleet_host_regional_istio
     transport:
@@ -73,10 +69,6 @@ suites:
   - name: gke_fleet_member_regional
     transport:
       root_module_directory: test/fixtures/gke_fleet_member/regional
-
-  - name: gke_fleet_member_global_onboarding
-    transport:
-      root_module_directory: test/fixtures/gke_fleet_member/global_onboarding
 
   - name: gke_fleet_member_regional_onboarding
     transport:

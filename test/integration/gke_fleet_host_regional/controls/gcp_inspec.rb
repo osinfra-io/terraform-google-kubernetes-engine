@@ -11,7 +11,6 @@ kms_key_ring_cluster_database_encryption_name = \
   input('kms_key_ring_cluster_database_encryption_name')
 location = 'us-east1'
 project_id = 'test-gke-fleet-host-tf64-sb'
-service_account_gke_operations_email = input('service_account_gke_operations_email')
 
 control 'container_cluster' do
   title 'Container Cluster'
@@ -79,7 +78,7 @@ control 'project_iam_binding' do
                                       role: 'organizations/163313809793/roles/container.deployer') do
     it { should exist }
     its('members') do
-      should include "serviceAccount:test-k8s-ns-admin@#{project_id}.iam.gserviceaccount.com"
+      should include "serviceAccount:plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
     end
   end
 end
@@ -90,17 +89,12 @@ control 'service_account' do
   # Service Account Resource
   # https://www.inspec.io/docs/reference/resources/google_service_account
 
-  %w[test-k8s-ns-admin foo-k8s-wif bar-k8s-wif].each do |name|
+  %w[foo-k8s-wif bar-k8s-wif].each do |name|
     describe google_service_account(project: project_id,
                                     name: "#{name}@#{project_id}.iam.gserviceaccount.com") do
       it { should exist }
       its('email') { should eq "#{name}@#{project_id}.iam.gserviceaccount.com" }
     end
-  end
-
-  describe google_service_account(project: project_id,
-                                  name: service_account_gke_operations_email) do
-    it { should exist }
   end
 end
 
