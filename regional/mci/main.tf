@@ -10,9 +10,9 @@ resource "kubernetes_manifest" "istio_gateway_mci" {
       name      = "istio-gateway-mci"
       namespace = "istio-ingress"
       annotations = {
-        "networking.gke.io/frontend-config"      = kubernetes_manifest.istio_gateway_mci_frontendconfig.manifest.metadata.name
-        "networking.gke.io/managed-certificates" = kubernetes_manifest.istio_gateway_mci_managed_certificate.manifest.metadata.name
-        "networking.gke.io/static-ip"            = "istio-gateway-mci"
+        "networking.gke.io/frontend-config"  = kubernetes_manifest.istio_gateway_mci_frontendconfig.manifest.metadata.name
+        "networking.gke.io/pre-shared-certs" = "istio-gateway"
+        "networking.gke.io/static-ip"        = var.istio_gateway_mci_ip
       }
     }
 
@@ -117,20 +117,6 @@ resource "kubernetes_manifest" "istio_gateway_mcs" {
       }
 
       clusters = var.multi_cluster_service_clusters
-    }
-  }
-}
-
-resource "kubernetes_manifest" "istio_gateway_mci_managed_certificate" {
-  manifest = {
-    apiVersion = "networking.gke.io/v1"
-    kind       = "ManagedCertificate"
-    metadata = {
-      name      = "istio-gateway-mci-managed-certificate"
-      namespace = "istio-ingress"
-    }
-    spec = {
-      domains = var.mci_istio_gateway_domains
     }
   }
 }

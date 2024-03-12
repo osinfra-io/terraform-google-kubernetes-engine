@@ -22,6 +22,15 @@ data "google_client_config" "current" {
 # This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
 # you do it in your root module.
 
+data "terraform_remote_state" "global" {
+  backend   = "gcs"
+  workspace = "kitchen-terraform-gke-fleet-host-global-gcp"
+
+  config = {
+    bucket = "plt-lz-testing-2c8b-sb"
+  }
+}
+
 data "terraform_remote_state" "regional" {
   backend   = "gcs"
   workspace = "kitchen-terraform-gke-fleet-host-regional-gcp"
@@ -38,10 +47,12 @@ module "test" {
 
   source = "../../../../regional/mci"
 
-  mci_istio_gateway_domains = [
+  istio_gateway_mci_domains = [
     "gateway.test.gcp.osinfra.io",
     "stream-team.test.gcp.osinfra.io"
   ]
+
+  istio_gateway_mci_ip = local.global.istio_gateway_mci_ip
 
   multi_cluster_service_clusters = [
     {

@@ -1,10 +1,16 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
-variable "mci_istio_gateway_domains" {
-  description = "List of domain names for the multi-cluster ingress Istio gateway managed certificate"
+variable "istio_gateway_mci_domains" {
+  description = "List of domain names for the Istio gateway multi-cluster ingress managed certificate"
   type        = list(string)
   default     = []
+}
+
+variable "istio_gateway_mci_ip" {
+  description = "The IP address for the Istio Gateway multi-cluster ingress"
+  type        = string
+  default     = ""
 }
 
 variable "multi_cluster_service_clusters" {

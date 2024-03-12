@@ -17,11 +17,28 @@ resource "google_compute_global_address" "istio_gateway_mci" {
   project = var.project_id
 }
 
+# Google Compute Managed SSL Certificate Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_managed_ssl_certificate
+
+# The declarative generation of a Kubernetes ManagedCertificate resource is not supported on
+# MultiClusterIngress resources. #36
+
+resource "google_compute_managed_ssl_certificate" "istio_gateway" {
+  count = var.gke_fleet_host_project_id == "" ? 1 : 0
+
+  managed {
+    domains = local.istio_gateway_domains
+  }
+
+  name    = "istio-gateway"
+  project = var.project_id
+}
+
 # DNS Record Set Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set
 
 resource "google_dns_record_set" "istio_gateway" {
-  for_each = var.mci_istio_gateway_dns
+  for_each = var.istio_gateway_mci_dns
 
   managed_zone = each.value.managed_zone
   name         = "${each.key}."
@@ -108,8 +125,8 @@ resource "google_project_iam_member" "container_deployer" {
 resource "google_service_account" "kubernetes_workload_identity" {
   for_each = var.namespaces
 
-  account_id   = "${each.key}-k8s-wif"
-  display_name = "Kubernetes Workload Identity Service Account"
+  account_id   = "gke-${random_id.this[each.key].hex}-workload-identity"
+  display_name = "Kubernetes ${each.key} namespace Workload Identity Service Account"
   project      = var.project_id
 }
 
@@ -122,4 +139,14 @@ resource "google_service_account_iam_member" "workload_identity" {
   member             = "serviceAccount:${var.project_id}.svc.id.goog[${each.key}/workload-identity]"
   role               = "roles/iam.workloadIdentityUser"
   service_account_id = google_service_account.kubernetes_workload_identity[each.key].name
+}
+
+# Random ID Resource
+# https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id
+
+resource "random_id" "this" {
+  for_each = var.namespaces
+
+  byte_length = 3
+  prefix      = "tf"
 }

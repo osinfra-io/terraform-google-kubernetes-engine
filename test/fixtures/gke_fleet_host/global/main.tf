@@ -7,7 +7,7 @@ module "test" {
 
   google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 
-  mci_istio_gateway_dns = {
+  istio_gateway_mci_dns = {
     "gateway.test.gcp.osinfra.io" = {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id

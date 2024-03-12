@@ -3,5 +3,5 @@
 
 
 locals {
-  istio_gateway_domains = keys(var.mci_istio_gateway_dns)
+  istio_gateway_domains = keys(var.istio_gateway_mci_dns)
 }

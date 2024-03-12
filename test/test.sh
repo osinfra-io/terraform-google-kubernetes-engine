@@ -52,6 +52,9 @@ if [ "$1" = "-d" ]; then
     "gke-fleet-host-regional-gcp" \
     "gke-fleet-host-global-gcp"
 
-# Comment the fleet membership for the member cluster
-  sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^/  #/}' test/fixtures/gke_fleet_host/regional/main.tf
+  # Comment the fleet membership for the member cluster
+  awk '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{if (!/^  #/) exit 1}' test/fixtures/gke_fleet_host/regional/main.tf
+  if [ $? -ne 0 ]; then
+    sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^/  #/}' test/fixtures/gke_fleet_host/regional/main.tf
+  fi
 fi

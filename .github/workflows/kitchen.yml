@@ -57,19 +57,12 @@ jobs:
           kitchen-command: converge
           kitchen-instance: gke-fleet-host-global-gcp
 
-      - name: "Converge: gke-fleet-host-regional-onboarding-gcp"
+      - name: "Converge: gke-fleet-host-regional-gcp"
         if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
         uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
         with:
           kitchen-command: converge
           kitchen-instance: gke-fleet-host-regional-gcp
-
-      - name: "Converge: gke-fleet-host-global-onboarding-gcp"
-        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
-        with:
-          kitchen-command: converge
-          kitchen-instance: gke-fleet-host-global-onboarding-gcp
 
       - name: "Converge: gke-fleet-host-regional-onboarding-gcp"
         if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
@@ -77,6 +70,20 @@ jobs:
         with:
           kitchen-command: converge
           kitchen-instance: gke-fleet-host-regional-onboarding-gcp
+
+      - name: "Converge: gke-fleet-host-regional-mci-gcp"
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-regional-mci-gcp
+
+      - name: "Converge: gke-fleet-host-regional-istio-gcp"
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-regional-istio-gcp
 
       - name: "Converge: gke-fleet-member-global-gcp"
         if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
@@ -92,12 +99,73 @@ jobs:
           kitchen-command: converge
           kitchen-instance: gke-fleet-member-regional-gcp
 
+      - name: "Converge: gke-fleet-member-regional-onboarding-gcp"
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-member-regional-onboarding-gcp
+
+      - name: "Converge: gke-fleet-member-regional-istio-gcp"
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-member-regional-istio-gcp
+
+      - name: "Uncomment the fleet membership for the member cluster"
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
+        run: |
+            sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^\s*#//}' test/fixtures/gke_fleet_host/regional/main.tf
+
+      - name: "Converge: gke-fleet-host-regional-gcp"
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: converge
+          kitchen-instance: gke-fleet-host-regional-gcp
+
       # No support for WIF: https://github.com/inspec/inspec-gcp/issues/437
 
       # - name: Verify
       #   uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
       #   with:
       #     kitchen-command: verify
+
+      - name: "Destroy: gke-fleet-member-regional-istio-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-member-regional-istio-gcp
+
+      - name: "Destroy: gke-fleet-host-regional-istio-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-regional-istio-gcp
+
+      - name: "Destroy: gke-fleet-host-regional-mci-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-regional-mci-gcp
+
+      - name: "Destroy: gke-fleet-member-regional-onboarding-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-member-regional-onboarding-gcp
+
+      - name: "Destroy: gke-fleet-host-regional-onboarding-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-regional-onboarding-gcp
 
       - name: "Destroy: gke-fleet-member-regional-gcp"
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -113,19 +181,12 @@ jobs:
           kitchen-command: destroy
           kitchen-instance: gke-fleet-member-global-gcp
 
-      - name: "Destroy: gke-fleet-host-regional-onboarding-gcp"
+      - name: "Destroy: gke-fleet-host-regional-gcp"
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
         with:
           kitchen-command: destroy
-          kitchen-instance: gke-fleet-host-regional-onboarding-gcp
-
-      - name: "Destroy: gke-fleet-host-global-onboarding-gcp"
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
-        with:
-          kitchen-command: destroy
-          kitchen-instance: gke-fleet-host-global-onboarding-gcp
+          kitchen-instance: gke-fleet-host-regional-gcp
 
       - name: "Destroy: gke-fleet-host-global-gcp"
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -133,10 +194,3 @@ jobs:
         with:
           kitchen-command: destroy
           kitchen-instance: gke-fleet-host-global-gcp
-
-      - name: "Destroy: gke-fleet-host-regional-gcp"
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
-        with:
-          kitchen-command: destroy
-          kitchen-instance: gke-fleet-host-regional-gcp
