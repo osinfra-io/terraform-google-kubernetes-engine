@@ -64,13 +64,6 @@ jobs:
           kitchen-command: converge
           kitchen-instance: gke-fleet-host-regional-gcp
 
-      - name: "Converge: gke-fleet-host-global-onboarding-gcp"
-        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
-        with:
-          kitchen-command: converge
-          kitchen-instance: gke-fleet-host-global-onboarding-gcp
-
       - name: "Converge: gke-fleet-host-regional-onboarding-gcp"
         if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize')
         uses: osinfra-io/github-kitchen-terraform-action@v2.5.2
@@ -193,21 +186,7 @@ jobs:
         uses: osinfra-io/github-kitchen-terraform-action@v2.5.2
         with:
           kitchen-command: destroy
-          kitchen-instance: gke-fleet-host-regional-onboarding-gcp
-
-      - name: "Destroy: gke-fleet-host-global-onboarding-gcp"
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.1
-        with:
-          kitchen-command: destroy
-          kitchen-instance: gke-fleet-host-global-onboarding-gcp
-
-      - name: "Destroy: gke-fleet-host-global-gcp"
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: osinfra-io/github-kitchen-terraform-action@v2.5.2
-        with:
-          kitchen-command: destroy
-          kitchen-instance: gke-fleet-host-global-gcp
+          kitchen-instance: gke-fleet-host-regional-gcp
 
       - name: "Destroy: gke-fleet-host-regional-gcp"
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -215,3 +194,10 @@ jobs:
         with:
           kitchen-command: destroy
           kitchen-instance: gke-fleet-host-regional-gcp
+
+      - name: "Destroy: gke-fleet-host-global-gcp"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: osinfra-io/github-kitchen-terraform-action@v2.5.2
+        with:
+          kitchen-command: destroy
+          kitchen-instance: gke-fleet-host-global-gcp

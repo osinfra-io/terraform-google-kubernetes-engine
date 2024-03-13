@@ -5,7 +5,7 @@ module "test" {
 
   source = "../../../../global"
 
-  google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+  google_service_account = var.google_service_account
 
   istio_gateway_mci_dns = {
     "gateway.test.gcp.osinfra.io" = {
