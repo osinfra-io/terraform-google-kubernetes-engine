@@ -43,14 +43,9 @@ data "terraform_remote_state" "regional" {
 module "test" {
 
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
-  # source = "github.com/osinfra-io/terraform-google-kubernetes//global/istio/?ref=v0.0.0"
+  # source = "github.com/osinfra-io/terraform-google-kubernetes//regional/mci/?ref=v0.0.0"
 
   source = "../../../../regional/mci"
-
-  istio_gateway_mci_domains = [
-    "gateway.test.gcp.osinfra.io",
-    "stream-team.test.gcp.osinfra.io"
-  ]
 
   istio_gateway_mci_ip = local.global.istio_gateway_mci_ip
 

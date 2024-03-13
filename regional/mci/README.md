@@ -30,7 +30,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_istio_gateway_mci_domains"></a> [istio\_gateway\_mci\_domains](#input\_istio\_gateway\_mci\_domains) | List of domain names for the Istio gateway multi-cluster ingress managed certificate | `list(string)` | `[]` | no |
 | <a name="input_istio_gateway_mci_ip"></a> [istio\_gateway\_mci\_ip](#input\_istio\_gateway\_mci\_ip) | The IP address for the Istio Gateway multi-cluster ingress | `string` | `""` | no |
 | <a name="input_multi_cluster_service_clusters"></a> [multi\_cluster\_service\_clusters](#input\_multi\_cluster\_service\_clusters) | List of clusters to be included in the MultiClusterService | <pre>list(object({<br>    link = string<br>  }))</pre> | `[]` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs | `string` | n/a | yes |

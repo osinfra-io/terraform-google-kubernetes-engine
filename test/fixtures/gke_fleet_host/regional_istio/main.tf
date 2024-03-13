@@ -61,6 +61,7 @@ module "test" {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id
     }
+
     "stream-team-us-east1.test.gcp.osinfra.io" = {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id
