@@ -16,18 +16,7 @@ module "test" {
   enable_deletion_protection   = false
   enable_gke_hub_host          = true
 
-
-  # This code is managed by the test/test.sh script do not modify it unless your are updating the test
-
-  ### START GKE HUB MEMBERSHIPS ###
-
-  # gke_hub_memberships = {
-  #   "fleet-member-us-east4" = {
-  #     cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4"
-  #   }
-  # }
-
-  ### END GKE HUB MEMBERSHIPS ###
+  gke_hub_memberships = var.gke_hub_memberships
 
   labels = {
     env        = "sb"

@@ -29,8 +29,9 @@ if [ ! $1 ]; then
     "gke-fleet-member-regional-onboarding-gcp" \
     "gke-fleet-member-regional-istio-gcp"
 
-  # Uncomment the fleet membership for the member cluster
-  sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^\s*#//}' test/fixtures/gke_fleet_host/regional/main.tf
+  # Enable the fleet membership for the member cluster
+
+  export TF_VAR_gke_hub_memberships='{ "fleet-member-us-east4" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4" } }'
 
   # Run converge on the gke-fleet-host-regional-gcp instance to enable the fleet membership
   bundle exec kitchen converge gke-fleet-host-regional-gcp
@@ -52,9 +53,6 @@ if [ "$1" = "-d" ]; then
     "gke-fleet-host-regional-gcp" \
     "gke-fleet-host-global-gcp"
 
-  # Comment the fleet membership for the member cluster
-  awk '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{if (!/^  #/) exit 1}' test/fixtures/gke_fleet_host/regional/main.tf
-  if [ $? -ne 0 ]; then
-    sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^/  #/}' test/fixtures/gke_fleet_host/regional/main.tf
-  fi
+  # Disable the fleet membership for the member cluster
+  unset TF_VAR_gke_hub_memberships
 fi

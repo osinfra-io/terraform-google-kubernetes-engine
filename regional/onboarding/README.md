@@ -35,7 +35,7 @@ No modules.
 | <a name="input_google_service_account"></a> [google\_service\_account](#input\_google\_service\_account) | The email address of the pre-existing Google service account to use for the namespace administrator | `string` | n/a | yes |
 | <a name="input_namespaces"></a> [namespaces](#input\_namespaces) | A map of namespaces | <pre>map(object({<br>    istio_injection = optional(string, "disabled")<br>  }))</pre> | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs | `string` | n/a | yes |
-| <a name="input_workload_identity_service_account_emails"></a> [workload\_identity\_service\_account\_emails](#input\_workload\_identity\_service\_account\_emails) | A map of workload identity service account emails for each namespace | `map(string)` | n/a | yes |
+| <a name="input_workload_identity_service_account_emails"></a> [workload\_identity\_service\_account\_emails](#input\_workload\_identity\_service\_account\_emails) | A map of workload identity service account emails for each namespace. Each key should be a namespace name, and the value should be the email address of the service account to associate with that namespace. | `map(string)` | n/a | yes |
 
 ## Outputs
 
