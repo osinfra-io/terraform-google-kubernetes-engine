@@ -8,14 +8,17 @@
 
 [![infracost](https://img.shields.io/endpoint?url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
 
-Monthly cost estimates for this module based on these usage values:
+💵 Monthly cost estimates for this module based on these usage values:
 
 - [gke_fleet_host/global](test/fixtures/gke_fleet_host/global/infracost-usage.yml)
 - [gke_fleet_host/regional](test/fixtures/gke_fleet_host/regional/infracost-usage.yml)
-- [gke_fleet_host/global_onboarding](test/fixtures/gke_fleet_host/global_onboarding/infracost-usage.yml)
+- [gke_fleet_host/regional_istio](test/fixtures/gke_fleet_host/regional_istio/infracost-usage.yml)
+- [gke_fleet_host/regional_mci](test/fixtures/gke_fleet_host/regional_mci/infracost-usage.yml)
 - [gke_fleet_host/regional_onboarding](test/fixtures/gke_fleet_host/regional_onboarding/infracost-usage.yml)
 - [gke_fleet_member/global](test/fixtures/gke_fleet_member/global/infracost-usage.yml)
 - [gke_fleet_member/regional](test/fixtures/gke_fleet_member/regional/infracost-usage.yml)
+- [gke_fleet_member/regional_istio](test/fixtures/gke_fleet_member/regional_istio/infracost-usage.yml)
+- [gke_fleet_member/regional_onboarding](test/fixtures/gke_fleet_member/regional_onboarding/infracost-usage.yml)
 
 ## Repository Description
 
@@ -54,6 +57,7 @@ See the documentation for setting up a local development environment [here](http
 
 ### 🛠️ Tools
 
+- [helm](https://helm.sh)
 - [infracost](https://github.com/infracost/infracost)
 - [inspec](https://github.com/inspec/inspec)
 - [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform)
@@ -65,7 +69,10 @@ See the documentation for setting up a local development environment [here](http
 
 Links to documentation and other resources required to develop and iterate in this repository successfully.
 
+- [istio](https://istio.io/latest/docs)
+  - [istio on gke](https://istio.io/latest/docs/setup/platform-setup/gke)
 - [kubernetes engine](https://cloud.google.com/kubernetes-engine/docs)
+  - [multi cluster ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress)
   - [node pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
   - [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
   - [workload identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
@@ -75,10 +82,6 @@ Links to documentation and other resources required to develop and iterate in th
 ### 🔍 Tests
 
 You'll need to be a member of the [platform-contributors](https://groups.google.com/a/osinfra.io/g/platform-contributors) Google Group to run the tests. This group manages access to Testing/Sandbox folder in the resource hierarchy. You can request access to this group by opening an issue [here](https://github.com/osinfra-io/google-cloud-hierarchy/issues/new?assignees=&labels=enhancement&projects=&template=add-update-identity-group.yml&title=Add+or+update+identity+group).
-
-```none
-bundle install
-```
 
 #### Converge and Verify
 
@@ -95,6 +98,7 @@ test/test.sh -d
 ## 📓 Terraform Documentation
 
 - [global](global/README.md)
-- [global/onboarding](global/onboarding/README.md)
 - [regional](regional/README.md)
+- [regional/istio](regional/istio/README.md)
+- [regional/mci](regional/mci/README.md)
 - [regional/onboarding](regional/onboarding/README.md)
