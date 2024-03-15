@@ -22,6 +22,15 @@ data "google_client_config" "current" {
 # This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
 # you do it in your root module.
 
+data "terraform_remote_state" "global" {
+  backend   = "gcs"
+  workspace = "kitchen-terraform-gke-fleet-host-global-gcp"
+
+  config = {
+    bucket = "plt-lz-testing-2c8b-sb"
+  }
+}
+
 data "terraform_remote_state" "regional" {
   backend   = "gcs"
   workspace = "kitchen-terraform-gke-fleet-host-regional-gcp"
@@ -38,35 +47,28 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
-  namespace_admin = "test"
-
-  namespaces = {
-    foo = {
-      istio_injection = "enabled"
-    }
-    bar = {
-      istio_injection = "disabled"
-    }
-  }
-
-  project_id = var.project_id
-}
-
-module "test_service_account" {
-
-  # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
-  # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional/onboarding?ref=v0.0.0"
-
-  source = "../../../../regional/onboarding"
-
   google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 
   namespaces = {
-    cat = {}
-    dog = {}
+
+    bar = {
+      istio_injection = "disabled"
+    }
+
+    foo = {
+      istio_injection = "enabled"
+    }
+
+    istio-ingress = {
+      istio_injection = "enabled"
+    }
+
+    istio-system = {}
   }
 
   project_id = var.project_id
+
+  workload_identity_service_account_emails = data.terraform_remote_state.global.outputs.workload_identity_service_account_emails
 }
 
 # This is a test to validate workload identity. It's not needed for the module to work.
@@ -98,7 +100,7 @@ resource "kubernetes_job_v1" "test" {
           # This demonstrates that by default, the Pod acts as the IAM service account's authority when calling Google Cloud APIs.
 
           command = [
-            "/bin/bash", "-c", "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email | grep ${each.key}-k8s-wif@test-gke-fleet-host-tf64-sb.iam.gserviceaccount.com", "[ $? -ne 0 ] || exit 1"
+            "/bin/bash", "-c", "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email | grep ${data.terraform_remote_state.global.outputs.workload_identity_service_account_emails[each.key]}", "[ $? -ne 0 ] || exit 1"
           ]
 
         }

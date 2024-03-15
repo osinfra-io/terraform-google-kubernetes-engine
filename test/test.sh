@@ -2,6 +2,9 @@
 
 set -e
 
+# Install the required gems
+bundle install
+
 # Define a function to run a kitchen command on multiple instances
 kitchen() {
   local command=$1
@@ -18,13 +21,17 @@ if [ ! $1 ]; then
   kitchen converge \
     "gke-fleet-host-global-gcp" \
     "gke-fleet-host-regional-gcp" \
-    "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
+    "gke-fleet-host-regional-mci-gcp" \
+    "gke-fleet-host-regional-istio-gcp" \
     "gke-fleet-member-global-gcp" \
-    "gke-fleet-member-regional-gcp"
+    "gke-fleet-member-regional-gcp" \
+    "gke-fleet-member-regional-onboarding-gcp" \
+    "gke-fleet-member-regional-istio-gcp"
 
-  # Uncomment the fleet membership for the member cluster
-  sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^\s*#//}' test/fixtures/gke_fleet_host/regional/main.tf
+  # Enable the fleet membership for the member cluster
+
+  export TF_VAR_gke_hub_memberships='{ "fleet-member-us-east4" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4" } }'
 
   # Run converge on the gke-fleet-host-regional-gcp instance to enable the fleet membership
   bundle exec kitchen converge gke-fleet-host-regional-gcp
@@ -36,13 +43,16 @@ fi
 # Run destroy on all instances sequentially
 if [ "$1" = "-d" ]; then
   kitchen destroy \
+    "gke-fleet-member-regional-istio-gcp" \
+    "gke-fleet-host-regional-istio-gcp" \
+    "gke-fleet-host-regional-mci-gcp" \
+    "gke-fleet-member-regional-onboarding-gcp" \
     "gke-fleet-host-regional-onboarding-gcp" \
-    "gke-fleet-host-global-onboarding-gcp" \
     "gke-fleet-member-regional-gcp" \
     "gke-fleet-member-global-gcp" \
     "gke-fleet-host-regional-gcp" \
     "gke-fleet-host-global-gcp"
 
-# Comment the fleet membership for the member cluster
-  sed -i '/### START GKE HUB MEMBERSHIPS ###/,/### END GKE HUB MEMBERSHIPS ###/{//!s/^/  #/}' test/fixtures/gke_fleet_host/regional/main.tf
+  # Disable the fleet membership for the member cluster
+  unset TF_VAR_gke_hub_memberships
 fi

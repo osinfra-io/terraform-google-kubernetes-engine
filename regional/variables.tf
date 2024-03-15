@@ -11,7 +11,7 @@ variable "cluster_autoscaling" {
     oauth_scopes                             = optional(list(string), ["https://www.googleapis.com/auth/cloud-platform"])
     resource_limits_min_cpu_cores            = optional(number, 0)
     resource_limits_min_memory_gb            = optional(number, 0)
-    resource_limits_max_cpu_cores            = optional(number, 4)
+    resource_limits_max_cpu_cores            = optional(number, 6)
     resource_limits_max_memory_gb            = optional(number, 32)
     upgrade_settings_batch_node_count        = optional(number)
     upgrade_settings_batch_percentage        = optional(number)

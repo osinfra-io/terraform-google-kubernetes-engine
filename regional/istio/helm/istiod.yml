@@ -1,0 +1,70 @@
+global:
+  proxy:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 2000m
+        memory: 1024Mi
+
+    tracer: datadog
+
+  meshID: default
+  network: standard-shared
+
+meshConfig:
+  accessLogFile: /dev/stdout
+  defaultConfig:
+    proxyMetadata:
+      ISTIO_META_DNS_CAPTURE: "true"
+      ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+
+pilot:
+  autoscaleEnabled: true
+  autoscaleMin: 1
+  autoscaleMax: 5
+
+  cpu:
+    targetAverageUtilization: 80
+
+  env:
+    EXTERNAL_ISTIOD: "false"
+
+  podAnnotations:
+    ad.datadoghq.com/discovery.check_names: '["istio"]'
+    ad.datadoghq.com/discovery.init_configs: '[{}]'
+    ad.datadoghq.com/discovery.instances: |
+      [
+        {
+          "istiod_endpoint": "http://%%host%%:15014/metrics",
+          "use_openmetrics": "true"
+        }
+      ]
+    ad.datadoghq.com/discovery.logs: '[{"source":"istio"}]'
+
+  podLabels:
+    tags.datadoghq.com/service: istiod
+    tags.datadoghq.com/source: istio
+
+  replicaCount: 1
+  rollingMaxSurge: 100%
+  rollingMaxUnavailable: 25%
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2Gi
+    limits:
+      cpu: 1000m
+      memory: 4Gi
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app: istiod
+
+  traceSampling: 100.0

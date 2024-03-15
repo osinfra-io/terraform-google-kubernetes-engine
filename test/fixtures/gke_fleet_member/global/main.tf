@@ -6,5 +6,6 @@ module "test" {
   source = "../../../../global"
 
   gke_fleet_host_project_id = var.gke_fleet_host_project_id
+  google_service_account    = var.google_service_account
   project_id                = var.project_id
 }

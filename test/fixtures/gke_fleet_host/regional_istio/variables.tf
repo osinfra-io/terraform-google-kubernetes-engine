@@ -1,9 +1,9 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
-variable "gke_fleet_host_project_id" {
+variable "dns_project_id" {
   type    = string
-  default = "test-gke-fleet-host-tf64-sb"
+  default = "test-vpc-host-tf12-sb"
 }
 
 variable "project_id" {
@@ -11,7 +11,7 @@ variable "project_id" {
   default = "test-gke-fleet-host-tf64-sb"
 }
 
-variable "vpc_host_project_id" {
+variable "region" {
   type    = string
-  default = "test-vpc-host-tf12-sb"
+  default = "us-east1"
 }

@@ -8,14 +8,17 @@
 
 [![infracost](https://img.shields.io/endpoint?url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
 
-Monthly cost estimates for this module based on these usage values:
+💵 Monthly cost estimates for this module based on these usage values:
 
 - [gke_fleet_host/global](test/fixtures/gke_fleet_host/global/infracost-usage.yml)
 - [gke_fleet_host/regional](test/fixtures/gke_fleet_host/regional/infracost-usage.yml)
-- [gke_fleet_host/global_onboarding](test/fixtures/gke_fleet_host/global_onboarding/infracost-usage.yml)
+- [gke_fleet_host/regional_istio](test/fixtures/gke_fleet_host/regional_istio/infracost-usage.yml)
+- [gke_fleet_host/regional_mci](test/fixtures/gke_fleet_host/regional_mci/infracost-usage.yml)
 - [gke_fleet_host/regional_onboarding](test/fixtures/gke_fleet_host/regional_onboarding/infracost-usage.yml)
 - [gke_fleet_member/global](test/fixtures/gke_fleet_member/global/infracost-usage.yml)
 - [gke_fleet_member/regional](test/fixtures/gke_fleet_member/regional/infracost-usage.yml)
+- [gke_fleet_member/regional_istio](test/fixtures/gke_fleet_member/regional_istio/infracost-usage.yml)
+- [gke_fleet_member/regional_onboarding](test/fixtures/gke_fleet_member/regional_onboarding/infracost-usage.yml)
 
 ## Repository Description
 
@@ -42,132 +45,6 @@ Google project services must be enabled before using this module. As a best prac
 > NOTE: The autoscaling profile feature requires the `google-beta` provider.
 > Include this provider in your root module required_providers block if you use GitHub Dependabot.
 
-Here is an example of a basic configuration; these would be in different `main.tf` files running separately in their workflows. For example, the global configuration would run first, followed by the regional configuration, and then the onboarding configurations.
-
-### Fleet Host
-
-`global/main.tf`:
-
-```hcl
-module "kubernetes-engine" {
-  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//global?ref=v0.0.0"
-
-  project_id               = "example-project"
-}
-```
-
-`regional/main.tf`:
-
-```hcl
-module "kubernetes-engine" {
-  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
-
-  cost_center                    = "x000"
-  cluster_prefix                 = "example-fleet-host-cluster"
-  cluster_secondary_range_name   = "example-k8s-pods-us-east1"
-  enable_gke_hub_host          = true
-
-  gke_hub_memberships = {
-    "example-member-us-east1" = {
-      cluster_id = "projects/example-member-project/locations/us-east1/clusters/example-fleet-member-us-east4"
-    }
-  }
-
-  network                        = "example-vpc"
-
-  node_pools = {
-    standard-pool = {
-      machine_type = "g1-small"
-    }
-  }
-
-  master_ipv4_cidr_block         = "10.61.224.0/28"
-  project_id                     = "example-fleet-host-project"
-  region                         = "us-east1"
-  services_secondary_range_name  = "example-k8s-services-us-east1"
-  subnet                         = "example-subnet-us-east1"
-  vpc_host_project_id            = "example-vpc-host-project"
-}
-```
-
-### Fleet Member
-
-`global/main.tf`:
-
-```hcl
-module "kubernetes-engine" {
-  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//global?ref=v0.0.0"
-
-  gke_fleet_host_project_id = "example-fleet-host-project"
-  project_id                = "example-fleet-member-project"
-}
-```
-
-`regional/main.tf`:
-
-```hcl
-module "kubernetes-engine" {
-  source = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
-
-  cost_center                    = "x000"
-  cluster_prefix                 = "example-fleet-member-cluster"
-  cluster_secondary_range_name   = "example-k8s-pods-us-east4"
-  network                        = "example-vpc"
-
-  node_pools = {
-    standard-pool = {
-      machine_type = "g1-small"
-    }
-  }
-
-  master_ipv4_cidr_block         = "10.61.224.16/28"
-  project_id                     = "example-fleet-member-project"
-  region                         = "us-east4"
-  services_secondary_range_name  = "example-k8s-services-us-east4"
-  subnet                         = "example-subnet-us-east4"
-  vpc_host_project_id            = "example-vpc-host-project"
-}
-```
-
-### Onboarding
-
-`global/onboarding/main.tf`:
-
-```hcl
-module "team_a" {
-  source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//global/onboarding?ref=v0.0.0"
-
-  namespace_admin = "team-a"
-
-  namespaces = [
-    "team-a-namespace-a",
-    "team-a-namespace-b"
-  ]
-
-  project_id = "example-project"
-}
-```
-
-`regional/onboarding/main.tf`:
-
-```hcl
-module "team_a" {
-  source  = "github.com/osinfra-io/terraform-google-kubernetes-engine//regional/onboarding?ref=v0.0.0"
-
-  namespace_admin = "team-a"
-
-  namespaces = {
-    team-a-namespace-a = {
-      istio_injection = enabled
-    }
-
-    team-a-namespace-b = {}
-  }
-
-  project_id = "example-project"
-}
-```
-
 ## <img align="left" width="35" height="35" src="https://github.com/osinfra-io/github-organization-management/assets/1610100/39d6ae3b-ccc2-42db-92f1-276a5bc54e65"> Development
 
 Our focus is on the core fundamental practice of platform engineering, Infrastructure as Code.
@@ -180,6 +57,7 @@ See the documentation for setting up a local development environment [here](http
 
 ### 🛠️ Tools
 
+- [helm](https://helm.sh)
 - [infracost](https://github.com/infracost/infracost)
 - [inspec](https://github.com/inspec/inspec)
 - [kitchen-terraform](https://github.com/newcontext-oss/kitchen-terraform)
@@ -191,7 +69,10 @@ See the documentation for setting up a local development environment [here](http
 
 Links to documentation and other resources required to develop and iterate in this repository successfully.
 
+- [istio](https://istio.io/latest/docs)
+  - [istio on gke](https://istio.io/latest/docs/setup/platform-setup/gke)
 - [kubernetes engine](https://cloud.google.com/kubernetes-engine/docs)
+  - [multi cluster ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress)
   - [node pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
   - [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
   - [workload identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
@@ -201,10 +82,6 @@ Links to documentation and other resources required to develop and iterate in th
 ### 🔍 Tests
 
 You'll need to be a member of the [platform-contributors](https://groups.google.com/a/osinfra.io/g/platform-contributors) Google Group to run the tests. This group manages access to Testing/Sandbox folder in the resource hierarchy. You can request access to this group by opening an issue [here](https://github.com/osinfra-io/google-cloud-hierarchy/issues/new?assignees=&labels=enhancement&projects=&template=add-update-identity-group.yml&title=Add+or+update+identity+group).
-
-```none
-bundle install
-```
 
 #### Converge and Verify
 
@@ -221,6 +98,7 @@ test/test.sh -d
 ## 📓 Terraform Documentation
 
 - [global](global/README.md)
-- [global/onboarding](global/onboarding/README.md)
 - [regional](regional/README.md)
+- [regional/istio](regional/istio/README.md)
+- [regional/mci](regional/mci/README.md)
 - [regional/onboarding](regional/onboarding/README.md)

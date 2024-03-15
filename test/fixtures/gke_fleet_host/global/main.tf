@@ -5,5 +5,35 @@ module "test" {
 
   source = "../../../../global"
 
+  google_service_account = var.google_service_account
+
+  istio_gateway_mci_dns = {
+    "gateway.test.gcp.osinfra.io" = {
+      managed_zone = "test-gcp-osinfra-io"
+      project      = var.dns_project_id
+    }
+
+    "stream-team.test.gcp.osinfra.io" = {
+      managed_zone = "test-gcp-osinfra-io"
+      project      = var.dns_project_id
+    }
+  }
+
+  namespaces = {
+    bar = {
+      istio_injection = "disabled"
+    }
+
+    foo = {
+      istio_injection = "enabled"
+    }
+
+    istio-ingress = {
+      istio_injection = "enabled"
+    }
+
+    istio-system = {}
+  }
+
   project_id = var.project_id
 }

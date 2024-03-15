@@ -7,18 +7,10 @@
 version: 0.1
 projects:
 
-{{- range $project := matchPaths "test/fixtures/gke_fleet_host/:name" }}
-  {{- if ne $project.name "shared"}}
-    - path: {{ print $project._dir "/" $project.name }}
+{{- range $project := matchPaths "test/fixtures/:cluster/:name" }}
+  {{- if ne $project.cluster "shared"}}
+    - path: {{ print $project._dir "/" $project.cluster "/" $project.name }}
       name: gke_fleet_host_{{ $project.name }}
-      usage_file: {{ print $project._dir "/" $project.name  "/infracost-usage.yml" }}
-  {{- end }}
-{{- end}}
-
-{{- range $project := matchPaths "test/fixtures/gke_fleet_member/:name" }}
-  {{- if ne $project.name "shared"}}
-    - path: {{ print $project._dir "/" $project.name }}
-      name: gke_fleet_member_{{ $project.name }}
-      usage_file: {{ print $project._dir "/" $project.name  "/infracost-usage.yml" }}
+      usage_file: {{ print $project._dir "/" $project.cluster "/" $project.name  "/infracost-usage.yml" }}
   {{- end }}
 {{- end}}

@@ -4,13 +4,7 @@
 data "google_service_account" "workload_identity" {
   for_each = var.namespaces
 
-  account_id = "${each.key}-k8s-wif@${var.project_id}.iam.gserviceaccount.com"
-}
-
-data "google_service_account" "namespace_admin" {
-  count = var.google_service_account == "" ? 1 : 0
-
-  account_id = "${var.namespace_admin}-k8s-ns-admin@${var.project_id}.iam.gserviceaccount.com"
+  account_id = var.workload_identity_service_account_emails[each.key]
 }
 
 # Kubernetes Namespace Resource
@@ -67,7 +61,7 @@ resource "kubernetes_role_binding_v1" "namespace_admin" {
 
   subject {
     kind = "User"
-    name = local.google_service_account
+    name = data.google_service_account.workload_identity[each.key].email
   }
 }
 
