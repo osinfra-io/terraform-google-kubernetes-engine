@@ -47,7 +47,7 @@ module "test" {
 
   source = "../../../../regional/mci"
 
-  istio_gateway_mci_ip = local.global.istio_gateway_mci_ip
+  istio_gateway_mci_global_address = local.global.istio_gateway_mci_global_address
 
   multi_cluster_service_clusters = [
     {

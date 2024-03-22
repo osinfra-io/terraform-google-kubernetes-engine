@@ -5,7 +5,6 @@ module "test" {
 
   source = "../../../../global"
 
-  google_service_account = var.google_service_account
 
   istio_gateway_mci_dns = {
     "gateway.test.gcp.osinfra.io" = {
@@ -20,19 +19,24 @@ module "test" {
   }
 
   namespaces = {
-    bar = {
-      istio_injection = "disabled"
+    gke-java-example = {
+      google_service_account = var.google_service_account
+      istio_injection        = "disabled"
     }
 
-    foo = {
-      istio_injection = "enabled"
+    gke-go-example = {
+      google_service_account = var.google_service_account
+      istio_injection        = "disabled"
     }
 
     istio-ingress = {
-      istio_injection = "enabled"
+      google_service_account = var.google_service_account
+      istio_injection        = "enabled"
     }
 
-    istio-system = {}
+    istio-system = {
+      google_service_account = var.google_service_account
+    }
   }
 
   project_id = var.project_id

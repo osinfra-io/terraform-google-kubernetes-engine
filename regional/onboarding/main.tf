@@ -46,11 +46,11 @@ resource "kubernetes_role_v1" "namespace_admin" {
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding_v1
 
 resource "kubernetes_role_binding_v1" "namespace_admin" {
-  for_each = var.namespaces
+  for_each = local.namespace_admin_service_accounts
 
   metadata {
     name      = "namespace-admin"
-    namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
+    namespace = kubernetes_namespace_v1.this[each.value.namespace].metadata.0.name
   }
 
   role_ref {
@@ -61,7 +61,7 @@ resource "kubernetes_role_binding_v1" "namespace_admin" {
 
   subject {
     kind = "User"
-    name = data.google_service_account.workload_identity[each.key].email
+    name = each.value.service_account
   }
 }
 

@@ -1,7 +1,7 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
-variable "istio_gateway_mci_ip" {
+variable "istio_gateway_mci_global_address" {
   description = "The IP address for the Istio Gateway multi-cluster ingress"
   type        = string
   default     = ""

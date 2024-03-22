@@ -6,6 +6,12 @@ module "test" {
   source = "../../../../global"
 
   gke_fleet_host_project_id = var.gke_fleet_host_project_id
-  google_service_account    = var.google_service_account
-  project_id                = var.project_id
+
+  namespaces = {
+    istio-system = {
+      google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+    }
+  }
+
+  project_id = var.project_id
 }

@@ -1,16 +1,13 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
-variable "google_service_account" {
-  description = "The email address of the pre-existing Google service account to use for the namespace administrator"
-  type        = string
-}
-
 variable "namespaces" {
-  description = "A map of namespaces"
+  description = "A map of namespaces with the Google service account used for the namespace administrator and whether Istio injection is enabled or disabled"
+  default     = {}
 
   type = map(object({
-    istio_injection = optional(string, "disabled")
+    google_service_account = string
+    istio_injection        = optional(string, "disabled")
   }))
 }
 

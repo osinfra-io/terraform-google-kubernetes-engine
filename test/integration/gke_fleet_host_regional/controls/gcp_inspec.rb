@@ -5,6 +5,17 @@
 # the other tests.
 
 container_cluster_prefix = 'fleet-host'
+
+service_account_gke_operations_roles = [
+  'roles/autoscaling.metricsWriter',
+  'roles/logging.logWriter',
+  'roles/monitoring.metricWriter',
+  'roles/monitoring.viewer',
+  'roles/stackdriver.resourceMetadata.writer'
+]
+
+service_account_gke_operations_email = input('service_account_gke_operations_email')
+
 kms_crypto_key_cluster_database_encryption_name = \
   input('kms_crypto_key_cluster_database_encryption_name')
 kms_key_ring_cluster_database_encryption_name = \
@@ -74,11 +85,12 @@ control 'project_iam_binding' do
   # Project IAM Member Binding Resource
   # https://www.inspec.io/docs/reference/resources/google_project_iam_binding
 
-  describe google_project_iam_binding(project: project_id,
-                                      role: 'organizations/163313809793/roles/container.deployer') do
-    it { should exist }
-    its('members') do
-      should include "serviceAccount:plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+  service_account_gke_operations_roles.each do |role|
+    describe google_project_iam_binding(project: project_id, role: role) do
+      it { should exist }
+      its('members') do
+        should include "serviceAccount:#{service_account_gke_operations_email}"
+      end
     end
   end
 end
@@ -89,30 +101,8 @@ control 'service_account' do
   # Service Account Resource
   # https://www.inspec.io/docs/reference/resources/google_service_account
 
-  %w[foo-k8s-wif bar-k8s-wif].each do |name|
-    describe google_service_account(project: project_id,
-                                    name: "#{name}@#{project_id}.iam.gserviceaccount.com") do
-      it { should exist }
-      its('email') { should eq "#{name}@#{project_id}.iam.gserviceaccount.com" }
-    end
-  end
-end
-
-control 'service_account_key' do
-  title 'Service Account Key'
-
-  # Service Account Key Resource
-  # https://www.inspec.io/docs/reference/resources/google_service_account_key
-
-  key_names = google_service_account_keys(project: project_id,
-                                          service_account:
-            "test-k8s-ns-admin@#{project_id}.iam.gserviceaccount.com").key_names
-
-  key_names.each do |name|
-    describe google_service_account_key(project: project_id,
-                                        service_account: "test-k8s-ns-admin@#{project_id}.iam.gserviceaccount.com",
-                                        name: name.split('/').last) do
-      it { should exist }
-    end
+  describe google_service_account(project: project_id,
+                                  name: service_account_gke_operations_email) do
+    it { should exist }
   end
 end

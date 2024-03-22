@@ -47,10 +47,11 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
-  google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 
   namespaces = {
-    istio-system = {}
+    istio-system = {
+      google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+    }
   }
 
   project_id = var.project_id

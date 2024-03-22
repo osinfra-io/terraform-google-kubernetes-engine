@@ -47,23 +47,27 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
-  google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 
   namespaces = {
 
-    bar = {
-      istio_injection = "disabled"
+    gke-java-example = {
+      google_service_account = var.google_service_account
+      istio_injection        = "disabled"
     }
 
-    foo = {
-      istio_injection = "enabled"
+    gke-go-example = {
+      google_service_account = var.google_service_account
+      istio_injection        = "disabled"
     }
 
     istio-ingress = {
-      istio_injection = "enabled"
+      google_service_account = var.google_service_account
+      istio_injection        = "enabled"
     }
 
-    istio-system = {}
+    istio-system = {
+      google_service_account = var.google_service_account
+    }
   }
 
   project_id = var.project_id
@@ -78,8 +82,8 @@ module "test" {
 resource "kubernetes_job_v1" "test" {
   for_each = toset(
     [
-      "foo",
-      "bar"
+      "gke-go-example",
+      "gke-java-example"
     ]
   )
 

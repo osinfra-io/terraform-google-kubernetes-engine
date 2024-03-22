@@ -27,6 +27,10 @@ suites:
         - name: inspec_gcp
           backend: gcp
           controls:
+            - compute_global_address
+            - compute_ssl_certificate
+            - compute_ssl_policy
+            - dns_resource_record_set
             - project_iam_binding
 
   - name: gke_fleet_host_regional
@@ -42,7 +46,6 @@ suites:
             - kms_crypto_key
             - project_iam_binding
             - service_account
-            - service_account_key
 
   - name: gke_fleet_host_regional_onboarding
     transport:
