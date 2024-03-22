@@ -33,8 +33,8 @@ variable "istio_chart_repository" {
   default     = "https://istio-release.storage.googleapis.com/charts"
 }
 
-variable "ingress_istio_gateway_dns" {
-  description = "Map of attributes for the ingress Istio gateway domain names, it is also used to create the managed certificate resource"
+variable "istio_gateway_dns" {
+  description = "Map of attributes for the Istio gateway domain names, it is also used to create the managed certificate resource"
   type = map(object({
     managed_zone = string
     project      = string
