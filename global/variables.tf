@@ -17,8 +17,8 @@ variable "namespaces" {
   }))
 }
 
-variable "istio_gateway_mci_dns" {
-  description = "Map of attributes for the Istio gateway multi-cluster ingress domain names, it is also used to create the managed certificate resource"
+variable "istio_gateway_dns" {
+  description = "Map of attributes for the Istio gateway domain names, it is also used to create the managed certificate resource"
   type = map(object({
     managed_zone = string
     project      = string

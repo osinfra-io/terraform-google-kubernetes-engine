@@ -10,7 +10,7 @@ locals {
     }
   EOF
 
-  istio_gateway_domains = keys(var.ingress_istio_gateway_dns)
+  istio_gateway_domains = keys(var.istio_gateway_dns)
 
   multi_cluster_name = "${var.cluster_prefix}-${var.region}-${var.environment}"
 }

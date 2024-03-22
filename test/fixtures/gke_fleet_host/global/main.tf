@@ -6,7 +6,7 @@ module "test" {
   source = "../../../../global"
 
 
-  istio_gateway_mci_dns = {
+  istio_gateway_dns = {
     "gateway.test.gcp.osinfra.io" = {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id
