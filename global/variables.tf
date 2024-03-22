@@ -7,23 +7,14 @@ variable "gke_fleet_host_project_id" {
   default     = ""
 }
 
-variable "google_service_account" {
-  description = "The email address of the pre-existing Google service account to use for the namespace administrator"
-  type        = string
-}
-
 variable "namespaces" {
-  description = "A map of namespaces"
+  description = "A map of namespaces with the Google service account used for the namespace administrator and whether Istio injection is enabled or disabled"
   default     = {}
 
   type = map(object({
-    istio_injection = optional(string, "disabled")
+    google_service_account = string
+    istio_injection        = optional(string, "disabled")
   }))
-
-  validation {
-    condition     = alltrue([for k in keys(var.namespaces) : length(k) <= 20])
-    error_message = "Each namespace name must not contain more than 20 characters."
-  }
 }
 
 variable "istio_gateway_mci_dns" {

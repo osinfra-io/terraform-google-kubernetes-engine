@@ -21,6 +21,9 @@ projects:
     - path: test/fixtures/gke_fleet_host/gke_fleet_host/regional_onboarding
       name: gke_fleet_host_regional_onboarding
       usage_file: test/fixtures/gke_fleet_host/gke_fleet_host/regional_onboarding/infracost-usage.yml
+    - path: test/fixtures/gke_fleet_host/gke_fleet_host/shared
+      name: gke_fleet_host_shared
+      usage_file: test/fixtures/gke_fleet_host/gke_fleet_host/shared/infracost-usage.yml
     - path: test/fixtures/gke_fleet_member/gke_fleet_member/global
       name: gke_fleet_host_global
       usage_file: test/fixtures/gke_fleet_member/gke_fleet_member/global/infracost-usage.yml

@@ -23,29 +23,15 @@ resource "google_compute_global_address" "istio_gateway_mci" {
 # The declarative generation of a Kubernetes ManagedCertificate resource is not supported on
 # MultiClusterIngress resources. #36
 
-resource "google_compute_managed_ssl_certificate" "istio_gateway" {
+resource "google_compute_managed_ssl_certificate" "istio_gateway_mci" {
   count = var.gke_fleet_host_project_id == "" ? 1 : 0
 
   managed {
     domains = local.istio_gateway_domains
   }
 
-  name    = "istio-gateway"
+  name    = "istio-gateway-mci"
   project = var.project_id
-}
-
-# DNS Record Set Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set
-
-resource "google_dns_record_set" "istio_gateway" {
-  for_each = var.istio_gateway_mci_dns
-
-  managed_zone = each.value.managed_zone
-  name         = "${each.key}."
-  project      = each.value.project
-  rrdatas      = [google_compute_global_address.istio_gateway_mci[0].address]
-  ttl          = 300
-  type         = "A"
 }
 
 # Google Compute SSL Policy Resource
@@ -58,6 +44,20 @@ resource "google_compute_ssl_policy" "default" {
   min_tls_version = "TLS_1_2"
   profile         = "MODERN"
   project         = var.project_id
+}
+
+# DNS Record Set Resource
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set
+
+resource "google_dns_record_set" "istio_gateway_mci" {
+  for_each = var.istio_gateway_mci_dns
+
+  managed_zone = each.value.managed_zone
+  name         = "${each.key}."
+  project      = each.value.project
+  rrdatas      = [google_compute_global_address.istio_gateway_mci[0].address]
+  ttl          = 300
+  type         = "A"
 }
 
 # This section provides an example MCS configuration involving two existing GKE clusters each in a different Shared VPC service project.
@@ -109,12 +109,13 @@ resource "google_project_iam_member" "service_project_network_viewer" {
   role    = "roles/compute.networkViewer"
 }
 
-#### ONBOARD
 # Google Project IAM Member Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
 
 resource "google_project_iam_member" "container_deployer" {
-  member  = "serviceAccount:${var.google_service_account}"
+  for_each = local.container_deployer_service_accounts
+
+  member  = "serviceAccount:${each.value}"
   project = var.project_id
   role    = "organizations/163313809793/roles/container.deployer"
 }
@@ -126,7 +127,7 @@ resource "google_service_account" "kubernetes_workload_identity" {
   for_each = var.namespaces
 
   account_id   = "gke-${random_id.this[each.key].hex}-workload-identity"
-  display_name = "Kubernetes ${each.key} namespace Workload Identity Service Account"
+  display_name = "Kubernetes ${each.key} namespace Workload Identity"
   project      = var.project_id
 }
 
