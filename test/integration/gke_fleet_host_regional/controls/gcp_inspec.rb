@@ -30,7 +30,7 @@ control 'container_cluster' do
   # https://docs.chef.io/inspec/resources/google_container_cluster
 
   describe google_container_cluster(project: project_id, location: location,
-                                    name: "#{container_cluster_prefix}-#{location}") do
+                                    name: "#{container_cluster_prefix}-#{location}-b") do
     it { should exist }
     its('network') { should eq 'kitchen-vpc' }
     its('private_cluster_config.enable_private_nodes') { should == true }
@@ -46,13 +46,13 @@ control 'container_node_pool' do
   # https://docs.chef.io/inspec/resources/google_container_node_pool
 
   describe google_container_node_pool(project: project_id, location: location,
-                                      cluster_name: "#{container_cluster_prefix}-#{location}",
+                                      cluster_name: "#{container_cluster_prefix}-#{location}-b",
                                       nodepool_name: 'default-pool') do
     it { should_not exist }
   end
 
   describe google_container_node_pool(project: project_id, location: location,
-                                      cluster_name: "#{container_cluster_prefix}-#{location}",
+                                      cluster_name: "#{container_cluster_prefix}-#{location}-b",
                                       nodepool_name: 'standard-pool') do
     it { should exist }
     its('autoscaling.max_node_count') { should eq 3 }

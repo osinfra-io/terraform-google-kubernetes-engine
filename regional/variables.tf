@@ -25,8 +25,12 @@ variable "cluster_autoscaling" {
 }
 
 variable "cluster_prefix" {
-  description = "Prefix for your cluster name"
+  description = "Prefix for your cluster name, region, and zone (if applicable) will be added to the end of the cluster name. Must be 20 characters or less"
   type        = string
+  validation {
+    condition     = length(var.cluster_prefix) <= 20
+    error_message = "The cluster prefix must be 20 characters or less."
+  }
 }
 
 variable "cluster_secondary_range_name" {
@@ -105,6 +109,12 @@ variable "network" {
   description = "The name or self_link of the Google Compute Engine network to which the cluster is connected"
   type        = string
   default     = "default"
+}
+
+variable "node_location" {
+  description = "The zone in which the cluster's nodes should be located. If not specified, the cluster's nodes are located across zones in the region"
+  type        = string
+  default     = null
 }
 
 variable "project_id" {

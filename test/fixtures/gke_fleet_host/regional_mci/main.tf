@@ -51,7 +51,7 @@ module "test" {
 
   multi_cluster_service_clusters = [
     {
-      "link" = "us-east1/fleet-host-us-east1"
+      "link" = "us-east1/fleet-host-us-east1-b"
     }
   ]
 
