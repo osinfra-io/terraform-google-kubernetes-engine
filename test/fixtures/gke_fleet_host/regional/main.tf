@@ -25,7 +25,8 @@ module "test" {
     team       = "kitchen"
   }
 
-  network = "kitchen-vpc"
+  network       = "kitchen-vpc"
+  node_location = "${var.region}-b"
 
   node_pools = {
     standard-pool = {

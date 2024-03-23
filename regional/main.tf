@@ -144,7 +144,12 @@ resource "google_container_cluster" "this" {
   name = local.name
 
   network = local.network
-  project = var.project_id
+
+  # We intentionally support only a single zone for node locations. This is to ensure we do not see hot spots in the cluster
+  # when it comes to POD scheduling and locality based load balancing.
+
+  node_locations = var.node_location != null ? [var.node_location] : []
+  project        = var.project_id
 
   release_channel {
     channel = var.release_channel
@@ -228,7 +233,8 @@ resource "google_container_node_pool" "this" {
     }
   }
 
-  project = var.project_id
+  node_locations = google_container_cluster.this.node_locations
+  project        = var.project_id
 
   upgrade_settings {
     max_surge       = each.value.upgrade_settings_max_surge
@@ -307,7 +313,7 @@ resource "google_gke_hub_membership" "clusters" {
 resource "google_kms_crypto_key" "cluster_database_encryption" {
   key_ring        = google_kms_key_ring.cluster_database_encryption.id
   labels          = local.labels
-  name            = "cluster-database-encryption-${random_id.this.hex}"
+  name            = "cluster-db-enc-${random_id.this.hex}"
   rotation_period = "604800s"
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
@@ -337,7 +343,7 @@ resource "google_kms_crypto_key_iam_member" "cluster_database_encryption" {
 
 resource "google_kms_key_ring" "cluster_database_encryption" {
   location = var.region
-  name     = "${local.name}-${random_id.this.hex}-cluster-database-encryption"
+  name     = "${local.name}-${random_id.this.hex}-cluster-db-enc"
   project  = var.project_id
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.

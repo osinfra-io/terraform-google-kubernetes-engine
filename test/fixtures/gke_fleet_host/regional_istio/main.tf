@@ -57,12 +57,12 @@ module "test" {
   enable_istio_gateway = true
 
   istio_gateway_dns = {
-    "gateway-us-east1.test.gcp.osinfra.io" = {
+    "gateway-us-east1-b.test.gcp.osinfra.io" = {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id
     }
 
-    "stream-team-us-east1.test.gcp.osinfra.io" = {
+    "stream-team-us-east1-b.test.gcp.osinfra.io" = {
       managed_zone = "test-gcp-osinfra-io"
       project      = var.dns_project_id
     }
