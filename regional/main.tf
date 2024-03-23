@@ -148,7 +148,7 @@ resource "google_container_cluster" "this" {
   # We intentionally support only a single zone for node locations. This is to ensure we do not see hot spots in the cluster
   # when it comes to POD scheduling and locality based load balancing.
 
-  node_locations = var.node_location != null ? [var.node_location] : []
+  node_locations = var.node_location != null ? [var.node_location] : null
   project        = var.project_id
 
   release_channel {
