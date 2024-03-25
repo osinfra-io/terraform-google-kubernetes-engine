@@ -2,7 +2,7 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/container_engine_versions
 
 data "google_container_engine_versions" "this" {
-  project  = var.project_id
+  project  = var.project
   location = var.region
 }
 
@@ -10,7 +10,7 @@ data "google_container_engine_versions" "this" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project
 
 data "google_project" "this" {
-  project_id = var.project_id
+  project_id = var.project
 }
 
 # Google Container Cluster Resource
@@ -149,7 +149,7 @@ resource "google_container_cluster" "this" {
   # when it comes to POD scheduling and locality based load balancing.
 
   node_locations = var.node_location != null ? [var.node_location] : null
-  project        = var.project_id
+  project        = var.project
 
   release_channel {
     channel = var.release_channel
@@ -164,7 +164,7 @@ resource "google_container_cluster" "this" {
   # https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
 
   workload_identity_config {
-    workload_pool = "${var.project_id}.svc.id.goog"
+    workload_pool = "${var.project}.svc.id.goog"
   }
 
   private_cluster_config {
@@ -234,7 +234,7 @@ resource "google_container_node_pool" "this" {
   }
 
   node_locations = google_container_cluster.this.node_locations
-  project        = var.project_id
+  project        = var.project
 
   upgrade_settings {
     max_surge       = each.value.upgrade_settings_max_surge
@@ -251,7 +251,7 @@ resource "google_gke_hub_feature" "multi_cluster_ingress" {
   labels   = local.labels
   location = "global"
   name     = "multiclusteringress"
-  project  = var.project_id
+  project  = var.project
 
   spec {
     multiclusteringress {
@@ -266,7 +266,7 @@ resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
   name     = "multiclusterservicediscovery"
   labels   = local.labels
   location = "global"
-  project  = var.project_id
+  project  = var.project
 
 }
 
@@ -284,7 +284,7 @@ resource "google_gke_hub_membership" "host" {
 
   labels        = local.labels
   membership_id = google_container_cluster.this.name
-  project       = var.project_id
+  project       = var.project
 }
 
 # This is the resource for registering clusters to the GKE Hub.
@@ -304,7 +304,7 @@ resource "google_gke_hub_membership" "clusters" {
 
   labels        = local.labels
   membership_id = each.key
-  project       = var.project_id
+  project       = var.project
 }
 
 # KMS CryptoKey Resource
@@ -344,7 +344,7 @@ resource "google_kms_crypto_key_iam_member" "cluster_database_encryption" {
 resource "google_kms_key_ring" "cluster_database_encryption" {
   location = var.region
   name     = "${local.name}-${random_id.this.hex}-cluster-db-enc"
-  project  = var.project_id
+  project  = var.project
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 
@@ -377,7 +377,7 @@ resource "google_project_iam_member" "gke_operations" {
   ])
 
   member  = "serviceAccount:${google_service_account.gke_operations.email}"
-  project = var.project_id
+  project = var.project
   role    = each.value
 }
 
@@ -389,7 +389,7 @@ resource "google_project_iam_member" "gke_operations" {
 resource "google_service_account" "gke_operations" {
   account_id   = "gke-${random_id.this.hex}"
   display_name = "Kubernetes minimum privilege service account for: ${local.name}"
-  project      = var.project_id
+  project      = var.project
 }
 
 # Random ID Resource

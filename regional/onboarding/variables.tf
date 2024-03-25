@@ -11,7 +11,7 @@ variable "namespaces" {
   }))
 }
 
-variable "project_id" {
+variable "project" {
   description = "The ID of the project in which the resource belongs"
   type        = string
 }

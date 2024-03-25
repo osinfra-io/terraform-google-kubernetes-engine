@@ -2,5 +2,5 @@
 # https://www.terraform.io/language/values/outputs
 
 output "project_id" {
-  value = var.project_id
+  value = var.project
 }

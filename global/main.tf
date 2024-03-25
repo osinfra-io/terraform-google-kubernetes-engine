@@ -14,7 +14,7 @@ resource "google_compute_global_address" "istio_gateway_mci" {
   count = var.gke_fleet_host_project_id == "" ? 1 : 0
 
   name    = "istio-gateway-mci"
-  project = var.project_id
+  project = var.project
 }
 
 # Google Compute Managed SSL Certificate Resource
@@ -31,7 +31,7 @@ resource "google_compute_managed_ssl_certificate" "istio_gateway_mci" {
   }
 
   name    = "istio-gateway-mci"
-  project = var.project_id
+  project = var.project
 }
 
 # Google Compute SSL Policy Resource
@@ -43,7 +43,7 @@ resource "google_compute_ssl_policy" "default" {
   name            = "default"
   min_tls_version = "TLS_1_2"
   profile         = "MODERN"
-  project         = var.project_id
+  project         = var.project
 }
 
 # DNS Record Set Resource
@@ -72,7 +72,7 @@ resource "google_project_iam_member" "gke_hub_service_agent" {
   count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   member  = "serviceAccount:service-${data.google_project.fleet_host[count.index].number}@gcp-sa-gkehub.iam.gserviceaccount.com"
-  project = var.project_id
+  project = var.project
   role    = "roles/gkehub.serviceAgent"
 }
 
@@ -82,7 +82,7 @@ resource "google_project_iam_member" "multi_cluster_service_agent" {
   count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   member  = "serviceAccount:service-${data.google_project.fleet_host[count.index].number}@gcp-sa-mcsd.iam.gserviceaccount.com"
-  project = var.project_id
+  project = var.project
   role    = "roles/multiclusterservicediscovery.serviceAgent"
 }
 
@@ -97,15 +97,15 @@ resource "google_project_iam_member" "host_project_network_viewer" {
   count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
   member  = "serviceAccount:${var.gke_fleet_host_project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-  project = var.project_id
+  project = var.project
   role    = "roles/compute.networkViewer"
 }
 
 resource "google_project_iam_member" "service_project_network_viewer" {
   count = var.gke_fleet_host_project_id == "" ? 1 : 0
 
-  member  = "serviceAccount:${var.project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-  project = var.project_id
+  member  = "serviceAccount:${var.project}.svc.id.goog[gke-mcs/gke-mcs-importer]"
+  project = var.project
   role    = "roles/compute.networkViewer"
 }
 
@@ -116,7 +116,7 @@ resource "google_project_iam_member" "container_deployer" {
   for_each = local.container_deployer_service_accounts
 
   member  = "serviceAccount:${each.value}"
-  project = var.project_id
+  project = var.project
   role    = "organizations/163313809793/roles/container.deployer"
 }
 
@@ -128,7 +128,7 @@ resource "google_service_account" "kubernetes_workload_identity" {
 
   account_id   = "gke-${random_id.this[each.key].hex}-workload-identity"
   display_name = "Kubernetes ${each.key} namespace Workload Identity"
-  project      = var.project_id
+  project      = var.project
 }
 
 # Google Service Account IAM Member Resource
@@ -137,7 +137,7 @@ resource "google_service_account" "kubernetes_workload_identity" {
 resource "google_service_account_iam_member" "workload_identity" {
   for_each = var.namespaces
 
-  member             = "serviceAccount:${var.project_id}.svc.id.goog[${each.key}/workload-identity]"
+  member             = "serviceAccount:${var.project}.svc.id.goog[${each.key}/workload-identity]"
   role               = "roles/iam.workloadIdentityUser"
   service_account_id = google_service_account.kubernetes_workload_identity[each.key].name
 }

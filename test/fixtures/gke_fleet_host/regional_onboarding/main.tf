@@ -70,7 +70,7 @@ module "test" {
     }
   }
 
-  project_id = var.project_id
+  project = var.project
 
   workload_identity_service_account_emails = data.terraform_remote_state.global.outputs.workload_identity_service_account_emails
 }

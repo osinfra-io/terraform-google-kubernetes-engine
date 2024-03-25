@@ -3,10 +3,10 @@
 
 variable "dns_project_id" {
   type    = string
-  default = "test-vpc-host-tf12-sb"
+  default = "test-default-tf75-sb"
 }
 
-variable "project_id" {
+variable "project" {
   type    = string
   default = "test-gke-fleet-host-tf64-sb"
 }

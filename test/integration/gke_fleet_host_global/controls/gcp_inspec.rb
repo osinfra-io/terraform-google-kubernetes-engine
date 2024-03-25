@@ -45,7 +45,7 @@ control 'dns_resource_record_set' do
   # https://www.inspec.io/docs/reference/resources/google_dns_resource_record_set
 
   ['gateway.test.gcp.osinfra.io', 'stream-team.test.gcp.osinfra.io'].each do |record|
-    describe google_dns_resource_record_set(project: 'test-vpc-host-tf12-sb', managed_zone: 'test-gcp-osinfra-io',
+    describe google_dns_resource_record_set(project: 'test-default-tf75-sb', managed_zone: 'test-gcp-osinfra-io',
                                             name: "#{record}.", type: 'A') do
       it { should exist }
       its('type') { should eq 'A' }

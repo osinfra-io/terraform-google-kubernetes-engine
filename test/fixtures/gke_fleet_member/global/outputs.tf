@@ -10,7 +10,7 @@ output "gke_fleet_host_project_number" {
 }
 
 output "project_id" {
-  value = var.project_id
+  value = var.project
 }
 
 output "workload_identity_service_account_emails" {

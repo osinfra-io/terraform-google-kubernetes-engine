@@ -6,7 +6,7 @@ resource "google_compute_global_address" "istio_gateway" {
 
 
   name    = "istio-gateway-${var.region}"
-  project = var.project_id
+  project = var.project
 }
 
 # DNS Record Set Resource

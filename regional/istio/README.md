@@ -11,9 +11,9 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.20.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.17.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.27.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.26.0 |
 
 ## Modules
 
@@ -46,7 +46,7 @@ No modules.
 | <a name="input_istio_gateway_dns"></a> [istio\_gateway\_dns](#input\_istio\_gateway\_dns) | Map of attributes for the Istio gateway domain names, it is also used to create the managed certificate resource | <pre>map(object({<br>    managed_zone = string<br>    project      = string<br>  }))</pre> | `{}` | no |
 | <a name="input_istio_version"></a> [istio\_version](#input\_istio\_version) | The version of istio to install | `string` | `"1.20.3"` | no |
 | <a name="input_pilot_autoscale_min"></a> [pilot\_autoscale\_min](#input\_pilot\_autoscale\_min) | The minimum number of pilot replicas to run | `number` | `1` | no |
-| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs | `string` | n/a | yes |
+| <a name="input_project"></a> [project](#input\_project) | The ID of the project in which the resource belongs | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region to deploy the resources into | `string` | n/a | yes |
 
 ## Outputs

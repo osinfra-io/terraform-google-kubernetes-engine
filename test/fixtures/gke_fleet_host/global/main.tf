@@ -39,5 +39,5 @@ module "test" {
     }
   }
 
-  project_id = var.project_id
+  project = var.project
 }

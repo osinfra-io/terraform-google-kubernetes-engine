@@ -1,7 +1,7 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
-variable "project_id" {
+variable "project" {
   type    = string
   default = "test-gke-fleet-member-tfc5-sb"
 }
@@ -13,5 +13,5 @@ variable "region" {
 
 variable "vpc_host_project_id" {
   type    = string
-  default = "test-vpc-host-tf12-sb"
+  default = "test-default-tf75-sb"
 }

@@ -3,7 +3,7 @@
 
 variable "dns_project_id" {
   type    = string
-  default = "test-vpc-host-tf12-sb"
+  default = "test-default-tf75-sb"
 }
 
 variable "google_service_account" {
@@ -17,7 +17,7 @@ variable "istio_gateway_domain" {
   default     = "test.gcp.osinfra.io"
 }
 
-variable "project_id" {
+variable "project" {
   type    = string
   default = "test-gke-fleet-host-tf64-sb"
 }

@@ -52,7 +52,7 @@ module "test" {
   # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional/istio?ref=v0.0.0"
 
   source               = "../../../../regional/istio"
-  artifact_registry    = "us-docker.pkg.dev/test-vpc-host-tf12-sb/test-virtual"
+  artifact_registry    = "us-docker.pkg.dev/test-default-tf75-sb/test-virtual"
   cluster_prefix       = "fleet-host"
   enable_istio_gateway = true
 
@@ -68,6 +68,6 @@ module "test" {
     }
   }
 
-  project_id = var.project_id
-  region     = var.region
+  project = var.project
+  region  = var.region
 }

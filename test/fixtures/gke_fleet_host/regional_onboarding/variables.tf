@@ -11,7 +11,7 @@ variable "google_service_account" {
   default = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
 }
 
-variable "project_id" {
+variable "project" {
   type    = string
   default = "test-gke-fleet-host-tf64-sb"
 }
