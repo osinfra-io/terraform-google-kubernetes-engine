@@ -31,7 +31,7 @@ if [ ! $1 ]; then
 
   # Enable the fleet membership for the member cluster
 
-  export TF_VAR_gke_hub_memberships='{ "fleet-member-us-east4" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east4/clusters/fleet-member-us-east4" } }'
+  export TF_VAR_gke_hub_memberships='{ "fleet-member-us-east1" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east1/clusters/fleet-member-us-east1" } }'
 
   # Run converge on the gke-fleet-host-regional-gcp instance to enable the fleet membership
   bundle exec kitchen converge gke-fleet-host-regional-gcp

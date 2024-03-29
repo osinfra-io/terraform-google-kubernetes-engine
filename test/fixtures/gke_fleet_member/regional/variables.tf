@@ -8,7 +8,7 @@ variable "project" {
 
 variable "region" {
   type    = string
-  default = "us-east4"
+  default = "us-east1"
 }
 
 variable "vpc_host_project_id" {
