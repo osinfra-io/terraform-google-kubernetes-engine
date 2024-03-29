@@ -12,7 +12,7 @@ module "test" {
   }
 
   cluster_prefix               = "fleet-host"
-  cluster_secondary_range_name = "fleet-host-k8s-pods-${var.region}"
+  cluster_secondary_range_name = "fleet-host-k8s-pods-${var.region}-b"
   enable_deletion_protection   = false
   enable_gke_hub_host          = true
 
@@ -45,8 +45,8 @@ module "test" {
   }
 
   region                        = var.region
-  services_secondary_range_name = "fleet-host-k8s-services-${var.region}"
-  subnet                        = "fleet-host-${var.region}"
+  services_secondary_range_name = "fleet-host-k8s-services-${var.region}-b"
+  subnet                        = "fleet-host-${var.region}-b"
   vpc_host_project_id           = var.vpc_host_project_id
 }
 

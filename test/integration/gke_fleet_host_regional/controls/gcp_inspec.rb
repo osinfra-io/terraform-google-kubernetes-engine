@@ -35,7 +35,7 @@ control 'container_cluster' do
     its('network') { should eq 'kitchen-vpc' }
     its('private_cluster_config.enable_private_nodes') { should == true }
     its('status') { should eq 'RUNNING' }
-    its('subnetwork') { should eq 'fleet-host-us-east1' }
+    its('subnetwork') { should eq 'fleet-host-us-east1-b' }
   end
 end
 
