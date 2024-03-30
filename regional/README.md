@@ -11,8 +11,8 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.16.0 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.16.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.21.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.21.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 
 ## Modules
@@ -45,7 +45,6 @@ No modules.
 | <a name="input_cluster_autoscaling"></a> [cluster\_autoscaling](#input\_cluster\_autoscaling) | Per-cluster configuration of node auto-provisioning with cluster autoscaler to automatically adjust the size of the cluster and create/delete node pools based on the current needs of the cluster's workload | <pre>object({<br>    autoscaling_profile                      = optional(string, "OPTIMIZE_UTILIZATION")<br>    disk_type                                = optional(string)<br>    enabled                                  = optional(bool, false)<br>    image_type                               = optional(string)<br>    oauth_scopes                             = optional(list(string), ["https://www.googleapis.com/auth/cloud-platform"])<br>    resource_limits_min_cpu_cores            = optional(number, 0)<br>    resource_limits_min_memory_gb            = optional(number, 0)<br>    resource_limits_max_cpu_cores            = optional(number, 6)<br>    resource_limits_max_memory_gb            = optional(number, 32)<br>    upgrade_settings_batch_node_count        = optional(number)<br>    upgrade_settings_batch_percentage        = optional(number)<br>    upgrade_settings_batch_soak_duration     = optional(string)<br>    upgrade_settings_node_pool_soak_duration = optional(string)<br>    upgrade_settings_max_surge               = optional(number)<br>    upgrade_settings_max_unavailable         = optional(number, 1) # https://github.com/hashicorp/terraform-provider-google/issues/17164<br>    upgrade_settings_strategy                = optional(string, "SURGE")<br>  })</pre> | `{}` | no |
 | <a name="input_cluster_prefix"></a> [cluster\_prefix](#input\_cluster\_prefix) | Prefix for your cluster name, region, and zone (if applicable) will be added to the end of the cluster name. Must be 20 characters or less | `string` | n/a | yes |
 | <a name="input_cluster_secondary_range_name"></a> [cluster\_secondary\_range\_name](#input\_cluster\_secondary\_range\_name) | The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses | `string` | n/a | yes |
-| <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | The cost center to use for resource labels | `string` | n/a | yes |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | Whether or not to enable deletion protection on the cluster | `bool` | `true` | no |
 | <a name="input_enable_gke_hub_host"></a> [enable\_gke\_hub\_host](#input\_enable\_gke\_hub\_host) | Whether or not to enable GKE Hub Host | `bool` | `false` | no |
 | <a name="input_gke_hub_memberships"></a> [gke\_hub\_memberships](#input\_gke\_hub\_memberships) | The map of GKE Hub Memberships to create | <pre>map(object({<br>    cluster_id = string<br>  }))</pre> | `{}` | no |

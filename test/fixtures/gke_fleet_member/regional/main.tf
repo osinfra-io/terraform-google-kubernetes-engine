@@ -5,7 +5,6 @@ module "test" {
 
   source = "../../../../regional"
 
-  cost_center = "x000"
 
   cluster_autoscaling = {
     enabled = true
@@ -16,10 +15,11 @@ module "test" {
   enable_deletion_protection   = false
 
   labels = {
-    env        = "sb"
-    region     = var.region
-    repository = "terraform-google-kubernetes-engine"
-    team       = "kitchen"
+    cost-center = "x000"
+    env         = "sb"
+    region      = var.region
+    repository  = "terraform-google-kubernetes-engine"
+    team        = "kitchen"
   }
 
   network                = "kitchen-vpc"
