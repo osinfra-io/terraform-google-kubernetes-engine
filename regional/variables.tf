@@ -38,11 +38,6 @@ variable "cluster_secondary_range_name" {
   type        = string
 }
 
-variable "cost_center" {
-  description = "The cost center to use for resource labels"
-  type        = string
-}
-
 variable "enable_deletion_protection" {
   description = "Whether or not to enable deletion protection on the cluster"
   type        = bool

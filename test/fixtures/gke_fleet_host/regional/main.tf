@@ -5,7 +5,6 @@ module "test" {
 
   source = "../../../../regional"
 
-  cost_center = "x000"
 
   cluster_autoscaling = {
     enabled = true
@@ -19,10 +18,11 @@ module "test" {
   gke_hub_memberships = var.gke_hub_memberships
 
   labels = {
-    env        = "sb"
-    region     = var.region
-    repository = "terraform-google-kubernetes-engine"
-    team       = "kitchen"
+    cost-center = "x000"
+    env         = "sb"
+    region      = var.region
+    repository  = "terraform-google-kubernetes-engine"
+    team        = "kitchen"
   }
 
   network       = "kitchen-vpc"

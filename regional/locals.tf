@@ -20,13 +20,6 @@ locals {
     }
   ] : []
 
-  labels = merge(
-    {
-      cost-center = var.cost_center
-    },
-    var.labels
-  )
-
   name    = var.node_location == null ? "${var.cluster_prefix}-${var.region}" : "${var.cluster_prefix}-${var.node_location}"
   network = "projects/${var.vpc_host_project_id}/global/networks/${var.network}"
   subnet  = "projects/${var.vpc_host_project_id}/regions/${var.region}/subnetworks/${var.subnet}"

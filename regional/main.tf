@@ -248,7 +248,7 @@ resource "google_container_node_pool" "this" {
 resource "google_gke_hub_feature" "multi_cluster_ingress" {
   count = var.enable_gke_hub_host ? 1 : 0
 
-  labels   = local.labels
+  labels   = var.labels
   location = "global"
   name     = "multiclusteringress"
   project  = var.project
@@ -264,7 +264,7 @@ resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
   count = var.enable_gke_hub_host ? 1 : 0
 
   name     = "multiclusterservicediscovery"
-  labels   = local.labels
+  labels   = var.labels
   location = "global"
   project  = var.project
 
@@ -282,7 +282,7 @@ resource "google_gke_hub_membership" "host" {
     }
   }
 
-  labels        = local.labels
+  labels        = var.labels
   membership_id = google_container_cluster.this.name
   project       = var.project
 }
@@ -302,7 +302,7 @@ resource "google_gke_hub_membership" "clusters" {
     }
   }
 
-  labels        = local.labels
+  labels        = var.labels
   membership_id = each.key
   project       = var.project
 }
@@ -312,7 +312,7 @@ resource "google_gke_hub_membership" "clusters" {
 
 resource "google_kms_crypto_key" "cluster_database_encryption" {
   key_ring        = google_kms_key_ring.cluster_database_encryption.id
-  labels          = local.labels
+  labels          = var.labels
   name            = "cluster-db-enc-${random_id.this.hex}"
   rotation_period = "604800s"
 
