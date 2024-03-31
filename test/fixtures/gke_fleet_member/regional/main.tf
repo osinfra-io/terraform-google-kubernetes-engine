@@ -11,7 +11,7 @@ module "test" {
   }
 
   cluster_prefix               = "fleet-member"
-  cluster_secondary_range_name = "fleet-member-k8s-pods-${var.region}"
+  cluster_secondary_range_name = "k8s-secondary-pods"
   enable_deletion_protection   = false
 
   labels = {
@@ -23,7 +23,7 @@ module "test" {
   }
 
   network                = "kitchen-vpc"
-  master_ipv4_cidr_block = "10.61.224.16/28"
+  master_ipv4_cidr_block = "10.63.240.16/28"
   project                = var.project
   region                 = var.region
 
@@ -34,7 +34,7 @@ module "test" {
     team       = "kitchen"
   }
 
-  services_secondary_range_name = "fleet-member-k8s-services-${var.region}"
+  services_secondary_range_name = "k8s-secondary-services"
   subnet                        = "fleet-member-${var.region}"
   vpc_host_project_id           = var.vpc_host_project_id
 }

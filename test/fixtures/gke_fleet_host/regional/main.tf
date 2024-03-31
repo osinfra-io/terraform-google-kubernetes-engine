@@ -11,7 +11,7 @@ module "test" {
   }
 
   cluster_prefix               = "fleet-host"
-  cluster_secondary_range_name = "fleet-host-k8s-pods-${var.region}-b"
+  cluster_secondary_range_name = "k8s-secondary-pods"
   enable_deletion_protection   = false
   enable_gke_hub_host          = true
 
@@ -34,7 +34,7 @@ module "test" {
     }
   }
 
-  master_ipv4_cidr_block = "10.61.224.0/28"
+  master_ipv4_cidr_block = "10.63.240.48/28"
   project                = var.project
 
   resource_labels = {
@@ -45,7 +45,7 @@ module "test" {
   }
 
   region                        = var.region
-  services_secondary_range_name = "fleet-host-k8s-services-${var.region}-b"
+  services_secondary_range_name = "k8s-secondary-services"
   subnet                        = "fleet-host-${var.region}-b"
   vpc_host_project_id           = var.vpc_host_project_id
 }
