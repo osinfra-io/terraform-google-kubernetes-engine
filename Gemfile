@@ -11,4 +11,4 @@ gem 'nori', '2.7.0'
 # These Gems are used by the Shopify/ruby-lsp Visual Studio Code extension
 
 gem 'rubocop', '1.25.1'
-gem 'ruby-lsp', '0.16.0'
+gem 'ruby-lsp', '0.16.1'
