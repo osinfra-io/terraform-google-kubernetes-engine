@@ -1,9 +1,0 @@
----
-last_action: verify
-last_error:
-kitchen_terraform_outputs:
-  project_id:
-    sensitive: false
-    type: string
-    value: test-gke-fleet-member-tfc5-sb
-kitchen_terraform_variables: {}
