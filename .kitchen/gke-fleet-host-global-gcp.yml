@@ -1,0 +1,37 @@
+---
+last_action: verify
+last_error:
+kitchen_terraform_outputs:
+  container_deployer_service_accounts:
+    sensitive: false
+    type:
+    - set
+    - string
+    value:
+    - plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com
+  istio_gateway_mci_global_address:
+    sensitive: false
+    type: string
+    value: 34.111.74.2
+  istio_gateway_mci_ssl_certificate_name:
+    sensitive: false
+    type: string
+    value: istio-gateway-mci
+  project_id:
+    sensitive: false
+    type: string
+    value: test-gke-fleet-host-tf64-sb
+  workload_identity_service_account_emails:
+    sensitive: false
+    type:
+    - object
+    - gke-go-example: string
+      gke-java-example: string
+      istio-ingress: string
+      istio-system: string
+    value:
+      gke-go-example: gke-tfd4e4dc-workload-identity@test-gke-fleet-host-tf64-sb.iam.gserviceaccount.com
+      gke-java-example: gke-tffce6a2-workload-identity@test-gke-fleet-host-tf64-sb.iam.gserviceaccount.com
+      istio-ingress: gke-tf09c87d-workload-identity@test-gke-fleet-host-tf64-sb.iam.gserviceaccount.com
+      istio-system: gke-tf0f8309-workload-identity@test-gke-fleet-host-tf64-sb.iam.gserviceaccount.com
+kitchen_terraform_variables: {}
