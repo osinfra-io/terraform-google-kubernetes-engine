@@ -45,7 +45,7 @@ module "test" {
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
   # source = "github.com/osinfra-io/terraform-google-kubernetes//regional/mci/?ref=v0.0.0"
 
-  source = "../../../regional/mci"
+  source = "../../../../regional/mci"
 
   istio_gateway_mci_global_address = local.global.istio_gateway_mci_global_address
 
