@@ -20,7 +20,7 @@ Terraform **example** module for a Google Cloud Platform Kubernetes engine clust
 ## 🔩 Usage
 
 > [!TIP]
-> You can check the [fixtures](fixtures) directory for example configurations. These fixtures set up the system for testing by providing all the necessary initial code, thus creating good examples to base your configurations.
+> You can check the [tests/fixtures](tests/fixtures) directory for example configurations. These fixtures set up the system for testing by providing all the necessary initial code, thus creating good examples on which to base your configurations.
 
 Google project services must be enabled before using this module. As a best practice, these should be defined in the [terraform-google-project](https://github.com/osinfra-io/terraform-google-project) module. The following services are required:
 
@@ -72,7 +72,11 @@ Links to documentation and other resources required to develop and iterate in th
 You'll need to be a member of the [platform-contributors](https://groups.google.com/a/osinfra.io/g/platform-contributors) Google Group to run the tests. This group manages access to Testing/Sandbox folder in the resource hierarchy. You can request access to this group by opening an issue [here](https://github.com/osinfra-io/google-cloud-hierarchy/issues/new?assignees=&labels=enhancement&projects=&template=add-update-identity-group.yml&title=Add+or+update+identity+group).
 
 ```none
-fixtures/test.zsh
+terraform init
+```
+
+```none
+terraform test
 ```
 
 ## 📓 Terraform Documentation
