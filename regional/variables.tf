@@ -76,7 +76,7 @@ variable "master_ipv4_cidr_block" {
 }
 
 variable "node_pools" {
-  description = "List of maps containing node pools"
+  description = "The node pools to create in the cluster"
   type = map(object({
     auto_repair                              = optional(bool)
     auto_upgrade                             = optional(bool)
@@ -88,7 +88,6 @@ variable "node_pools" {
     min_node_count                           = optional(number, 0)
     node_count                               = optional(number)
     oauth_scopes                             = optional(list(string), ["https://www.googleapis.com/auth/cloud-platform"])
-    service_account                          = optional(string)
     upgrade_settings_batch_node_count        = optional(number)
     upgrade_settings_batch_percentage        = optional(number)
     upgrade_settings_batch_soak_duration     = optional(string)
