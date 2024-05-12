@@ -11,7 +11,7 @@ resource "kubernetes_manifest" "istio_gateway_mci" {
       namespace = "istio-ingress"
       annotations = {
         "networking.gke.io/frontend-config"  = kubernetes_manifest.istio_gateway_mci_frontendconfig.manifest.metadata.name
-        "networking.gke.io/pre-shared-certs" = "istio-gateway"
+        "networking.gke.io/pre-shared-certs" = "istio-gateway-mci"
         "networking.gke.io/static-ip"        = var.istio_gateway_mci_global_address
       }
     }
