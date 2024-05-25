@@ -14,6 +14,8 @@ resource "kubernetes_namespace_v1" "this" {
   for_each = var.namespaces
 
   metadata {
+    annotations = each.value.annotations != null ? each.value.annotations : {}
+
     labels = {
       "istio-injection" = each.value.istio_injection
     }

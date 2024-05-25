@@ -6,8 +6,10 @@ variable "namespaces" {
   default     = {}
 
   type = map(object({
-    google_service_account = string
-    istio_injection        = optional(string, "disabled")
+    annotations                  = optional(map(string))
+    google_service_account       = string
+    istio_control_plane_clusters = optional(string)
+    istio_injection              = optional(string, "disabled")
   }))
 }
 
