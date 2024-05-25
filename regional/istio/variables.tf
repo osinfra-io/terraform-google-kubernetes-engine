@@ -33,6 +33,18 @@ variable "istio_chart_repository" {
   default     = "https://istio-release.storage.googleapis.com/charts"
 }
 
+variable "istio_config_cluster" {
+  description = "Boolean to configure a remote cluster as the config cluster for an external istiod"
+  type        = bool
+  default     = false
+}
+
+variable "istio_external_istiod" {
+  description = "Boolean to configure a remote cluster data plane controlled by an external istiod"
+  type        = bool
+  default     = true
+}
+
 variable "istio_gateway_dns" {
   description = "Map of attributes for the Istio gateway domain names, it is also used to create the managed certificate resource"
   type = map(object({
@@ -42,20 +54,100 @@ variable "istio_gateway_dns" {
   default = {}
 }
 
-# If you're changing the version of Istio here, make sure to update the version in the script
-# tools/crds-upgrade.sh as well. Helm does not upgrade or delete CRDs when performing an upgrade.
-# Because of this restriction, an additional step is required when upgrading Istio with Helm.
+variable "istio_gateway_cpu_request" {
+  description = "The CPU request for the Istio gateway"
+  type        = string
+  default     = "100m"
+}
+
+variable "istio_gateway_cpu_limit" {
+  description = "The CPU limit for the Istio gateway"
+  type        = string
+  default     = "2000m"
+}
+
+variable "istio_gateway_memory_request" {
+  description = "The memory request for the Istio gateway"
+  type        = string
+  default     = "128Mi"
+}
+
+variable "istio_gateway_memory_limit" {
+  description = "The memory limit for the Istio gateway"
+  type        = string
+  default     = "1024Mi"
+}
+
+variable "istio_pilot_autoscale_min" {
+  description = "The minimum number of Istio pilot replicas to run"
+  type        = number
+  default     = 1
+}
+
+variable "istio_pilot_cpu_request" {
+  description = "The CPU request for the Istio pilot"
+  type        = string
+  default     = "500m"
+}
+
+variable "istio_pilot_cpu_limit" {
+  description = "The CPU limit for the Istio pilot"
+  type        = string
+  default     = "1000m"
+}
+
+variable "istio_pilot_memory_request" {
+  description = "The memory request for the Istio pilot"
+  type        = string
+  default     = "2048Mi"
+}
+
+variable "istio_pilot_memory_limit" {
+  description = "The memory limit for the Istio pilot"
+  type        = string
+  default     = "4096Mi"
+}
+
+variable "istio_pilot_replica_count" {
+  description = "The number of Istio pilot replicas to run"
+  type        = number
+  default     = 1
+}
+
+variable "istio_proxy_cpu_request" {
+  description = "The CPU request for the Istio proxy"
+  type        = string
+  default     = "100m"
+}
+
+variable "istio_proxy_cpu_limit" {
+  description = "The CPU limit for the Istio proxy"
+  type        = string
+  default     = "2000m"
+}
+
+variable "istio_proxy_memory_request" {
+  description = "The memory request for the Istio proxy"
+  type        = string
+  default     = "128Mi"
+}
+
+variable "istio_proxy_memory_limit" {
+  description = "The memory limit for the Istio proxy"
+  type        = string
+  default     = "1024Mi"
+}
+
+variable "istio_remote_pilot_address" {
+  description = "The remote pilot and istiod service and endpoint"
+  type        = string
+  default     = ""
+}
 
 variable "istio_version" {
   description = "The version of istio to install"
   type        = string
-  default     = "1.20.3"
-}
-
-variable "pilot_autoscale_min" {
-  description = "The minimum number of pilot replicas to run"
-  type        = number
-  default     = 1
+  default     = "1.22.0"
 }
 
 variable "project" {

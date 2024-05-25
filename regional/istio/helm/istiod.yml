@@ -1,13 +1,5 @@
 global:
   proxy:
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 2000m
-        memory: 1024Mi
-
     tracer: datadog
 
   meshID: default
@@ -29,7 +21,7 @@ pilot:
     targetAverageUtilization: 80
 
   env:
-    EXTERNAL_ISTIOD: "false"
+    EXTERNAL_ISTIOD: "true"
 
   podAnnotations:
     ad.datadoghq.com/discovery.check_names: '["istio"]'
@@ -47,17 +39,8 @@ pilot:
     tags.datadoghq.com/service: istiod
     tags.datadoghq.com/source: istio
 
-  replicaCount: 1
   rollingMaxSurge: 100%
   rollingMaxUnavailable: 25%
-
-  resources:
-    requests:
-      cpu: 500m
-      memory: 2Gi
-    limits:
-      cpu: 1000m
-      memory: 4Gi
 
   topologySpreadConstraints:
     - maxSkew: 1
