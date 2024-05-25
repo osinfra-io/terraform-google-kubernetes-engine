@@ -9,7 +9,7 @@
 // https://github.com/hashicorp/terraform/issues/34980
 
 run "gke_fleet_host_global" {
-  command = apply
+  command = plan
 
   module {
     source = "./tests/fixtures/gke_fleet_host/global"
@@ -17,7 +17,7 @@ run "gke_fleet_host_global" {
 }
 
 run "gke_fleet_host_regional" {
-  command = apply
+  command = plan
 
   module {
     source = "./tests/fixtures/gke_fleet_host/regional"
@@ -60,23 +60,21 @@ run "gke_fleet_host_regional" {
 //   }
 // }
 
-// This test runs bu is redundant since we can't run the other associated tests due to lack of remote state support.
+run "gke_fleet_member_global" {
+  command = plan
 
-// run "gke_fleet_member_global" {
-//   command = apply
+  module {
+    source = "./tests/fixtures/gke_fleet_member/global"
+  }
+}
 
-//   module {
-//     source = "./tests/fixtures/gke_fleet_member/global"
-//   }
-// }
+run "gke_fleet_member_regional" {
+  command = plan
 
-// run "gke_fleet_member_regional" {
-//   command = apply
-
-//   module {
-//     source = "./tests/fixtures/gke_fleet_member/regional"
-//   }
-// }
+  module {
+    source = "./tests/fixtures/gke_fleet_member/regional"
+  }
+}
 
 // This test can't run unless if can access the state of the previous test to get the cluster information
 // for the kubernetes provider.
