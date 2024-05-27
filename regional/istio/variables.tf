@@ -45,15 +45,6 @@ variable "istio_external_istiod" {
   default     = true
 }
 
-variable "istio_gateway_dns" {
-  description = "Map of attributes for the Istio gateway domain names, it is also used to create the managed certificate resource"
-  type = map(object({
-    managed_zone = string
-    project      = string
-  }))
-  default = {}
-}
-
 variable "istio_gateway_cpu_request" {
   description = "The CPU request for the Istio gateway"
   type        = string
@@ -64,6 +55,15 @@ variable "istio_gateway_cpu_limit" {
   description = "The CPU limit for the Istio gateway"
   type        = string
   default     = "2000m"
+}
+
+variable "istio_gateway_dns" {
+  description = "Map of attributes for the Istio gateway domain names, it is also used to create the managed certificate resource"
+  type = map(object({
+    managed_zone = string
+    project      = string
+  }))
+  default = {}
 }
 
 variable "istio_gateway_memory_request" {
