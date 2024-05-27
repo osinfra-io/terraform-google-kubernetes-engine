@@ -66,6 +66,16 @@ resource "helm_release" "istiod" {
   }
 
   set {
+    name  = "istioRemote.injectionURL"
+    value = var.istio_remote_injection_url
+  }
+
+  set {
+    name  = "istioRemote.injectionPath"
+    value = var.istio_remote_injection_path
+  }
+
+  set {
     name  = "pilot.autoscaleMin"
     value = var.istio_pilot_autoscale_min
   }
