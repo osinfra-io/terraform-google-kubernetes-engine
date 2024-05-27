@@ -1,6 +1,12 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
+variable "istio_control_plane_clusters" {
+  description = "The GKE clusters that will be used as Istio control planes"
+  type        = string
+  default     = null
+}
+
 variable "namespaces" {
   description = "A map of namespaces with the Google service account used for the namespace administrator and whether Istio injection is enabled or disabled"
   default     = {}

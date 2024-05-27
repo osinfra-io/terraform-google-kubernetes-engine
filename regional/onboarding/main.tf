@@ -14,7 +14,9 @@ resource "kubernetes_namespace_v1" "this" {
   for_each = var.namespaces
 
   metadata {
-    annotations = each.value.annotations != null ? each.value.annotations : {}
+    annotations = var.istio_control_plane_clusters != null ? {
+      "topology.istio.io/controlPlaneClusters" = var.istio_control_plane_clusters
+    } : {}
 
     labels = {
       "istio-injection" = each.value.istio_injection
