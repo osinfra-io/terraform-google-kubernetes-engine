@@ -1,6 +1,12 @@
 # Input Variables
 # https://www.terraform.io/language/values/variables
 
+variable "enable_istio_gateway" {
+  description = "Enable the Istio gateway, used for ingress traffic into the mesh"
+  type        = bool
+  default     = false
+}
+
 variable "istio_control_plane_clusters" {
   description = "The GKE clusters that will be used as Istio control planes"
   type        = string

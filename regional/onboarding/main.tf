@@ -10,6 +10,28 @@ data "google_service_account" "workload_identity" {
 # Kubernetes Namespace Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1
 
+resource "kubernetes_namespace_v1" "istio_ingress" {
+  count = var.enable_istio_gateway ? 1 : 0
+
+  metadata {
+    labels = {
+      "istio-injection" = "enabled"
+    }
+
+    name = "istio-ingress"
+  }
+}
+
+resource "kubernetes_namespace_v1" "istio_system" {
+  metadata {
+    annotations = var.istio_control_plane_clusters != null ? {
+      "topology.istio.io/controlPlaneClusters" = var.istio_control_plane_clusters
+    } : {}
+
+    name = "istio-system"
+  }
+}
+
 resource "kubernetes_namespace_v1" "this" {
   for_each = var.namespaces
 
