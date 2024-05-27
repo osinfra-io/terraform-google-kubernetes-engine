@@ -319,3 +319,19 @@ resource "kubernetes_manifest" "istio_gateway_managed_certificate" {
     }
   }
 }
+
+resource "kubernetes_manifest" "istio_service_exports" {
+  manifest = {
+    "apiVersion" = "net.gke.io/v1"
+    "kind"       = "ServiceExport"
+
+    "metadata" = {
+      "name"      = "istiod"
+      "namespace" = "istio-system"
+    }
+  }
+
+  depends_on = [
+    helm_release.istiod
+  ]
+}
