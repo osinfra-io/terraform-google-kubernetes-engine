@@ -61,11 +61,6 @@ resource "helm_release" "istiod" {
   }
 
   set {
-    name  = "global.remotePilotAddress"
-    value = var.istio_remote_pilot_address
-  }
-
-  set {
     name  = "istioRemote.injectionURL"
     value = var.istio_remote_injection_url
   }

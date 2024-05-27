@@ -150,18 +150,11 @@ variable "istio_remote_injection_url" {
   default     = ""
 }
 
-variable "istio_remote_pilot_address" {
-  description = "The remote pilot and istiod service and endpoint"
-  type        = string
-  default     = ""
-}
-
 variable "istio_version" {
   description = "The version of istio to install"
   type        = string
   default     = "1.22.0"
 }
-
 
 variable "project" {
   description = "The ID of the project in which the resource belongs"
