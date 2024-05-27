@@ -321,6 +321,8 @@ resource "kubernetes_manifest" "istio_gateway_managed_certificate" {
 }
 
 resource "kubernetes_manifest" "istio_service_exports" {
+  count = var.istio_external_istiod ? 1 : 0
+
   manifest = {
     "apiVersion" = "net.gke.io/v1"
     "kind"       = "ServiceExport"
