@@ -335,7 +335,7 @@ resource "google_kms_crypto_key" "cluster_database_encryption" {
   key_ring        = google_kms_key_ring.cluster_database_encryption.id
   labels          = var.labels
   name            = "cluster-db-enc-${random_id.this.hex}"
-  rotation_period = "604800s"
+  rotation_period = "7776000s"
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 
