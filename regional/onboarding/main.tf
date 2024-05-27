@@ -28,14 +28,17 @@ resource "kubernetes_namespace_v1" "this" {
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_v1
 
 resource "kubernetes_role_v1" "namespace_admin" {
+
+  # Minimize wildcard use in Roles and ClusterRoles
+  # https://github.com/osinfra-io/terraform-google-kubernetes-engine/issues/76
+  # checkov:skip=CKV_K8S_49
+
   for_each = var.namespaces
 
   metadata {
     name      = "namespace-admin"
     namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
   }
-
-  # This is could be more restrictive to align with the principle of least privilege (PoLP)
 
   rule {
     api_groups = [""]
