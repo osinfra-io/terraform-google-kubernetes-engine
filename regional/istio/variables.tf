@@ -42,7 +42,7 @@ variable "istio_config_cluster" {
 variable "istio_external_istiod" {
   description = "Boolean to configure a remote cluster data plane controlled by an external istiod"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "istio_gateway_cpu_request" {
