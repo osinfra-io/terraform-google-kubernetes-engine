@@ -20,9 +20,6 @@ pilot:
   cpu:
     targetAverageUtilization: 80
 
-  env:
-    EXTERNAL_ISTIOD: "true"
-
   podAnnotations:
     ad.datadoghq.com/discovery.check_names: '["istio"]'
     ad.datadoghq.com/discovery.init_configs: '[{}]'

@@ -51,13 +51,28 @@ resource "helm_release" "istiod" {
   }
 
   set {
+    name  = "global.configCluster"
+    value = var.istio_config_cluster
+  }
+
+  set {
     name  = "global.multiCluster.clusterName"
     value = local.multi_cluster_name
   }
 
   set {
+    name  = "global.remotePilotAddress"
+    value = var.istio_remote_pilot_address
+  }
+
+  set {
     name  = "pilot.autoscaleMin"
     value = var.istio_pilot_autoscale_min
+  }
+
+  set {
+    name  = "pilot.env.EXTERNAL_ISTIOD"
+    value = var.istio_external_istiod
   }
 
   set {
