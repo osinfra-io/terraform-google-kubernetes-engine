@@ -1,3 +1,17 @@
+# Required Providers
+# https://developer.hashicorp.com/terraform/language/providers/requirements
+
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+    google-beta = {
+      source = "hashicorp/google-beta"
+    }
+  }
+}
+
 module "test" {
 
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test

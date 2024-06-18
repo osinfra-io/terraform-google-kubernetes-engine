@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    google = {
+      source = "hashicorp/google"
+    }
+  }
+}
+
 # Kubernetes Provider
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest
 
