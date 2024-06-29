@@ -31,7 +31,7 @@ run "gke_fleet_host_global" {
   command = apply
 
   module {
-    source = "./tests/fixtures/gke_fleet_host/global"
+    source = "./tests/fixtures/gke_fleet_host"
   }
 }
 
@@ -69,15 +69,15 @@ run "gke_fleet_host_regional_istio" {
 }
 
 run "gke_fleet_member_global" {
-  command = plan
+  command = apply
 
   module {
-    source = "./tests/fixtures/gke_fleet_member/global"
+    source = "./tests/fixtures/gke_fleet_member"
   }
 }
 
 run "gke_fleet_member_regional" {
-  command = plan
+  command = apply
 
   module {
     source = "./tests/fixtures/gke_fleet_member/regional"
