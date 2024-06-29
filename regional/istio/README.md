@@ -63,7 +63,7 @@ No modules.
 | <a name="input_istio_proxy_memory_request"></a> [istio\_proxy\_memory\_request](#input\_istio\_proxy\_memory\_request) | The memory request for the Istio proxy | `string` | `"128Mi"` | no |
 | <a name="input_istio_remote_injection_path"></a> [istio\_remote\_injection\_path](#input\_istio\_remote\_injection\_path) | The sidecar injector mutating webhook configuration path value for the clientConfig.service field | `string` | `"/inject"` | no |
 | <a name="input_istio_remote_injection_url"></a> [istio\_remote\_injection\_url](#input\_istio\_remote\_injection\_url) | The sidecar injector mutating webhook configuration clientConfig.url value | `string` | `""` | no |
-| <a name="input_istio_version"></a> [istio\_version](#input\_istio\_version) | The version of istio to install | `string` | `"1.22.0"` | no |
+| <a name="input_istio_version"></a> [istio\_version](#input\_istio\_version) | The version of istio to install | `string` | `"1.22.2"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The ID of the project in which the resource belongs | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region to deploy the resources into | `string` | n/a | yes |
 
