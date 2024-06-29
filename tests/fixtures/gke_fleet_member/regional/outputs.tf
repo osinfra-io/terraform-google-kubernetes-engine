@@ -2,8 +2,7 @@
 # https://www.terraform.io/language/values/outputs
 
 output "cluster_ca_certificate" {
-  value     = module.test.container_cluster_ca_certificate
-  sensitive = true
+  value = module.test.container_cluster_ca_certificate
 }
 
 output "cluster_endpoint" {

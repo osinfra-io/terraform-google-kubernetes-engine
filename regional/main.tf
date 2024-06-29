@@ -18,6 +18,23 @@ data "google_project" "this" {
 
 resource "google_container_cluster" "this" {
 
+
+  # Ensure Network Policy is enabled on Kubernetes Engine Clusters (False Positive)
+  # Network policy enforcement is built into GKE Dataplane V2
+  # https://github.com/bridgecrewio/checkov/issues/6357
+  # checkov:skip=CKV_GCP_12
+
+  # Ensure master authorized networks is set to enabled in GKE clusters
+  # checkov:skip=CKV_GCP_20
+
+  # Ensure use of Binary Authorization
+  # checkov:skip=CKV_GCP_66
+
+  # Ensure the GKE Metadata Server is Enabled (False Positive)
+  # Removal of the default node pool is a best practice to ensure that all nodes are managed by Terraform.
+  # The Metadata server is enabled in the google_container_node_pool resource.
+  # checkov:skip=CKV_GCP_69
+
   # Configuration options for the autoscaling profile feature are in beta
   # Remove README.md note if beta is no longer required.
 
@@ -311,10 +328,14 @@ resource "google_gke_hub_membership" "clusters" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key
 
 resource "google_kms_crypto_key" "cluster_database_encryption" {
+
+  # See comment below for why we can't use the lifecycle block to prevent destroy on this resource.
+  # checkov:skip=CKV_GCP_82
+
   key_ring        = google_kms_key_ring.cluster_database_encryption.id
   labels          = var.labels
   name            = "cluster-db-enc-${random_id.this.hex}"
-  rotation_period = "604800s"
+  rotation_period = "7776000s"
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 

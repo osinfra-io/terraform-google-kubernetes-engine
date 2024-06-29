@@ -1,3 +1,17 @@
+# Required Providers
+# https://developer.hashicorp.com/terraform/language/providers/requirements
+
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+    google-beta = {
+      source = "hashicorp/google-beta"
+    }
+  }
+}
+
 module "test" {
 
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test
@@ -48,13 +62,4 @@ module "test" {
   services_secondary_range_name = "k8s-secondary-services"
   subnet                        = "fleet-host-${var.region}-b"
   vpc_host_project_id           = var.vpc_host_project_id
-}
-
-
-resource "google_artifact_registry_repository_iam_member" "docker_virtual_readers" {
-  location   = "us"
-  project    = var.vpc_host_project_id
-  repository = "projects/test-default-tf75-sb/locations/us/repositories/test-virtual"
-  role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:${module.test.service_account_gke_operations_email}"
 }
