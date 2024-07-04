@@ -1,6 +1,6 @@
 global:
   proxy:
-    tracer: datadog
+    tracer: none
 
   meshID: default
   network: standard-shared
@@ -23,6 +23,7 @@ pilot:
   podAnnotations:
     ad.datadoghq.com/discovery.check_names: '["istio"]'
     ad.datadoghq.com/discovery.init_configs: '[{}]'
+
     ad.datadoghq.com/discovery.instances: |
       [
         {
@@ -30,6 +31,7 @@ pilot:
           "use_openmetrics": "true"
         }
       ]
+
     ad.datadoghq.com/discovery.logs: '[{"source":"istio"}]'
 
   podLabels:
@@ -46,5 +48,3 @@ pilot:
       labelSelector:
         matchLabels:
           app: istiod
-
-  traceSampling: 100.0

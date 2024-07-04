@@ -68,9 +68,10 @@ module "test" {
   # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
   # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional/istio?ref=v0.0.0"
 
-  source            = "../../../../regional/istio"
-  artifact_registry = "us-docker.pkg.dev/test-default-tf75-sb/test-virtual"
-  cluster_prefix    = "fleet-member"
+  source                     = "../../../../regional/istio"
+  artifact_registry          = "us-docker.pkg.dev/test-default-tf75-sb/test-virtual"
+  cluster_prefix             = "fleet-member"
+  istio_remote_injection_url = "https://istiod.istio-system.svc.clusterset.local:15017/inject/cluster/fleet-host-us-east1-b/net/standard-shared"
 
 
   project = var.project
