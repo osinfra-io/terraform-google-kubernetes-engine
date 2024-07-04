@@ -1,3 +1,17 @@
+# Required Providers
+# https://developer.hashicorp.com/terraform/language/providers/requirements
+
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    google = {
+      source = "hashicorp/google"
+    }
+  }
+}
+
 # Kubernetes Provider
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest
 
@@ -47,7 +61,7 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
-
+  istio_control_plane_clusters = "fleet-host-us-east1-b"
   namespaces = {
     istio-system = {
       google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"

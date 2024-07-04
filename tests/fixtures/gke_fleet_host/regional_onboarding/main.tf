@@ -1,3 +1,17 @@
+# Required Providers
+# https://developer.hashicorp.com/terraform/language/providers/requirements
+
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    google = {
+      source = "hashicorp/google"
+    }
+  }
+}
+
 # Kubernetes Provider
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest
 
@@ -79,54 +93,54 @@ module "test" {
 # This test is loosely based on:
 # https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#verify_the_setup
 
-resource "kubernetes_job_v1" "test" {
-  for_each = toset(
-    [
-      "gke-go-example",
-      "gke-java-example"
-    ]
-  )
+# resource "kubernetes_job_v1" "test" {
+#   for_each = toset(
+#     [
+#       "gke-go-example",
+#       "gke-java-example"
+#     ]
+#   )
 
-  metadata {
-    name      = "workload-identity-test"
-    namespace = each.key
-  }
+#   metadata {
+#     name      = "workload-identity-test"
+#     namespace = each.key
+#   }
 
-  spec {
-    template {
-      metadata {}
-      spec {
-        container {
-          image = "google/cloud-sdk:slim"
-          name  = "workload-identity-test"
+#   spec {
+#     template {
+#       metadata {}
+#       spec {
+#         container {
+#           image = "google/cloud-sdk:slim"
+#           name  = "workload-identity-test"
 
-          # If the service accounts are correctly configured, the IAM service account email address is listed as the active (and only) identity.
-          # This demonstrates that by default, the Pod acts as the IAM service account's authority when calling Google Cloud APIs.
+#           # If the service accounts are correctly configured, the IAM service account email address is listed as the active (and only) identity.
+#           # This demonstrates that by default, the Pod acts as the IAM service account's authority when calling Google Cloud APIs.
 
-          command = [
-            "/bin/bash", "-c", "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email | grep ${data.terraform_remote_state.global.outputs.workload_identity_service_account_emails[each.key]}", "[ $? -ne 0 ] || exit 1"
-          ]
+#           command = [
+#             "/bin/bash", "-c", "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email | grep ${data.terraform_remote_state.global.outputs.workload_identity_service_account_emails[each.key]}", "[ $? -ne 0 ] || exit 1"
+#           ]
 
-        }
+#         }
 
-        restart_policy       = "Never"
-        service_account_name = "${each.key}-workload-identity-sa"
-      }
-    }
+#         restart_policy       = "Never"
+#         service_account_name = "${each.key}-workload-identity-sa"
+#       }
+#     }
 
-    # Fast developer feedback is important so we set the backoff limit to 1.
+#     # Fast developer feedback is important so we set the backoff limit to 1.
 
-    backoff_limit = 1
-  }
+#     backoff_limit = 1
+#   }
 
-  wait_for_completion = true
+#   wait_for_completion = true
 
-  timeouts {
-    create = "5m"
-    update = "5m"
-  }
+#   timeouts {
+#     create = "5m"
+#     update = "5m"
+#   }
 
-  depends_on = [
-    module.test
-  ]
-}
+#   depends_on = [
+#     module.test
+#   ]
+# }

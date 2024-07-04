@@ -3,7 +3,6 @@
 
 output "container_cluster_ca_certificate" {
   description = "Base64 encoded public certificate that is the root of trust for the cluster"
-  sensitive   = true
   value       = google_container_cluster.this.master_auth[0].cluster_ca_certificate
 }
 

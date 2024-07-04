@@ -1,19 +1,45 @@
 # Google Service Account Data Source
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account
 
-data "google_service_account" "workload_identity" {
-  for_each = var.namespaces
+# data "google_service_account" "workload_identity" {
+#   for_each = var.namespaces
 
-  account_id = var.workload_identity_service_account_emails[each.key]
-}
+#   account_id = var.workload_identity_service_account_emails[each.key]
+# }
 
 # Kubernetes Namespace Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1
+
+resource "kubernetes_namespace_v1" "istio_ingress" {
+  count = var.enable_istio_gateway ? 1 : 0
+
+  metadata {
+    labels = {
+      "istio-injection" = "enabled"
+    }
+
+    name = "istio-ingress"
+  }
+}
+
+resource "kubernetes_namespace_v1" "istio_system" {
+  metadata {
+    annotations = var.istio_control_plane_clusters != null ? {
+      "topology.istio.io/controlPlaneClusters" = var.istio_control_plane_clusters
+    } : {}
+
+    name = "istio-system"
+  }
+}
 
 resource "kubernetes_namespace_v1" "this" {
   for_each = var.namespaces
 
   metadata {
+    annotations = var.istio_control_plane_clusters != null ? {
+      "topology.istio.io/controlPlaneClusters" = var.istio_control_plane_clusters
+    } : {}
+
     labels = {
       "istio-injection" = each.value.istio_injection
     }
@@ -26,14 +52,17 @@ resource "kubernetes_namespace_v1" "this" {
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_v1
 
 resource "kubernetes_role_v1" "namespace_admin" {
+
+  # Minimize wildcard use in Roles and ClusterRoles
+  # https://github.com/osinfra-io/terraform-google-kubernetes-engine/issues/76
+  # checkov:skip=CKV_K8S_49
+
   for_each = var.namespaces
 
   metadata {
     name      = "namespace-admin"
     namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
   }
-
-  # This is could be more restrictive to align with the principle of least privilege (PoLP)
 
   rule {
     api_groups = [""]
@@ -45,39 +74,39 @@ resource "kubernetes_role_v1" "namespace_admin" {
 # Kubernetes Role Binding Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding_v1
 
-resource "kubernetes_role_binding_v1" "namespace_admin" {
-  for_each = local.namespace_admin_service_accounts
+# resource "kubernetes_role_binding_v1" "namespace_admin" {
+#   for_each = local.namespace_admin_service_accounts
 
-  metadata {
-    name      = "namespace-admin"
-    namespace = kubernetes_namespace_v1.this[each.value.namespace].metadata.0.name
-  }
+#   metadata {
+#     name      = "namespace-admin"
+#     namespace = kubernetes_namespace_v1.this[each.value.namespace].metadata.0.name
+#   }
 
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "Role"
-    name      = "namespace-admin"
-  }
+#   role_ref {
+#     api_group = "rbac.authorization.k8s.io"
+#     kind      = "Role"
+#     name      = "namespace-admin"
+#   }
 
-  subject {
-    kind = "User"
-    name = each.value.service_account
-  }
-}
+#   subject {
+#     kind = "User"
+#     name = each.value.service_account
+#   }
+# }
 
 # Kubernetes Service Account Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account_v1
 
-resource "kubernetes_service_account_v1" "workload_identity" {
-  for_each = var.namespaces
+# resource "kubernetes_service_account_v1" "workload_identity" {
+#   for_each = var.namespaces
 
-  metadata {
+#   metadata {
 
-    annotations = {
-      "iam.gke.io/gcp-service-account" = data.google_service_account.workload_identity[each.key].email
-    }
+#     annotations = {
+#       "iam.gke.io/gcp-service-account" = data.google_service_account.workload_identity[each.key].email
+#     }
 
-    name      = "${each.key}-workload-identity-sa"
-    namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
-  }
-}
+#     name      = "${each.key}-workload-identity-sa"
+#     namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
+#   }
+# }

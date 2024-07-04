@@ -26,14 +26,14 @@ resource "google_dns_record_set" "istio_gateway" {
 # Helm Release
 # https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release
 
-resource "helm_release" "istio_base" {
+resource "helm_release" "base" {
   chart      = "base"
-  name       = "istio-base"
+  name       = "base"
   namespace  = "istio-system"
   repository = var.istio_chart_repository
 
   values = [
-    file("${path.module}/helm/istio-base.yml")
+    file("${path.module}/helm/base.yml")
   ]
 
   version = var.istio_version
@@ -51,13 +51,33 @@ resource "helm_release" "istiod" {
   }
 
   set {
+    name  = "global.configCluster"
+    value = var.istio_config_cluster
+  }
+
+  set {
     name  = "global.multiCluster.clusterName"
     value = local.multi_cluster_name
   }
 
   set {
+    name  = "istioRemote.injectionURL"
+    value = var.istio_remote_injection_url
+  }
+
+  set {
+    name  = "istioRemote.injectionPath"
+    value = var.istio_remote_injection_path
+  }
+
+  set {
     name  = "pilot.autoscaleMin"
-    value = var.pilot_autoscale_min
+    value = var.istio_pilot_autoscale_min
+  }
+
+  set {
+    name  = "pilot.env.EXTERNAL_ISTIOD"
+    value = var.istio_external_istiod
   }
 
   set {
@@ -70,6 +90,51 @@ resource "helm_release" "istiod" {
     value = var.istio_version
   }
 
+  set {
+    name  = "pilot.resources.limits.cpu"
+    value = var.istio_pilot_cpu_limit
+  }
+
+  set {
+    name  = "pilot.resources.limits.memory"
+    value = var.istio_pilot_memory_limit
+  }
+
+  set {
+    name  = "pilot.resources.requests.cpu"
+    value = var.istio_pilot_cpu_request
+  }
+
+  set {
+    name  = "pilot.resources.requests.memory"
+    value = var.istio_pilot_memory_request
+  }
+
+  set {
+    name  = "pilot.replicaCount"
+    value = var.istio_pilot_replica_count
+  }
+
+  set {
+    name  = "proxy.resources.limits.cpu"
+    value = var.istio_proxy_cpu_limit
+  }
+
+  set {
+    name  = "proxy.resources.limits.memory"
+    value = var.istio_proxy_memory_limit
+  }
+
+  set {
+    name  = "proxy.resources.requests.cpu"
+    value = var.istio_proxy_cpu_request
+  }
+
+  set {
+    name  = "proxy.resources.requests.memory"
+    value = var.istio_proxy_memory_request
+  }
+
   values = [
     file("${path.module}/helm/istiod.yml")
   ]
@@ -77,7 +142,7 @@ resource "helm_release" "istiod" {
   version = var.istio_version
 
   depends_on = [
-    helm_release.istio_base
+    helm_release.base
   ]
 }
 
@@ -92,6 +157,26 @@ resource "helm_release" "gateway" {
   set {
     name  = "autoscaling.minReplicas"
     value = var.gateway_autoscale_min
+  }
+
+  set {
+    name  = "gateway.resources.limits.cpu"
+    value = var.istio_gateway_cpu_limit
+  }
+
+  set {
+    name  = "gateway.resources.limits.memory"
+    value = var.istio_gateway_memory_limit
+  }
+
+  set {
+    name  = "gateway.resources.requests.cpu"
+    value = var.istio_gateway_cpu_request
+  }
+
+  set {
+    name  = "gateway.resources.requests.memory"
+    value = var.istio_gateway_memory_request
   }
 
   set {
@@ -233,4 +318,22 @@ resource "kubernetes_manifest" "istio_gateway_managed_certificate" {
       domains = local.istio_gateway_domains
     }
   }
+}
+
+resource "kubernetes_manifest" "istio_service_exports" {
+  count = var.istio_external_istiod ? 1 : 0
+
+  manifest = {
+    "apiVersion" = "net.gke.io/v1"
+    "kind"       = "ServiceExport"
+
+    "metadata" = {
+      "name"      = "istiod"
+      "namespace" = "istio-system"
+    }
+  }
+
+  depends_on = [
+    helm_release.istiod
+  ]
 }
