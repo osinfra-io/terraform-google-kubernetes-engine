@@ -65,7 +65,7 @@ resource "kubernetes_role_v1" "namespace_admin" {
   }
 
   rule {
-    api_groups = [""]
+    api_groups = ["*"]
     resources  = ["*"]
     verbs      = ["create", "delete", "get", "list", "patch", "update", "watch"]
   }
