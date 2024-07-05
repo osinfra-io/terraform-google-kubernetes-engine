@@ -1,11 +1,11 @@
 # Google Service Account Data Source
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account
 
-# data "google_service_account" "workload_identity" {
-#   for_each = var.namespaces
+data "google_service_account" "workload_identity" {
+  for_each = var.namespaces
 
-#   account_id = var.workload_identity_service_account_emails[each.key]
-# }
+  account_id = var.workload_identity_service_account_emails[each.key]
+}
 
 # Kubernetes Namespace Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1
@@ -74,39 +74,39 @@ resource "kubernetes_role_v1" "namespace_admin" {
 # Kubernetes Role Binding Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding_v1
 
-# resource "kubernetes_role_binding_v1" "namespace_admin" {
-#   for_each = local.namespace_admin_service_accounts
+resource "kubernetes_role_binding_v1" "namespace_admin" {
+  for_each = local.namespace_admin_service_accounts
 
-#   metadata {
-#     name      = "namespace-admin"
-#     namespace = kubernetes_namespace_v1.this[each.value.namespace].metadata.0.name
-#   }
+  metadata {
+    name      = "namespace-admin"
+    namespace = kubernetes_namespace_v1.this[each.value.namespace].metadata.0.name
+  }
 
-#   role_ref {
-#     api_group = "rbac.authorization.k8s.io"
-#     kind      = "Role"
-#     name      = "namespace-admin"
-#   }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = "namespace-admin"
+  }
 
-#   subject {
-#     kind = "User"
-#     name = each.value.service_account
-#   }
-# }
+  subject {
+    kind = "User"
+    name = each.value.service_account
+  }
+}
 
 # Kubernetes Service Account Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account_v1
 
-# resource "kubernetes_service_account_v1" "workload_identity" {
-#   for_each = var.namespaces
+resource "kubernetes_service_account_v1" "workload_identity" {
+  for_each = var.namespaces
 
-#   metadata {
+  metadata {
 
-#     annotations = {
-#       "iam.gke.io/gcp-service-account" = data.google_service_account.workload_identity[each.key].email
-#     }
+    annotations = {
+      "iam.gke.io/gcp-service-account" = data.google_service_account.workload_identity[each.key].email
+    }
 
-#     name      = "${each.key}-workload-identity-sa"
-#     namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
-#   }
-# }
+    name      = "${each.key}-workload-identity-sa"
+    namespace = kubernetes_namespace_v1.this[each.key].metadata.0.name
+  }
+}
