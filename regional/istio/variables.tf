@@ -156,6 +156,12 @@ variable "istio_version" {
   default     = "1.22.2"
 }
 
+variable "node_location" {
+  description = "The zone in which the cluster's nodes should be located. If not specified, the cluster's nodes are located across zones in the region"
+  type        = string
+  default     = null
+}
+
 variable "project" {
   description = "The ID of the project in which the resource belongs"
   type        = string
