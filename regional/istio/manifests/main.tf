@@ -196,7 +196,7 @@ resource "kubernetes_manifest" "gke_info_istio_virtual_services" {
           "match" = [
             {
               "uri" = {
-                "prefix" = "/gke-info"
+                "prefix" = "/gke-info-go"
               }
             }
           ]
