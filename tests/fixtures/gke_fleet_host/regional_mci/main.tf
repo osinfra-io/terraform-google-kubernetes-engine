@@ -58,8 +58,6 @@ module "test" {
 
   source = "../../../../regional/mci"
 
-  istio_gateway_mci_global_address = local.global.istio_gateway_mci_global_address
-
   multi_cluster_service_clusters = [
     {
       "link" = "us-east1/fleet-host-us-east1-b"
