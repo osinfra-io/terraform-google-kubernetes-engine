@@ -8,7 +8,7 @@ resource "kubernetes_manifest" "istio_cluster_services_destination_rule" {
 
     "metadata" = {
       "name"      = "cluster-services"
-      "namespace" = "istio-ingress"
+      "namespace" = "istio-system"
     }
 
     "spec" = {
@@ -63,7 +63,7 @@ resource "kubernetes_manifest" "istio_kubernetes_default_destination_rule" {
 
     "metadata" = {
       "name"      = "kubernetes-default"
-      "namespace" = "istio-ingress"
+      "namespace" = "istio-system"
     }
 
     "spec" = {
@@ -150,7 +150,7 @@ resource "kubernetes_manifest" "istio_virtual_services" {
 
     "metadata" = {
       "name"      = each.key
-      "namespace" = "istio-system"
+      "namespace" = "istio-ingress"
     }
 
     "spec" = {
@@ -187,7 +187,7 @@ resource "kubernetes_manifest" "gke_info_istio_virtual_services" {
     "kind"       = "VirtualService"
     "metadata" = {
       "name"      = each.key
-      "namespace" = "istio-system"
+      "namespace" = "istio-ingress"
     }
     "spec" = {
       "gateways" = [
