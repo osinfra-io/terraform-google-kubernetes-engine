@@ -187,7 +187,7 @@ resource "kubernetes_manifest" "gke_info_istio_virtual_services" {
     "kind"       = "VirtualService"
     "metadata" = {
       "name"      = each.key
-      "namespace" = "istio-ingress"
+      "namespace" = "istio-system"
     }
     "spec" = {
       "gateways" = [
