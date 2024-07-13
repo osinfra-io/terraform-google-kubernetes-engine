@@ -203,8 +203,8 @@ resource "kubernetes_manifest" "gke_info_istio_virtual_services" {
               "uri" = {
                 "prefix" = "/gke-info-go"
               }
-              rewrite = {
-                uri = "/"
+              "rewrite" = {
+                "uri" = "/"
               }
             }
           ]
