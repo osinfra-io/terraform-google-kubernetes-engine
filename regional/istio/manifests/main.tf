@@ -108,6 +108,11 @@ resource "kubernetes_manifest" "istio_gateway" {
           "tls" = {
 
             # As part of the incoming TLS connection, the gateway will decrypt the traffic in order to apply the routing rules.
+            # This is an additional manual step to configure the gateway to use the TLS certificate. This is not recommended for production use.
+            # openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=Open Source Infrastructure as Code/CN=osinfra.io' -keyout osinfra.io.key -out osinfra.io.crt
+            # openssl req -out gateway.istio-ingress.svc.cluster.local.csr -newkey rsa:2048 -nodes -keyout gateway.istio-ingress.svc.cluster.local.key -subj "/O=Open Source Infrastructure as Code/CN=osinfra.io"
+            # openssl x509 -req -sha256 -days 365 -CA osinfra.io.crt -CAkey osinfra.io.key -set_serial 0 -in gateway.istio-ingress.svc.cluster.local.csr -out gateway.istio-ingress.svc.cluster.local.crt
+            # kubectl create -n istio-ingress secret tls gateway-tls --key=gateway.istio-ingress.svc.cluster.local.key --cert=gateway.istio-ingress.svc.cluster.local.crt
 
             "mode"           = "SIMPLE"
             "credentialName" = "gateway-tls"
@@ -197,6 +202,9 @@ resource "kubernetes_manifest" "gke_info_istio_virtual_services" {
             {
               "uri" = {
                 "prefix" = "/gke-info-go"
+              }
+              rewrite = {
+                uri = "/"
               }
             }
           ]
