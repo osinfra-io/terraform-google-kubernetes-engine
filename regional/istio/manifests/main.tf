@@ -205,9 +205,6 @@ resource "kubernetes_manifest" "gke_info_istio_virtual_services" {
               }
             }
           ]
-          "rewrite" = {
-            "uri" = "/"
-          }
           "route" = [
             {
               "destination" = {
