@@ -47,6 +47,7 @@ See the documentation for setting up a local development environment [here](http
 
 ### 🛠️ Tools
 
+- [checkov](https://www.checkov.io)
 - [helm](https://helm.sh)
 - [infracost](https://github.com/infracost/infracost)
 - [pre-commit](https://github.com/pre-commit/pre-commit)
@@ -57,8 +58,6 @@ See the documentation for setting up a local development environment [here](http
 
 Links to documentation and other resources required to develop and iterate in this repository successfully.
 
-- [istio](https://istio.io/latest/docs)
-  - [istio on gke](https://istio.io/latest/docs/setup/platform-setup/gke)
 - [kubernetes engine](https://cloud.google.com/kubernetes-engine/docs)
   - [multi cluster ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress)
   - [node pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
@@ -92,7 +91,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.36.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.37.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ### Modules
