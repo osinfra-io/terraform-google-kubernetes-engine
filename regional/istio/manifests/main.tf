@@ -135,7 +135,7 @@ resource "kubernetes_manifest" "istio_peer_authentication" {
 
     "spec" = {
       "mtls" = {
-        "mode" = "PERMISSIVE"
+        "mode" = "STRICT"
       }
     }
   }
