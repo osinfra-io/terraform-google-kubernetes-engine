@@ -8,7 +8,7 @@ resource "kubernetes_manifest" "istio_cluster_services_destination_rule" {
 
     "metadata" = {
       "name"      = "cluster-services"
-      "namespace" = "istio-system"
+      "namespace" = "istio-ingress"
     }
 
     "spec" = {
@@ -63,7 +63,7 @@ resource "kubernetes_manifest" "istio_kubernetes_default_destination_rule" {
 
     "metadata" = {
       "name"      = "kubernetes-default"
-      "namespace" = "istio-system"
+      "namespace" = "istio-ingress"
     }
 
     "spec" = {
@@ -135,7 +135,7 @@ resource "kubernetes_manifest" "istio_peer_authentication" {
 
     "spec" = {
       "mtls" = {
-        "mode" = "STRICT"
+        "mode" = "PERMISSIVE"
       }
     }
   }
