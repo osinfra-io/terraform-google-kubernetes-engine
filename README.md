@@ -132,6 +132,5 @@ No modules.
 ## 📓 Terraform Regional Documentation
 
 - [regional](regional/README.md)
-- [regional/istio](regional/istio/README.md)
 - [regional/mci](regional/mci/README.md)
 - [regional/onboarding](regional/onboarding/README.md)
