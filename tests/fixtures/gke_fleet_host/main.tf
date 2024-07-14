@@ -16,19 +16,6 @@ module "test" {
 
   source = "../../../"
 
-
-  istio_gateway_dns = {
-    "gateway.test.gcp.osinfra.io" = {
-      managed_zone = "test-gcp-osinfra-io"
-      project      = var.dns_project_id
-    }
-
-    "stream-team.test.gcp.osinfra.io" = {
-      managed_zone = "test-gcp-osinfra-io"
-      project      = var.dns_project_id
-    }
-  }
-
   namespaces = {
     gke-java-example = {
       google_service_account = var.google_service_account

@@ -8,14 +8,12 @@ mock_provider "google" {
 }
 
 mock_provider "google-beta" {}
-mock_provider "helm" {}
 mock_provider "kubernetes" {}
 
 mock_provider "terraform" {
   mock_data "terraform_remote_state" {
     defaults = {
       outputs = {
-        istio_gateway_mci_global_address = "35.184.145.227"
         workload_identity_service_account_emails = {
           gke-go-example   = "gke-tf111111-workload-identity@mock.iam.gserviceaccount.com"
           gke-java-example = "gke-tf222222-workload-identity@mock.iam.gserviceaccount.com"
@@ -27,7 +25,7 @@ mock_provider "terraform" {
   }
 }
 
-run "gke_fleet_host_global" {
+run "gke_fleet_host" {
   command = apply
 
   module {
@@ -60,15 +58,7 @@ run "gke_fleet_host_regional_mci" {
   }
 }
 
-run "gke_fleet_host_regional_istio" {
-  command = apply
-
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional_istio"
-  }
-}
-
-run "gke_fleet_member_global" {
+run "gke_fleet_member" {
   command = apply
 
   module {
@@ -89,14 +79,6 @@ run "gke_fleet_member_regional_onboarding" {
 
   module {
     source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
-  }
-}
-
-run "gke_fleet_member_regional_istio" {
-  command = apply
-
-  module {
-    source = "./tests/fixtures/gke_fleet_member/regional_istio"
   }
 }
 
