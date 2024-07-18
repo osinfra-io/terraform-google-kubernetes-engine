@@ -47,8 +47,7 @@ See the documentation for setting up a local development environment [here](http
 
 ### 🛠️ Tools
 
-- [checkov](https://www.checkov.io)
-- [helm](https://helm.sh)
+- [checkov](https://github.com/bridgecrewio/checkov)
 - [infracost](https://github.com/infracost/infracost)
 - [pre-commit](https://github.com/pre-commit/pre-commit)
 - [pre-commit-terraform](https://github.com/antonbabenko/pre-commit-terraform)
@@ -91,7 +90,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.37.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.38.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ### Modules
