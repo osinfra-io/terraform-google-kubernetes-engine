@@ -117,7 +117,7 @@ variable "project" {
 }
 
 variable "region" {
-  description = "The region the cluster will run in if not creating a zonal cluster, required for subnet as well"
+  description = "The region in which the resource belongs"
   type        = string
   default     = "us-east4"
 }
