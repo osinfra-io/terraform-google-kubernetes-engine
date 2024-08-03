@@ -36,21 +36,21 @@ data "google_client_config" "current" {
 # This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
 # you do it in your root module.
 
-data "terraform_remote_state" "global" {
+data "terraform_remote_state" "main" {
   backend   = "gcs"
-  workspace = "kitchen-terraform-gke-fleet-host-global-gcp"
+  workspace = "mock"
 
   config = {
-    bucket = "plt-lz-testing-2c8b-sb"
+    bucket = "mock"
   }
 }
 
 data "terraform_remote_state" "regional" {
   backend   = "gcs"
-  workspace = "kitchen-terraform-gke-fleet-host-regional-gcp"
+  workspace = "mock"
 
   config = {
-    bucket = "plt-lz-testing-2c8b-sb"
+    bucket = "mock"
   }
 }
 
@@ -71,22 +71,13 @@ module "test" {
 
     gke-go-example = {
       google_service_account = var.google_service_account
-      istio_injection        = "disabled"
-    }
-
-    istio-ingress = {
-      google_service_account = var.google_service_account
       istio_injection        = "enabled"
-    }
-
-    istio-system = {
-      google_service_account = var.google_service_account
     }
   }
 
   project = var.project
 
-  workload_identity_service_account_emails = data.terraform_remote_state.global.outputs.workload_identity_service_account_emails
+  workload_identity_service_account_emails = data.terraform_remote_state.main.outputs.workload_identity_service_account_emails
 }
 
 # This is a test to validate workload identity. It's not needed for the module to work.
@@ -118,7 +109,7 @@ module "test" {
 #           # This demonstrates that by default, the Pod acts as the IAM service account's authority when calling Google Cloud APIs.
 
 #           command = [
-#             "/bin/bash", "-c", "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email | grep ${data.terraform_remote_state.global.outputs.workload_identity_service_account_emails[each.key]}", "[ $? -ne 0 ] || exit 1"
+#             "/bin/bash", "-c", "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email | grep ${data.terraform_remote_state.main.outputs.workload_identity_service_account_emails[each.key]}", "[ $? -ne 0 ] || exit 1"
 #           ]
 
 #         }

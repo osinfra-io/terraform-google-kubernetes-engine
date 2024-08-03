@@ -33,7 +33,7 @@ data "google_client_config" "current" {
 # This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
 # you do it in your root module.
 
-data "terraform_remote_state" "global" {
+data "terraform_remote_state" "main" {
   backend   = "gcs"
   workspace = "kitchen-terraform-gke-fleet-host-global-gcp"
 

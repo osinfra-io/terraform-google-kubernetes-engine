@@ -36,21 +36,21 @@ data "google_client_config" "current" {
 # This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
 # you do it in your root module.
 
-data "terraform_remote_state" "global" {
+data "terraform_remote_state" "main" {
   backend   = "gcs"
-  workspace = "kitchen-terraform-gke-fleet-host-global-gcp"
+  workspace = "mock"
 
   config = {
-    bucket = "plt-lz-testing-2c8b-sb"
+    bucket = "mock"
   }
 }
 
 data "terraform_remote_state" "regional" {
   backend   = "gcs"
-  workspace = "kitchen-terraform-gke-fleet-member-regional-gcp"
+  workspace = "mock"
 
   config = {
-    bucket = "plt-lz-testing-2c8b-sb"
+    bucket = "mock"
   }
 }
 
@@ -70,5 +70,5 @@ module "test" {
 
   project = var.project
 
-  workload_identity_service_account_emails = data.terraform_remote_state.global.outputs.workload_identity_service_account_emails
+  workload_identity_service_account_emails = data.terraform_remote_state.main.outputs.workload_identity_service_account_emails
 }
