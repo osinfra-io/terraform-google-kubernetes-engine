@@ -13,53 +13,26 @@ terraform {
 }
 
 module "test" {
-
-  # This module will be consumed using the source address of the github repo and not the "../../../" used in this test
-  # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional?ref=v0.0.0"
-
   source = "../../../../regional"
 
-
-  cluster_autoscaling = {
-    enabled = true
-  }
-
-  cluster_prefix               = "fleet-host"
-  cluster_secondary_range_name = "k8s-secondary-pods"
+  cluster_prefix               = "mock"
+  cluster_secondary_range_name = "mock-secondary-pods"
   enable_deletion_protection   = false
-  enable_gke_hub_host          = true
+  enable_gke_hub_host          = var.enable_gke_hub_host
+  gke_hub_memberships          = var.gke_hub_memberships
+  labels                       = local.labels
+  network                      = "mock-network"
+  node_location                = var.node_location
+  node_pools                   = var.node_pools
+  master_ipv4_cidr_block       = var.master_ipv4_cidr_block
+  project                      = var.project
 
-  gke_hub_memberships = var.gke_hub_memberships
-
-  labels = {
-    cost-center = "x000"
-    env         = "sb"
-    region      = var.region
-    repository  = "terraform-google-kubernetes-engine"
-    team        = "kitchen"
-  }
-
-  network       = "terraform-test-vpc"
-  node_location = "${var.region}-b"
-
-  node_pools = {
-    standard-pool = {
-      machine_type = "g1-small"
-    }
-  }
-
-  master_ipv4_cidr_block = "10.63.240.48/28"
-  project                = var.project
-
-  resource_labels = {
-    env        = "sb"
-    region     = var.region
-    repository = "terraform-google-kubernetes-engine"
-    team       = "kitchen"
-  }
+  resource_labels = merge(local.labels, {
+    region = var.region
+  })
 
   region                        = var.region
-  services_secondary_range_name = "k8s-secondary-services"
-  subnet                        = "fleet-host-${var.region}-b"
+  services_secondary_range_name = "mock-secondary-services"
+  subnet                        = "mock-${var.region}-${var.zone}"
   vpc_host_project_id           = var.vpc_host_project_id
 }

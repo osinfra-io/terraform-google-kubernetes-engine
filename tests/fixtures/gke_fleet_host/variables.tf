@@ -8,3 +8,10 @@ variable "google_service_account" {
 variable "project" {
   type = string
 }
+
+variable "namespaces" {
+  type = map(object({
+    google_service_account = string
+    istio_injection        = optional(string, "disabled")
+  }))
+}

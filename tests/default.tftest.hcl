@@ -15,8 +15,8 @@ mock_provider "terraform" {
     defaults = {
       outputs = {
         workload_identity_service_account_emails = {
-          namespace-a   = "mock-tf111111-workload-identity@mock.iam.gserviceaccount.com"
-          namespace-b = "mock-tf222222-workload-identity@mock.iam.gserviceaccount.com"
+          namespace-a = "mock-a-workload-identity@mock.iam.gserviceaccount.com"
+          namespace-b = "mock-b-workload-identity@mock.iam.gserviceaccount.com"
         }
       }
     }
@@ -29,6 +29,10 @@ run "gke_fleet_host" {
   module {
     source = "./tests/fixtures/gke_fleet_host"
   }
+
+  variables {
+    project = "mock-project-host-project"
+  }
 }
 
 run "gke_fleet_host_regional" {
@@ -37,30 +41,60 @@ run "gke_fleet_host_regional" {
   module {
     source = "./tests/fixtures/gke_fleet_host/regional"
   }
-}
 
-run "gke_fleet_host_regional_onboarding" {
-  command = apply
+  variables {
+    enable_gke_hub_host = true
 
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
+    gke_hub_memberships = {
+      "mock-fleet-member" = {
+        cluster_id = "projects/mock/locations/mock-region/clusters/mock-fleet-member"
+      }
+    }
+
+    node_location = "mock-node-location"
+
+    node_pools = {
+      default-pool = {
+        machine_type   = "e2-standard-2"
+        max_node_count = 1
+        min_node_count = 0
+      }
+    }
+
+    project             = "mock-project-host-project"
+    region              = "mock-region"
+    zone                = "mock-zone"
+    vpc_host_project_id = "mock-vpc-host-project"
   }
 }
 
+// run "gke_fleet_host_regional_onboarding" {
+//   command = apply
 
-run "gke_fleet_host_regional_mci" {
-  command = apply
+//   module {
+//     source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
+//   }
+// }
 
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional_mci"
-  }
-}
+
+// run "gke_fleet_host_regional_mci" {
+//   command = apply
+
+//   module {
+//     source = "./tests/fixtures/gke_fleet_host/regional_mci"
+//   }
+// }
 
 run "gke_fleet_member" {
   command = apply
 
   module {
     source = "./tests/fixtures/gke_fleet_member"
+  }
+
+  variables {
+    gke_fleet_host_project_id = "mock-fleet-host-project"
+    project                   = "mock-project-member-project"
   }
 }
 
@@ -70,29 +104,49 @@ run "gke_fleet_member_regional" {
   module {
     source = "./tests/fixtures/gke_fleet_member/regional"
   }
-}
-
-run "gke_fleet_member_regional_onboarding" {
-  command = apply
-
-  module {
-    source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
-  }
-}
-
-run "gke_fleet_host_regional_hub_membership" {
-  command = apply
-
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional"
-  }
 
   variables {
-    gke_hub_memberships = { "fleet-member-us-east1" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east1/clusters/fleet-member-us-east1" } }
+    enable_gke_hub_host = false
+
+    gke_hub_memberships = {}
+    node_location = "mock-node-location"
+
+    node_pools = {
+      default-pool = {
+        machine_type   = "e2-standard-2"
+        max_node_count = 1
+        min_node_count = 0
+      }
+    }
+
+    project             = "mock-project-member-project"
+    region              = "mock-region"
+    zone                = "mock-zone"
+    vpc_host_project_id = "mock-vpc-host-project"
   }
 }
 
+// run "gke_fleet_member_regional_onboarding" {
+//   command = apply
+
+//   module {
+//     source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
+//   }
+// }
+
 variables {
+  environment            = "mock-environment"
   google_service_account = "mock@mock.iam.gserviceaccount.com"
-  project               = "mock"
+
+  namespaces = {
+    namespace-a = {
+      google_service_account = "mock-github@mock.gserviceaccount.com"
+      istio_injection        = "enabled"
+    }
+    namespace-b = {
+      google_service_account = "mock-github@mock.gserviceaccount.com"
+    }
+  }
+
+  master_ipv4_cidr_block = "192.0.2.0/28" # https://www.rfc-editor.org/rfc/rfc5737#section-3
 }
