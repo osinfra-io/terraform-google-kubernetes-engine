@@ -1,8 +1,8 @@
 mock_provider "google" {
   mock_resource "google_service_account" {
     defaults = {
-      name  = "projects/mock/serviceAccounts/gke-tf777641-workload-identity@mock.iam.gserviceaccount.com"
-      email = "gke-tf777641-workload-identity@mock.iam.gserviceaccount.com"
+      name  = "projects/mock/serviceAccounts/mock-github@mock.iam.gserviceaccount.com"
+      email = "mock-github@mock.iam.gserviceaccount.com"
     }
   }
 }
@@ -15,10 +15,8 @@ mock_provider "terraform" {
     defaults = {
       outputs = {
         workload_identity_service_account_emails = {
-          gke-go-example   = "gke-tf111111-workload-identity@mock.iam.gserviceaccount.com"
-          gke-java-example = "gke-tf222222-workload-identity@mock.iam.gserviceaccount.com"
-          istio-ingress    = "gke-tf333333-workload-identity@mock.iam.gserviceaccount.com"
-          istio-system     = "gke-tf444444-workload-identity@mock.iam.gserviceaccount.com"
+          namespace-a   = "mock-tf111111-workload-identity@mock.iam.gserviceaccount.com"
+          namespace-b = "mock-tf222222-workload-identity@mock.iam.gserviceaccount.com"
         }
       }
     }
@@ -92,4 +90,9 @@ run "gke_fleet_host_regional_hub_membership" {
   variables {
     gke_hub_memberships = { "fleet-member-us-east1" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east1/clusters/fleet-member-us-east1" } }
   }
+}
+
+variables {
+  google_service_account = "mock@mock.iam.gserviceaccount.com"
+  project               = "mock"
 }

@@ -61,10 +61,16 @@ module "test" {
 
   source = "../../../../regional/onboarding"
 
-  istio_control_plane_clusters = "fleet-host-us-east1-b"
   namespaces = {
-    istio-system = {
-      google_service_account = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+
+    namespace-a = {
+      google_service_account = var.google_service_account
+      istio_injection        = "disabled"
+    }
+
+    namespace-b = {
+      google_service_account = var.google_service_account
+      istio_injection        = "enabled"
     }
   }
 

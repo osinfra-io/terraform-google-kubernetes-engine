@@ -33,9 +33,6 @@ data "google_client_config" "current" {
 # Remote State Data Source
 # https://www.terraform.io/language/state/remote-state-data
 
-# This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
-# you do it in your root module.
-
 data "terraform_remote_state" "main" {
   backend   = "gcs"
   workspace = "mock"
@@ -64,12 +61,12 @@ module "test" {
 
   namespaces = {
 
-    gke-java-example = {
+    namespace-a = {
       google_service_account = var.google_service_account
       istio_injection        = "disabled"
     }
 
-    gke-go-example = {
+    namespace-b = {
       google_service_account = var.google_service_account
       istio_injection        = "enabled"
     }
