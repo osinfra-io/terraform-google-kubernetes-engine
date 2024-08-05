@@ -68,22 +68,26 @@ run "gke_fleet_host_regional" {
   }
 }
 
-// run "gke_fleet_host_regional_onboarding" {
-//   command = apply
+run "gke_fleet_host_regional_onboarding" {
+  command = apply
 
-//   module {
-//     source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
-//   }
-// }
+  module {
+    source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
+  }
+
+  variables {
+    project = "mock-project-host-project"
+  }
+}
 
 
-// run "gke_fleet_host_regional_mci" {
-//   command = apply
+run "gke_fleet_host_regional_mci" {
+  command = apply
 
-//   module {
-//     source = "./tests/fixtures/gke_fleet_host/regional_mci"
-//   }
-// }
+  module {
+    source = "./tests/fixtures/gke_fleet_host/regional_mci"
+  }
+}
 
 run "gke_fleet_member" {
   command = apply
@@ -126,13 +130,17 @@ run "gke_fleet_member_regional" {
   }
 }
 
-// run "gke_fleet_member_regional_onboarding" {
-//   command = apply
+run "gke_fleet_member_regional_onboarding" {
+  command = apply
 
-//   module {
-//     source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
-//   }
-// }
+  module {
+    source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
+  }
+
+  variables {
+    project = "mock-project-member-project"
+  }
+}
 
 variables {
   environment            = "mock-environment"

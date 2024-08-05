@@ -33,9 +33,6 @@ data "google_client_config" "current" {
 # Remote State Data Source
 # https://www.terraform.io/language/state/remote-state-data
 
-# This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
-# you do it in your root module.
-
 data "terraform_remote_state" "main" {
   backend   = "gcs"
   workspace = "mock"
@@ -55,26 +52,10 @@ data "terraform_remote_state" "regional" {
 }
 
 module "test" {
-
-  # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
-  # source = "git@github.com:osinfra-io/terraform-google-kubernetes-engine//regional/onboarding?ref=v0.0.0"
-
   source = "../../../../regional/onboarding"
 
-  namespaces = {
 
-    namespace-a = {
-      google_service_account = var.google_service_account
-      istio_injection        = "disabled"
-    }
-
-    namespace-b = {
-      google_service_account = var.google_service_account
-      istio_injection        = "enabled"
-    }
-  }
-
-  project = var.project
-
+  namespaces                               = var.namespaces
+  project                                  = var.project
   workload_identity_service_account_emails = data.terraform_remote_state.main.outputs.workload_identity_service_account_emails
 }
