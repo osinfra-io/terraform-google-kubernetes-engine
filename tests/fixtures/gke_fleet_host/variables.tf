@@ -2,11 +2,16 @@
 # https://www.terraform.io/language/values/variables
 
 variable "google_service_account" {
-  type    = string
-  default = "plt-lz-testing-github@ptl-lz-terraform-tf91-sb.iam.gserviceaccount.com"
+  type = string
 }
 
 variable "project" {
-  type    = string
-  default = "test-gke-fleet-host-tf64-sb"
+  type = string
+}
+
+variable "namespaces" {
+  type = map(object({
+    google_service_account = string
+    istio_injection        = optional(string, "disabled")
+  }))
 }

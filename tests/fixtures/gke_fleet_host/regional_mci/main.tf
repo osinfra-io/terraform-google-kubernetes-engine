@@ -30,37 +30,30 @@ data "google_client_config" "current" {
 # Remote State Data Source
 # https://www.terraform.io/language/state/remote-state-data
 
-# This is the preferred way to get the remote state data from other terraform workspaces and how we recommend
-# you do it in your root module.
-
-data "terraform_remote_state" "global" {
+data "terraform_remote_state" "main" {
   backend   = "gcs"
-  workspace = "kitchen-terraform-gke-fleet-host-global-gcp"
+  workspace = "mock"
 
   config = {
-    bucket = "plt-lz-testing-2c8b-sb"
+    bucket = "mock"
   }
 }
 
 data "terraform_remote_state" "regional" {
   backend   = "gcs"
-  workspace = "kitchen-terraform-gke-fleet-host-regional-gcp"
+  workspace = "mock"
 
   config = {
-    bucket = "plt-lz-testing-2c8b-sb"
+    bucket = "mock"
   }
 }
 
 module "test" {
-
-  # This module will be consumed using the source address of the github repo and not the "../../../" used in this test.
-  # source = "github.com/osinfra-io/terraform-google-kubernetes//regional/mci/?ref=v0.0.0"
-
   source = "../../../../regional/mci"
 
   multi_cluster_service_clusters = [
     {
-      "link" = "us-east1/fleet-host-us-east1-b"
+      "link" = "mock-region/mock-cluster"
     }
   ]
 

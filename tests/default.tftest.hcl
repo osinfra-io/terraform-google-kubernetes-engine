@@ -1,8 +1,8 @@
 mock_provider "google" {
   mock_resource "google_service_account" {
     defaults = {
-      name  = "projects/mock/serviceAccounts/gke-tf777641-workload-identity@mock.iam.gserviceaccount.com"
-      email = "gke-tf777641-workload-identity@mock.iam.gserviceaccount.com"
+      name  = "projects/mock/serviceAccounts/mock-github@mock.iam.gserviceaccount.com"
+      email = "mock-github@mock.iam.gserviceaccount.com"
     }
   }
 }
@@ -15,10 +15,8 @@ mock_provider "terraform" {
     defaults = {
       outputs = {
         workload_identity_service_account_emails = {
-          gke-go-example   = "gke-tf111111-workload-identity@mock.iam.gserviceaccount.com"
-          gke-java-example = "gke-tf222222-workload-identity@mock.iam.gserviceaccount.com"
-          istio-ingress    = "gke-tf333333-workload-identity@mock.iam.gserviceaccount.com"
-          istio-system     = "gke-tf444444-workload-identity@mock.iam.gserviceaccount.com"
+          namespace-a = "mock-a-workload-identity@mock.iam.gserviceaccount.com"
+          namespace-b = "mock-b-workload-identity@mock.iam.gserviceaccount.com"
         }
       }
     }
@@ -31,6 +29,10 @@ run "gke_fleet_host" {
   module {
     source = "./tests/fixtures/gke_fleet_host"
   }
+
+  variables {
+    project = "mock-project-host-project"
+  }
 }
 
 run "gke_fleet_host_regional" {
@@ -39,6 +41,31 @@ run "gke_fleet_host_regional" {
   module {
     source = "./tests/fixtures/gke_fleet_host/regional"
   }
+
+  variables {
+    enable_gke_hub_host = true
+
+    gke_hub_memberships = {
+      "mock-fleet-member" = {
+        cluster_id = "projects/mock/locations/mock-region/clusters/mock-fleet-member"
+      }
+    }
+
+    node_location = "mock-node-location"
+
+    node_pools = {
+      default-pool = {
+        machine_type   = "e2-standard-2"
+        max_node_count = 1
+        min_node_count = 0
+      }
+    }
+
+    project             = "mock-project-host-project"
+    region              = "mock-region"
+    zone                = "mock-zone"
+    vpc_host_project_id = "mock-vpc-host-project"
+  }
 }
 
 run "gke_fleet_host_regional_onboarding" {
@@ -46,6 +73,10 @@ run "gke_fleet_host_regional_onboarding" {
 
   module {
     source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
+  }
+
+  variables {
+    project = "mock-project-host-project"
   }
 }
 
@@ -64,6 +95,11 @@ run "gke_fleet_member" {
   module {
     source = "./tests/fixtures/gke_fleet_member"
   }
+
+  variables {
+    gke_fleet_host_project_id = "mock-fleet-host-project"
+    project                   = "mock-project-member-project"
+  }
 }
 
 run "gke_fleet_member_regional" {
@@ -71,6 +107,26 @@ run "gke_fleet_member_regional" {
 
   module {
     source = "./tests/fixtures/gke_fleet_member/regional"
+  }
+
+  variables {
+    enable_gke_hub_host = false
+
+    gke_hub_memberships = {}
+    node_location = "mock-node-location"
+
+    node_pools = {
+      default-pool = {
+        machine_type   = "e2-standard-2"
+        max_node_count = 1
+        min_node_count = 0
+      }
+    }
+
+    project             = "mock-project-member-project"
+    region              = "mock-region"
+    zone                = "mock-zone"
+    vpc_host_project_id = "mock-vpc-host-project"
   }
 }
 
@@ -80,16 +136,25 @@ run "gke_fleet_member_regional_onboarding" {
   module {
     source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
   }
-}
-
-run "gke_fleet_host_regional_hub_membership" {
-  command = apply
-
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional"
-  }
 
   variables {
-    gke_hub_memberships = { "fleet-member-us-east1" = { cluster_id = "projects/test-gke-fleet-member-tfc5-sb/locations/us-east1/clusters/fleet-member-us-east1" } }
+    project = "mock-project-member-project"
   }
+}
+
+variables {
+  environment            = "mock-environment"
+  google_service_account = "mock@mock.iam.gserviceaccount.com"
+
+  namespaces = {
+    namespace-a = {
+      google_service_account = "mock-github@mock.gserviceaccount.com"
+      istio_injection        = "enabled"
+    }
+    namespace-b = {
+      google_service_account = "mock-github@mock.gserviceaccount.com"
+    }
+  }
+
+  master_ipv4_cidr_block = "192.0.2.0/28" # https://www.rfc-editor.org/rfc/rfc5737#section-3
 }
