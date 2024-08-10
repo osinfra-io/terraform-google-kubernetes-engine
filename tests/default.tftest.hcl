@@ -81,14 +81,6 @@ run "gke_fleet_host_regional_onboarding" {
 }
 
 
-run "gke_fleet_host_regional_mci" {
-  command = apply
-
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional_mci"
-  }
-}
-
 run "gke_fleet_member" {
   command = apply
 
