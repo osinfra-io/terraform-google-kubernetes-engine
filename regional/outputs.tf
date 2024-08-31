@@ -21,14 +21,19 @@ output "container_cluster_name" {
   value       = google_container_cluster.this.name
 }
 
-output "kms_key_ring_cluster_database_encryption_name" {
+output "kms_key_ring_cluster_encryption_name" {
   description = "The name of the Google Cloud KMS key ring"
-  value       = google_kms_key_ring.cluster_database_encryption.name
+  value       = google_kms_key_ring.cluster_encryption.name
 }
 
 output "kms_crypto_key_cluster_database_encryption_name" {
   description = "The name of the Google Cloud KMS crypto key used to encrypt the secrets"
-  value       = google_kms_crypto_key.cluster_database_encryption.name
+  value       = google_kms_crypto_key.this["cluster-database-encryption"].name
+}
+
+output "kms_crypto_key_cluster_boot_disk_encryption_name" {
+  description = "The name of the Google Cloud KMS crypto key used to encrypt the boot disk"
+  value       = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
 }
 
 output "project_id" {

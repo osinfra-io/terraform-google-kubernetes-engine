@@ -12,7 +12,6 @@ No requirements.
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 6.0.1 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 6.0.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
@@ -23,15 +22,15 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_container_cluster.this](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_container_cluster) | resource |
+| [google_container_cluster.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster) | resource |
 | [google_container_node_pool.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool) | resource |
 | [google_gke_hub_feature.multi_cluster_ingress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature) | resource |
 | [google_gke_hub_feature.multi_cluster_service_discovery](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature) | resource |
 | [google_gke_hub_membership.clusters](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_membership) | resource |
 | [google_gke_hub_membership.host](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_membership) | resource |
-| [google_kms_crypto_key.cluster_database_encryption](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key) | resource |
-| [google_kms_crypto_key_iam_member.cluster_database_encryption](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key_iam_member) | resource |
-| [google_kms_key_ring.cluster_database_encryption](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring) | resource |
+| [google_kms_crypto_key.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key) | resource |
+| [google_kms_crypto_key_iam_member.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key_iam_member) | resource |
+| [google_kms_key_ring.cluster_encryption](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring) | resource |
 | [google_project_iam_member.gke_operations](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_service_account.gke_operations](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
@@ -70,8 +69,9 @@ No modules.
 | <a name="output_container_cluster_endpoint"></a> [container\_cluster\_endpoint](#output\_container\_cluster\_endpoint) | The connection endpoint for the cluster |
 | <a name="output_container_cluster_id"></a> [container\_cluster\_id](#output\_container\_cluster\_id) | The unique identifier for the cluster |
 | <a name="output_container_cluster_name"></a> [container\_cluster\_name](#output\_container\_cluster\_name) | The name of the cluster, unique within the project and location |
+| <a name="output_kms_crypto_key_cluster_boot_disk_encryption_name"></a> [kms\_crypto\_key\_cluster\_boot\_disk\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_boot\_disk\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the boot disk |
 | <a name="output_kms_crypto_key_cluster_database_encryption_name"></a> [kms\_crypto\_key\_cluster\_database\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_database\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the secrets |
-| <a name="output_kms_key_ring_cluster_database_encryption_name"></a> [kms\_key\_ring\_cluster\_database\_encryption\_name](#output\_kms\_key\_ring\_cluster\_database\_encryption\_name) | The name of the Google Cloud KMS key ring |
+| <a name="output_kms_key_ring_cluster_encryption_name"></a> [kms\_key\_ring\_cluster\_encryption\_name](#output\_kms\_key\_ring\_cluster\_encryption\_name) | The name of the Google Cloud KMS key ring |
 | <a name="output_project_id"></a> [project\_id](#output\_project\_id) | The ID of the project in which the resource belongs |
 | <a name="output_service_account_gke_operations_email"></a> [service\_account\_gke\_operations\_email](#output\_service\_account\_gke\_operations\_email) | The email address of the Kubernetes minimum privilege service account for the cluster |
 <!-- END_TF_DOCS -->

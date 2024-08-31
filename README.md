@@ -32,9 +32,6 @@ Google project services must be enabled before using this module. As a best prac
 - `multiclusterservicediscovery.googleapis.com`
 - `trafficdirector.googleapis.com`
 
-> NOTE: The autoscaling profile feature requires the `google-beta` provider.
-> Include this provider in your root module required_providers block if you use GitHub Dependabot.
-
 ## <img align="left" width="35" height="35" src="https://github.com/osinfra-io/github-organization-management/assets/1610100/39d6ae3b-ccc2-42db-92f1-276a5bc54e65"> Development
 
 Our focus is on the core fundamental practice of platform engineering, Infrastructure as Code.

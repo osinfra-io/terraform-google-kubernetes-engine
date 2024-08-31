@@ -35,11 +35,6 @@ resource "google_container_cluster" "this" {
   # The Metadata server is enabled in the google_container_node_pool resource.
   # checkov:skip=CKV_GCP_69
 
-  # Configuration options for the autoscaling profile feature are in beta
-  # Remove README.md note if beta is no longer required.
-
-  provider = google-beta
-
   authenticator_groups_config {
     security_group = "gke-security-groups@osinfra.io"
   }
@@ -52,10 +47,11 @@ resource "google_container_cluster" "this" {
       for_each = var.cluster_autoscaling.enabled ? [var.cluster_autoscaling.enabled] : []
 
       content {
-        disk_type       = var.cluster_autoscaling.disk_type
-        image_type      = var.cluster_autoscaling.image_type
-        oauth_scopes    = var.cluster_autoscaling.oauth_scopes
-        service_account = google_service_account.gke_operations.email
+        boot_disk_kms_key = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
+        disk_type         = var.cluster_autoscaling.disk_type
+        image_type        = var.cluster_autoscaling.image_type
+        oauth_scopes      = var.cluster_autoscaling.oauth_scopes
+        service_account   = google_service_account.gke_operations.email
 
         management {
           auto_repair  = true
@@ -104,7 +100,7 @@ resource "google_container_cluster" "this" {
   }
 
   database_encryption {
-    key_name = google_kms_crypto_key.cluster_database_encryption.id
+    key_name = google_kms_crypto_key.this["cluster-database-encryption"].name
     state    = "ENCRYPTED"
   }
 
@@ -228,11 +224,12 @@ resource "google_container_node_pool" "this" {
   name = each.key
 
   node_config {
-    disk_size_gb = each.value.disk_size_gb
-    disk_type    = each.value.disk_type
-    image_type   = each.value.image_type
-    labels       = var.labels
-    machine_type = each.value.machine_type
+    boot_disk_kms_key = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
+    disk_size_gb      = each.value.disk_size_gb
+    disk_type         = each.value.disk_type
+    image_type        = each.value.image_type
+    labels            = var.labels
+    machine_type      = each.value.machine_type
 
     metadata = {
       "disable-legacy-endpoints" = true
@@ -328,14 +325,19 @@ resource "google_gke_hub_membership" "clusters" {
 # KMS CryptoKey Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key
 
-resource "google_kms_crypto_key" "cluster_database_encryption" {
+resource "google_kms_crypto_key" "this" {
 
   # See comment below for why we can't use the lifecycle block to prevent destroy on this resource.
   # checkov:skip=CKV_GCP_82
 
-  key_ring        = google_kms_key_ring.cluster_database_encryption.id
+  for_each = toset([
+    "cluster-boot-disk-encryption",
+    "cluster-database-encryption"
+  ])
+
+  key_ring        = google_kms_key_ring.cluster_encryption.id
   labels          = var.labels
-  name            = "cluster-db-enc-${random_id.this.hex}"
+  name            = "${each.key}-${random_id.this.hex}"
   rotation_period = "7776000s"
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
@@ -354,8 +356,13 @@ resource "google_kms_crypto_key" "cluster_database_encryption" {
 # KMS CryptoKey IAM Member Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_kms_crypto_key_iam
 
-resource "google_kms_crypto_key_iam_member" "cluster_database_encryption" {
-  crypto_key_id = google_kms_crypto_key.cluster_database_encryption.id
+resource "google_kms_crypto_key_iam_member" "this" {
+  for_each = toset([
+    "cluster-boot-disk-encryption",
+    "cluster-database-encryption"
+  ])
+
+  crypto_key_id = google_kms_crypto_key.this[each.key].id
   member        = "serviceAccount:service-${data.google_project.this.number}@container-engine-robot.iam.gserviceaccount.com"
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 }
@@ -363,9 +370,9 @@ resource "google_kms_crypto_key_iam_member" "cluster_database_encryption" {
 # KMS Key Ring Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring
 
-resource "google_kms_key_ring" "cluster_database_encryption" {
+resource "google_kms_key_ring" "cluster_encryption" {
   location = var.region
-  name     = "${local.name}-${random_id.this.hex}-cluster-db-enc"
+  name     = "${local.name}-${random_id.this.hex}-cluster-encryption"
   project  = var.project
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
@@ -402,8 +409,6 @@ resource "google_project_iam_member" "gke_operations" {
   project = var.project
   role    = each.value
 }
-
-
 
 # Service Account Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
