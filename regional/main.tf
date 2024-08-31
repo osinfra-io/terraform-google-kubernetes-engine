@@ -372,7 +372,7 @@ resource "google_kms_crypto_key_iam_member" "this" {
 
 resource "google_kms_key_ring" "cluster_encryption" {
   location = var.region
-  name     = "${local.name}-${random_id.this.hex}-cluster-encryption"
+  name     = "${local.name}-cluster-encryption-${random_id.this.hex}"
   project  = var.project
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
