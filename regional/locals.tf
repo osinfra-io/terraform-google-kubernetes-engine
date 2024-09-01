@@ -22,6 +22,11 @@ locals {
 
   kms_crypto_keys = {
     cluster-boot-disk-encryption = {
+
+      # For CMEK-protected node boot disks and CMEK-protected attached disks, this Compute Engine service account is the account
+      # which requires permissions to do encryption using your Cloud KMS key. This is true even if you are using a custom service
+      # account on your nodes.
+
       service_account = "serviceAccount:service-${data.google_project.this.number}@compute-system.iam.gserviceaccount.com"
     }
 
