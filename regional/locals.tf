@@ -22,7 +22,7 @@ locals {
 
   kms_crypto_keys = {
     cluster-boot-disk-encryption = {
-      service_account = "serviceAccount:${google_service_account.gke_operations.email}"
+      service_account = "serviceAccount:service-${data.google_project.this.number}@compute-system.iam.gserviceaccount.com"
     }
 
     cluster-database-encryption = {
