@@ -47,7 +47,7 @@ resource "google_container_cluster" "this" {
       for_each = var.cluster_autoscaling.enabled ? [var.cluster_autoscaling.enabled] : []
 
       content {
-        boot_disk_kms_key = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
+        boot_disk_kms_key = google_kms_crypto_key.this["cluster-boot-disk-encryption"].id
         disk_type         = var.cluster_autoscaling.disk_type
         image_type        = var.cluster_autoscaling.image_type
         oauth_scopes      = var.cluster_autoscaling.oauth_scopes
@@ -100,7 +100,7 @@ resource "google_container_cluster" "this" {
   }
 
   database_encryption {
-    key_name = google_kms_crypto_key.this["cluster-database-encryption"].name
+    key_name = google_kms_crypto_key.this["cluster-database-encryption"].id
     state    = "ENCRYPTED"
   }
 
@@ -224,7 +224,7 @@ resource "google_container_node_pool" "this" {
   name = each.key
 
   node_config {
-    boot_disk_kms_key = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
+    boot_disk_kms_key = google_kms_crypto_key.this["cluster-boot-disk-encryption"].id
     disk_size_gb      = each.value.disk_size_gb
     disk_type         = each.value.disk_type
     image_type        = each.value.image_type
@@ -372,7 +372,7 @@ resource "google_kms_crypto_key_iam_member" "this" {
 
 resource "google_kms_key_ring" "cluster_encryption" {
   location = var.region
-  name     = "${local.name}-${random_id.this.hex}-cluster-encryption"
+  name     = "${local.name}-cluster-encryption-${random_id.this.hex}"
   project  = var.project
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
