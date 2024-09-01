@@ -357,7 +357,7 @@ resource "google_kms_crypto_key_iam_member" "this" {
   for_each = local.kms_crypto_keys
 
   crypto_key_id = google_kms_crypto_key.this[each.key].id
-  member        = "serviceAccount:service-${data.google_project.this.number}@container-engine-robot.iam.gserviceaccount.com"
+  member        = each.value.service_account
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 }
 
