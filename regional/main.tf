@@ -330,10 +330,7 @@ resource "google_kms_crypto_key" "this" {
   # See comment below for why we can't use the lifecycle block to prevent destroy on this resource.
   # checkov:skip=CKV_GCP_82
 
-  for_each = toset([
-    "cluster-boot-disk-encryption",
-    "cluster-database-encryption"
-  ])
+  for_each = local.kms_crypto_keys
 
   key_ring        = google_kms_key_ring.cluster_encryption.id
   labels          = var.labels
@@ -357,13 +354,10 @@ resource "google_kms_crypto_key" "this" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_kms_crypto_key_iam
 
 resource "google_kms_crypto_key_iam_member" "this" {
-  for_each = toset([
-    "cluster-boot-disk-encryption",
-    "cluster-database-encryption"
-  ])
+  for_each = local.kms_crypto_keys
 
   crypto_key_id = google_kms_crypto_key.this[each.key].id
-  member        = "serviceAccount:service-${data.google_project.this.number}@container-engine-robot.iam.gserviceaccount.com"
+  member        = each.value.service_account
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 }
 
