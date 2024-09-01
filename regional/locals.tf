@@ -20,6 +20,16 @@ locals {
     }
   ] : []
 
+  kms_crypto_keys = {
+    cluster-boot-disk-encryption = {
+      service_account = "serviceAccount:${google_service_account.gke_operations.email}"
+    }
+
+    cluster-database-encryption = {
+      service_account = "serviceAccount:service-${data.google_project.this.number}@container-engine-robot.iam.gserviceaccount.com"
+    }
+  }
+
   name    = var.node_location == null ? "${var.cluster_prefix}-${var.region}" : "${var.cluster_prefix}-${var.node_location}"
   network = "projects/${var.vpc_host_project_id}/global/networks/${var.network}"
   subnet  = "projects/${var.vpc_host_project_id}/regions/${var.region}/subnetworks/${var.subnet}"
