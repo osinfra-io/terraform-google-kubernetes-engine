@@ -283,6 +283,7 @@ resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
   location = "global"
   project  = var.project
 
+  depends_on = [google_gke_hub_membership.host] # https://github.com/hashicorp/terraform-provider-kubernetes/issues/2579
 }
 
 # Google GKEHub Membership Resource
