@@ -38,6 +38,12 @@ variable "cluster_secondary_range_name" {
   type        = string
 }
 
+variable "daily_maintenance_window" {
+  description = "Time window specified for daily maintenance operations"
+  type        = string
+  default     = "06:00"
+}
+
 variable "enable_deletion_protection" {
   description = "Whether or not to enable deletion protection on the cluster"
   type        = bool
@@ -58,12 +64,6 @@ variable "gke_hub_memberships" {
   default = {}
 }
 
-variable "kubernetes_daily_maintenance_window" {
-  description = "Time window specified for daily maintenance operations"
-  type        = string
-  default     = "06:00"
-}
-
 variable "labels" {
   description = "A map of key/value pairs to assign to the resources being created"
   type        = map(string)
@@ -73,6 +73,18 @@ variable "labels" {
 variable "master_ipv4_cidr_block" {
   type        = string
   description = "The IP range in CIDR notation to use for the hosted master network"
+}
+
+variable "network" {
+  description = "The name or self_link of the Google Compute Engine network to which the cluster is connected"
+  type        = string
+  default     = "default"
+}
+
+variable "node_location" {
+  description = "The zone in which the cluster's nodes should be located. If not specified, the cluster's nodes are located across zones in the region"
+  type        = string
+  default     = null
 }
 
 variable "node_pools" {
@@ -97,18 +109,6 @@ variable "node_pools" {
     upgrade_settings_strategy                = optional(string, "SURGE")
   }))
   default = {}
-}
-
-variable "network" {
-  description = "The name or self_link of the Google Compute Engine network to which the cluster is connected"
-  type        = string
-  default     = "default"
-}
-
-variable "node_location" {
-  description = "The zone in which the cluster's nodes should be located. If not specified, the cluster's nodes are located across zones in the region"
-  type        = string
-  default     = null
 }
 
 variable "project" {
