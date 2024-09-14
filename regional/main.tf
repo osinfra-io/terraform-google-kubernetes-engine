@@ -123,7 +123,7 @@ resource "google_container_cluster" "this" {
 
   maintenance_policy {
     daily_maintenance_window {
-      start_time = var.kubernetes_daily_maintenance_window
+      start_time = var.daily_maintenance_window
     }
   }
 

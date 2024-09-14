@@ -38,7 +38,5 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_project_id"></a> [project\_id](#output\_project\_id) | The project ID |
+No outputs.
 <!-- END_TF_DOCS -->
