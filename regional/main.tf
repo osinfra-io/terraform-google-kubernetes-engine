@@ -13,6 +13,19 @@ data "google_project" "this" {
   project_id = var.project
 }
 
+# Identity Group Membership
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_identity_group_membership
+
+resource "google_cloud_identity_group_membership" "registry_readers" {
+  group = "${var.cluster_prefix}-registry-readers@osinfra.io"
+
+  preferred_member_key {
+    id = google_service_account.gke_operations.email
+  }
+
+  roles { name = "MEMBER" }
+}
+
 # Google Container Cluster Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 
