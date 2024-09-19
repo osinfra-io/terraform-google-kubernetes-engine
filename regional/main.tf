@@ -26,7 +26,7 @@ data "google_project" "this" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_identity_group_membership
 
 resource "google_cloud_identity_group_membership" "registry_readers" {
-  group = "groups/${data.google_cloud_identity_group_lookup.registry_readers.id}"
+  group = data.google_cloud_identity_group_lookup.registry_readers.name
 
   preferred_member_key {
     id = google_service_account.gke_operations.email
