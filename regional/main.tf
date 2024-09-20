@@ -1,3 +1,12 @@
+# Google Cloud Identity Group Lookup Data Source
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/cloud_identity_group_lookup
+
+data "google_cloud_identity_group_lookup" "registry_readers" {
+  group_key {
+    id = "${var.cluster_prefix}-registry-readers@osinfra.io"
+  }
+}
+
 # Google Container Engine Versions Data Source
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/container_engine_versions
 
@@ -13,11 +22,23 @@ data "google_project" "this" {
   project_id = var.project
 }
 
+# Google Cloud Identity Group Membership
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_identity_group_membership
+
+resource "google_cloud_identity_group_membership" "registry_readers" {
+  group = data.google_cloud_identity_group_lookup.registry_readers.name
+
+  preferred_member_key {
+    id = google_service_account.gke_operations.email
+  }
+
+  roles { name = "MEMBER" }
+}
+
 # Google Container Cluster Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 
 resource "google_container_cluster" "this" {
-
 
   # Ensure Network Policy is enabled on Kubernetes Engine Clusters (False Positive)
   # Network policy enforcement is built into GKE Dataplane V2
