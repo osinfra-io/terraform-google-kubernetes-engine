@@ -22,6 +22,35 @@ resource "kubernetes_namespace_v1" "this" {
   }
 }
 
+resource "kubernetes_namespace_v1" "cert_manager" {
+  metadata {
+    name = "cert-manager"
+  }
+}
+
+resource "kubernetes_namespace_v1" "datadog" {
+  metadata {
+    name = "datadog"
+  }
+}
+
+resource "kubernetes_namespace_v1" "istio_ingress" {
+  metadata {
+    labels = {
+      "istio-injection" = "enabled"
+    }
+
+    name = "istio-ingress"
+  }
+}
+
+resource "kubernetes_namespace_v1" "istio_system" {
+  metadata {
+    name = "istio-system"
+  }
+}
+
+
 # Kubernetes Role Resource
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_v1
 
