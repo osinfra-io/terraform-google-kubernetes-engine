@@ -11,7 +11,15 @@ data "google_service_account" "workload_identity" {
 # https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1
 
 resource "kubernetes_namespace_v1" "this" {
-  for_each = var.namespaces
+  for_each = merge(
+    var.namespaces,
+    {
+      "cert-manager"  = {},
+      "datadog"       = {},
+      "istio-ingress" = { istio_injection = "enabled" },
+      "istio-system"  = {}
+    }
+  )
 
   metadata {
     labels = {
@@ -19,34 +27,6 @@ resource "kubernetes_namespace_v1" "this" {
     }
 
     name = each.key
-  }
-}
-
-resource "kubernetes_namespace_v1" "cert_manager" {
-  metadata {
-    name = "cert-manager"
-  }
-}
-
-resource "kubernetes_namespace_v1" "datadog" {
-  metadata {
-    name = "datadog"
-  }
-}
-
-resource "kubernetes_namespace_v1" "istio_ingress" {
-  metadata {
-    labels = {
-      "istio-injection" = "enabled"
-    }
-
-    name = "istio-ingress"
-  }
-}
-
-resource "kubernetes_namespace_v1" "istio_system" {
-  metadata {
-    name = "istio-system"
   }
 }
 
