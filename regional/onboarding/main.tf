@@ -14,10 +14,10 @@ resource "kubernetes_namespace_v1" "this" {
   for_each = merge(
     var.namespaces,
     {
-      "cert-manager"  = {},
-      "datadog"       = {},
+      "cert-manager"  = { istio_injection = "disabled" },
+      "datadog"       = { istio_injection = "disabled" },
       "istio-ingress" = { istio_injection = "enabled" },
-      "istio-system"  = {}
+      "istio-system"  = { istio_injection = "disabled" }
     }
   )
 
