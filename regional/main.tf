@@ -249,8 +249,13 @@ resource "google_container_node_pool" "this" {
     disk_size_gb      = each.value.disk_size_gb
     disk_type         = each.value.disk_type
     image_type        = each.value.image_type
-    labels            = var.labels
-    machine_type      = each.value.machine_type
+
+    kubelet_config {
+      insecure_kubelet_readonly_port_enabled = "FALSE"
+    }
+
+    labels       = var.labels
+    machine_type = each.value.machine_type
 
     metadata = {
       "disable-legacy-endpoints" = true
