@@ -5,10 +5,6 @@ variable "enable_gke_hub_host" {
   type = bool
 }
 
-variable "environment" {
-  type = string
-}
-
 variable "gke_hub_memberships" {
   type = map(object({
     cluster_id = string
@@ -17,10 +13,6 @@ variable "gke_hub_memberships" {
 }
 
 variable "master_ipv4_cidr_block" {
-  type = string
-}
-
-variable "node_location" {
   type = string
 }
 
@@ -50,14 +42,6 @@ variable "project" {
   type = string
 }
 
-variable "region" {
-  type = string
-}
-
 variable "vpc_host_project_id" {
-  type = string
-}
-
-variable "zone" {
   type = string
 }

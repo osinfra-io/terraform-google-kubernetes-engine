@@ -51,8 +51,6 @@ run "gke_fleet_host_regional" {
       }
     }
 
-    node_location = "mock-node-location"
-
     node_pools = {
       default-pool = {
         machine_type   = "e2-standard-2"
@@ -62,8 +60,6 @@ run "gke_fleet_host_regional" {
     }
 
     project             = "mock-project-host-project"
-    region              = "mock-region"
-    zone                = "mock-zone"
     vpc_host_project_id = "mock-vpc-host-project"
   }
 }
@@ -105,7 +101,6 @@ run "gke_fleet_member_regional" {
     enable_gke_hub_host = false
 
     gke_hub_memberships = {}
-    node_location = "mock-node-location"
 
     node_pools = {
       default-pool = {
@@ -116,8 +111,6 @@ run "gke_fleet_member_regional" {
     }
 
     project             = "mock-project-member-project"
-    region              = "mock-region"
-    zone                = "mock-zone"
     vpc_host_project_id = "mock-vpc-host-project"
   }
 }
@@ -135,7 +128,6 @@ run "gke_fleet_member_regional_onboarding" {
 }
 
 variables {
-  environment            = "mock-environment"
   google_service_account = "mock@mock.iam.gserviceaccount.com"
 
   namespaces = {

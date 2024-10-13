@@ -20,6 +20,12 @@ locals {
     }
   ] : []
 
+  environment = (
+    terraform.workspace == "default" ?
+    "mock-environment" :
+    regex(".*-(?P<environment>[^-]+)$", terraform.workspace)["environment"]
+  )
+
   kms_crypto_keys = {
     cluster-boot-disk-encryption = {
 
@@ -35,7 +41,24 @@ locals {
     }
   }
 
-  name    = var.node_location == null ? "${var.cluster_prefix}-${var.region}" : "${var.cluster_prefix}-${var.node_location}"
+  name    = local.zone == null ? "${var.cluster_prefix}-${local.region}" : "${var.cluster_prefix}-${local.region}-${local.zone}"
   network = "projects/${var.vpc_host_project_id}/global/networks/${var.network}"
-  subnet  = "projects/${var.vpc_host_project_id}/regions/${var.region}/subnetworks/${var.subnet}"
+
+  region = (
+    terraform.workspace == "default" ?
+    "mock-region" :
+    (regex("^(?P<region>[^-]+-[^-]+)", terraform.workspace)["region"])
+  )
+
+  subnet = "projects/${var.vpc_host_project_id}/regions/${local.region}/subnetworks/${var.subnet}"
+
+  zone = (
+    terraform.workspace == "default" ?
+    "mock-zone" :
+    (
+      length(regex("^(?P<region>[^-]+-[^-]+)(?:-(?P<zone>[^-]+))?$", terraform.workspace)["zone"]) > 0 ?
+      regex("^(?P<region>[^-]+-[^-]+)(?:-(?P<zone>[^-]+))?$", terraform.workspace)["zone"] :
+      null
+    )
+  )
 }
