@@ -251,6 +251,7 @@ resource "google_container_node_pool" "this" {
     image_type        = each.value.image_type
 
     kubelet_config {
+      cpu_manager_policy                     = "none"
       insecure_kubelet_readonly_port_enabled = "FALSE"
     }
 
