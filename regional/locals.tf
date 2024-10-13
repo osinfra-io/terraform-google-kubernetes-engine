@@ -47,7 +47,7 @@ locals {
   region = (
     terraform.workspace == "default" ?
     "mock-region" :
-    (regex("^(?P<region>[^-]+-[^-]+)", terraform.workspace)["region"])
+    regex("^(?P<region>[^-]+-[^-]+)", terraform.workspace)["region"]
   )
 
   subnet = "projects/${var.vpc_host_project_id}/regions/${local.region}/subnetworks/${var.subnet}"
@@ -56,8 +56,8 @@ locals {
     terraform.workspace == "default" ?
     "mock-zone" :
     (
-      length(regex("^(?P<region>[^-]+-[^-]+)(?:-(?P<zone>[^-]+))?$", terraform.workspace)["zone"]) > 0 ?
-      regex("^(?P<region>[^-]+-[^-]+)(?:-(?P<zone>[^-]+))?$", terraform.workspace)["zone"] :
+      regex("^(?P<region>[^-]+-[^-]+)(?:-(?P<zone>[^-]+))?-.*$", terraform.workspace)["zone"] != "" ?
+      regex("^(?P<region>[^-]+-[^-]+)(?:-(?P<zone>[^-]+))?-.*$", terraform.workspace)["zone"] :
       null
     )
   )
