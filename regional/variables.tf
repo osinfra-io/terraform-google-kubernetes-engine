@@ -81,12 +81,6 @@ variable "network" {
   default     = "default"
 }
 
-variable "node_location" {
-  description = "The zone in which the cluster's nodes should be located. If not specified, the cluster's nodes are located across zones in the region"
-  type        = string
-  default     = null
-}
-
 variable "node_pools" {
   description = "The node pools to create in the cluster"
   type = map(object({
@@ -114,12 +108,6 @@ variable "node_pools" {
 variable "project" {
   description = "The ID of the project in which the resource belongs"
   type        = string
-}
-
-variable "region" {
-  description = "The region in which the resource belongs"
-  type        = string
-  default     = "us-east4"
 }
 
 variable "release_channel" {

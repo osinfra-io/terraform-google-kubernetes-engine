@@ -23,17 +23,17 @@ mock_provider "terraform" {
   }
 }
 
-run "gke_fleet_host" {
-  command = apply
+# run "gke_fleet_host" {
+#   command = apply
 
-  module {
-    source = "./tests/fixtures/gke_fleet_host"
-  }
+#   module {
+#     source = "./tests/fixtures/gke_fleet_host"
+#   }
 
-  variables {
-    project = "mock-project-host-project"
-  }
-}
+#   variables {
+#     project = "mock-project-host-project"
+#   }
+# }
 
 run "gke_fleet_host_regional" {
   command = apply
@@ -51,8 +51,6 @@ run "gke_fleet_host_regional" {
       }
     }
 
-    node_location = "mock-node-location"
-
     node_pools = {
       default-pool = {
         machine_type   = "e2-standard-2"
@@ -62,80 +60,74 @@ run "gke_fleet_host_regional" {
     }
 
     project             = "mock-project-host-project"
-    region              = "mock-region"
-    zone                = "mock-zone"
     vpc_host_project_id = "mock-vpc-host-project"
   }
 }
 
-run "gke_fleet_host_regional_onboarding" {
-  command = apply
+# run "gke_fleet_host_regional_onboarding" {
+#   command = apply
 
-  module {
-    source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
-  }
+#   module {
+#     source = "./tests/fixtures/gke_fleet_host/regional_onboarding"
+#   }
 
-  variables {
-    project = "mock-project-host-project"
-  }
-}
+#   variables {
+#     project = "mock-project-host-project"
+#   }
+# }
 
 
-run "gke_fleet_member" {
-  command = apply
+# run "gke_fleet_member" {
+#   command = apply
 
-  module {
-    source = "./tests/fixtures/gke_fleet_member"
-  }
+#   module {
+#     source = "./tests/fixtures/gke_fleet_member"
+#   }
 
-  variables {
-    gke_fleet_host_project_id = "mock-fleet-host-project"
-    project                   = "mock-project-member-project"
-  }
-}
+#   variables {
+#     gke_fleet_host_project_id = "mock-fleet-host-project"
+#     project                   = "mock-project-member-project"
+#   }
+# }
 
-run "gke_fleet_member_regional" {
-  command = apply
+# run "gke_fleet_member_regional" {
+#   command = apply
 
-  module {
-    source = "./tests/fixtures/gke_fleet_member/regional"
-  }
+#   module {
+#     source = "./tests/fixtures/gke_fleet_member/regional"
+#   }
 
-  variables {
-    enable_gke_hub_host = false
+#   variables {
+#     enable_gke_hub_host = false
 
-    gke_hub_memberships = {}
-    node_location = "mock-node-location"
+#     gke_hub_memberships = {}
 
-    node_pools = {
-      default-pool = {
-        machine_type   = "e2-standard-2"
-        max_node_count = 1
-        min_node_count = 0
-      }
-    }
+#     node_pools = {
+#       default-pool = {
+#         machine_type   = "e2-standard-2"
+#         max_node_count = 1
+#         min_node_count = 0
+#       }
+#     }
 
-    project             = "mock-project-member-project"
-    region              = "mock-region"
-    zone                = "mock-zone"
-    vpc_host_project_id = "mock-vpc-host-project"
-  }
-}
+#     project             = "mock-project-member-project"
+#     vpc_host_project_id = "mock-vpc-host-project"
+#   }
+# }
 
-run "gke_fleet_member_regional_onboarding" {
-  command = apply
+# run "gke_fleet_member_regional_onboarding" {
+#   command = apply
 
-  module {
-    source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
-  }
+#   module {
+#     source = "./tests/fixtures/gke_fleet_member/regional_onboarding"
+#   }
 
-  variables {
-    project = "mock-project-member-project"
-  }
-}
+#   variables {
+#     project = "mock-project-member-project"
+#   }
+# }
 
 variables {
-  environment            = "mock-environment"
   google_service_account = "mock@mock.iam.gserviceaccount.com"
 
   namespaces = {

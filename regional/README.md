@@ -11,7 +11,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 6.6.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.2.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
 
 ## Modules
@@ -53,10 +53,8 @@ No modules.
 | <a name="input_labels"></a> [labels](#input\_labels) | A map of key/value pairs to assign to the resources being created | `map(string)` | `{}` | no |
 | <a name="input_master_ipv4_cidr_block"></a> [master\_ipv4\_cidr\_block](#input\_master\_ipv4\_cidr\_block) | The IP range in CIDR notation to use for the hosted master network | `string` | n/a | yes |
 | <a name="input_network"></a> [network](#input\_network) | The name or self\_link of the Google Compute Engine network to which the cluster is connected | `string` | `"default"` | no |
-| <a name="input_node_location"></a> [node\_location](#input\_node\_location) | The zone in which the cluster's nodes should be located. If not specified, the cluster's nodes are located across zones in the region | `string` | `null` | no |
 | <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | The node pools to create in the cluster | <pre>map(object({<br/>    auto_repair                              = optional(bool)<br/>    auto_upgrade                             = optional(bool)<br/>    disk_size_gb                             = optional(number)<br/>    disk_type                                = optional(string)<br/>    image_type                               = optional(string)<br/>    machine_type                             = optional(string)<br/>    max_node_count                           = optional(number, 3)<br/>    min_node_count                           = optional(number, 0)<br/>    node_count                               = optional(number)<br/>    oauth_scopes                             = optional(list(string), ["https://www.googleapis.com/auth/cloud-platform"])<br/>    upgrade_settings_batch_node_count        = optional(number)<br/>    upgrade_settings_batch_percentage        = optional(number)<br/>    upgrade_settings_batch_soak_duration     = optional(string)<br/>    upgrade_settings_node_pool_soak_duration = optional(string)<br/>    upgrade_settings_max_surge               = optional(number)<br/>    upgrade_settings_max_unavailable         = optional(number, 1) # https://github.com/hashicorp/terraform-provider-google/issues/17164<br/>    upgrade_settings_strategy                = optional(string, "SURGE")<br/>  }))</pre> | `{}` | no |
 | <a name="input_project"></a> [project](#input\_project) | The ID of the project in which the resource belongs | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | The region in which the resource belongs | `string` | `"us-east4"` | no |
 | <a name="input_release_channel"></a> [release\_channel](#input\_release\_channel) | Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters | `string` | `"REGULAR"` | no |
 | <a name="input_resource_labels"></a> [resource\_labels](#input\_resource\_labels) | The GCP labels (key/value pairs) to be applied to each node | `map(string)` | `{}` | no |
 | <a name="input_services_secondary_range_name"></a> [services\_secondary\_range\_name](#input\_services\_secondary\_range\_name) | The name of the existing secondary range in the cluster's subnetwork to use for service | `string` | n/a | yes |
@@ -74,6 +72,5 @@ No modules.
 | <a name="output_kms_crypto_key_cluster_boot_disk_encryption_name"></a> [kms\_crypto\_key\_cluster\_boot\_disk\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_boot\_disk\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the boot disk |
 | <a name="output_kms_crypto_key_cluster_database_encryption_name"></a> [kms\_crypto\_key\_cluster\_database\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_database\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the secrets |
 | <a name="output_kms_key_ring_cluster_encryption_name"></a> [kms\_key\_ring\_cluster\_encryption\_name](#output\_kms\_key\_ring\_cluster\_encryption\_name) | The name of the Google Cloud KMS key ring |
-| <a name="output_project_id"></a> [project\_id](#output\_project\_id) | The ID of the project in which the resource belongs |
 | <a name="output_service_account_gke_operations_email"></a> [service\_account\_gke\_operations\_email](#output\_service\_account\_gke\_operations\_email) | The email address of the Kubernetes minimum privilege service account for the cluster |
 <!-- END_TF_DOCS -->

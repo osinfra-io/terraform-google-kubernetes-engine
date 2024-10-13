@@ -12,7 +12,7 @@ data "google_cloud_identity_group_lookup" "registry_readers" {
 
 data "google_container_engine_versions" "this" {
   project  = var.project
-  location = var.region
+  location = local.region
 }
 
 # Google Project Data Source
@@ -140,7 +140,7 @@ resource "google_container_cluster" "this" {
     services_secondary_range_name = var.services_secondary_range_name
   }
 
-  location = var.region
+  location = local.region
 
   maintenance_policy {
     daily_maintenance_window {
@@ -183,7 +183,7 @@ resource "google_container_cluster" "this" {
   # We intentionally support only a single zone for node locations. This is to ensure we do not see hot spots in the cluster
   # when it comes to POD scheduling and locality based load balancing.
 
-  node_locations = var.node_location != null ? [var.node_location] : null
+  node_locations = local.zone != null ? ["${local.region}-${local.zone}"] : null
   project        = var.project
 
   release_channel {
@@ -251,6 +251,7 @@ resource "google_container_node_pool" "this" {
     image_type        = each.value.image_type
 
     kubelet_config {
+      cpu_manager_policy                     = "none"
       insecure_kubelet_readonly_port_enabled = "FALSE"
     }
 
@@ -391,7 +392,7 @@ resource "google_kms_crypto_key_iam_member" "this" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring
 
 resource "google_kms_key_ring" "cluster_encryption" {
-  location = var.region
+  location = local.region
   name     = "${local.name}-cluster-encryption-${random_id.this.hex}"
   project  = var.project
 

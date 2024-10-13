@@ -36,11 +36,6 @@ output "kms_crypto_key_cluster_boot_disk_encryption_name" {
   value       = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
 }
 
-output "project_id" {
-  description = "The ID of the project in which the resource belongs"
-  value       = google_container_cluster.this.project
-}
-
 output "service_account_gke_operations_email" {
   description = "The email address of the Kubernetes minimum privilege service account for the cluster"
   value       = google_service_account.gke_operations.email
