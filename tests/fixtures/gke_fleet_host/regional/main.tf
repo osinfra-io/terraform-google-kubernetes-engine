@@ -25,15 +25,19 @@ module "test" {
   helpers_email                = var.helpers_email
   helpers_repository           = var.helpers_repository
   helpers_team                 = var.helpers_team
-  labels                       = local.labels
-  network                      = "mock-network"
-  node_pools                   = var.node_pools
-  master_ipv4_cidr_block       = var.master_ipv4_cidr_block
-  project                      = var.project
 
-  resource_labels = merge(local.labels, {
-    region = "mock-region"
-  })
+  labels = {
+    mock-key = "mock-value"
+  }
+
+  network                = "mock-network"
+  node_pools             = var.node_pools
+  master_ipv4_cidr_block = var.master_ipv4_cidr_block
+  project                = var.project
+
+  resource_labels = {
+    mock-key = "mock-value"
+  }
 
   services_secondary_range_name = "mock-secondary-services"
   subnet                        = "mock-subnet"

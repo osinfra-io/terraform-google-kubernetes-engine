@@ -17,10 +17,10 @@ terraform {
 
 provider "kubernetes" {
   cluster_ca_certificate = base64decode(
-    local.regional.cluster_ca_certificate
+    data.google_container_cluster.this.master_auth[0].cluster_ca_certificate
   )
 
-  host  = "https://${local.regional.cluster_endpoint}"
+  host  = data.google_container_cluster.this.endpoint
   token = data.google_client_config.current.access_token
 }
 
@@ -28,6 +28,15 @@ provider "kubernetes" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config
 
 data "google_client_config" "current" {
+}
+
+# Google Container Cluster Data Source
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/container_cluster
+
+data "google_container_cluster" "this" {
+  name     = "mock-cluster"
+  location = "mock-region"
+  project  = var.project
 }
 
 # Remote State Data Source
@@ -42,18 +51,8 @@ data "terraform_remote_state" "main" {
   }
 }
 
-data "terraform_remote_state" "regional" {
-  backend   = "gcs"
-  workspace = "mock"
-
-  config = {
-    bucket = "mock"
-  }
-}
-
 module "test" {
   source = "../../../../regional/onboarding"
-
 
   namespaces                               = var.namespaces
   project                                  = var.project
