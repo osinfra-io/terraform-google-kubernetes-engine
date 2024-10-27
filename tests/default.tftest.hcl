@@ -128,7 +128,12 @@ run "gke_fleet_member_regional_onboarding" {
 }
 
 variables {
-  google_service_account = "mock@mock.iam.gserviceaccount.com"
+  google_service_account      = "mock@mock.iam.gserviceaccount.com"
+  helpers_cost_center         = "mock-cost-center"
+  helpers_data_classification = "mock-data-classification"
+  helpers_email               = "mock-team@osinfra.io"
+  helpers_repository          = "mock-owner/mock-repository"
+  helpers_team                = "mock-team"
 
   namespaces = {
     namespace-a = {

@@ -1,3 +1,16 @@
+# Terraform Core Helpers Module (osinfra.io)
+# https://github.com/osinfra-io/terraform-core-helpers
+
+module "helpers" {
+  source = "github.com/osinfra-io/terraform-core-helpers?ref=v0.1.0"
+
+  cost_center         = var.helpers_cost_center
+  data_classification = var.helpers_data_classification
+  email               = var.helpers_email
+  repository          = var.helpers_repository
+  team                = var.helpers_team
+}
+
 # Google Cloud Identity Group Lookup Data Source
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/cloud_identity_group_lookup
 
@@ -12,7 +25,7 @@ data "google_cloud_identity_group_lookup" "registry_readers" {
 
 data "google_container_engine_versions" "this" {
   project  = var.project
-  location = local.region
+  location = module.helpers.region
 }
 
 # Google Project Data Source
@@ -140,7 +153,7 @@ resource "google_container_cluster" "this" {
     services_secondary_range_name = var.services_secondary_range_name
   }
 
-  location = local.region
+  location = module.helpers.region
 
   maintenance_policy {
     daily_maintenance_window {
@@ -183,7 +196,7 @@ resource "google_container_cluster" "this" {
   # We intentionally support only a single zone for node locations. This is to ensure we do not see hot spots in the cluster
   # when it comes to POD scheduling and locality based load balancing.
 
-  node_locations = local.zone != null ? ["${local.region}-${local.zone}"] : null
+  node_locations = module.helpers.zone != null ? ["${module.helpers.region}-${module.helpers.zone}"] : null
   project        = var.project
 
   release_channel {
@@ -392,7 +405,7 @@ resource "google_kms_crypto_key_iam_member" "this" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring
 
 resource "google_kms_key_ring" "cluster_encryption" {
-  location = local.region
+  location = module.helpers.region
   name     = "${local.name}-cluster-encryption-${random_id.this.hex}"
   project  = var.project
 

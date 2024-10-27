@@ -11,12 +11,14 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 6.2.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.8.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_helpers"></a> [helpers](#module\_helpers) | github.com/osinfra-io/terraform-core-helpers | v0.1.0 |
 
 ## Resources
 
@@ -50,6 +52,11 @@ No modules.
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | Whether or not to enable deletion protection on the cluster | `bool` | `true` | no |
 | <a name="input_enable_gke_hub_host"></a> [enable\_gke\_hub\_host](#input\_enable\_gke\_hub\_host) | Whether or not to enable GKE Hub Host | `bool` | `false` | no |
 | <a name="input_gke_hub_memberships"></a> [gke\_hub\_memberships](#input\_gke\_hub\_memberships) | The map of GKE Hub Memberships to create | <pre>map(object({<br/>    cluster_id = string<br/>  }))</pre> | `{}` | no |
+| <a name="input_helpers_cost_center"></a> [helpers\_cost\_center](#input\_helpers\_cost\_center) | The cost center the resources will be billed to, must start with 'x' followed by three or four digits | `string` | n/a | yes |
+| <a name="input_helpers_data_classification"></a> [helpers\_data\_classification](#input\_helpers\_data\_classification) | The data classification of the resources can be public, internal, or confidential | `string` | n/a | yes |
+| <a name="input_helpers_email"></a> [helpers\_email](#input\_helpers\_email) | The email address of the team responsible for the resources | `string` | n/a | yes |
+| <a name="input_helpers_repository"></a> [helpers\_repository](#input\_helpers\_repository) | The repository name (should be in the format 'owner/repo' containing only lowercase alphanumeric characters or hyphens) | `string` | n/a | yes |
+| <a name="input_helpers_team"></a> [helpers\_team](#input\_helpers\_team) | The team name (should contain only lowercase alphanumeric characters and hyphens) | `string` | n/a | yes |
 | <a name="input_labels"></a> [labels](#input\_labels) | A map of key/value pairs to assign to the resources being created | `map(string)` | `{}` | no |
 | <a name="input_master_ipv4_cidr_block"></a> [master\_ipv4\_cidr\_block](#input\_master\_ipv4\_cidr\_block) | The IP range in CIDR notation to use for the hosted master network | `string` | n/a | yes |
 | <a name="input_network"></a> [network](#input\_network) | The name or self\_link of the Google Compute Engine network to which the cluster is connected | `string` | `"default"` | no |
