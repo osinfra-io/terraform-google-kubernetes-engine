@@ -35,7 +35,7 @@ locals {
     }
   }
 
-  name    = local.zone == null ? "${var.cluster_prefix}-${local.region}" : "${var.cluster_prefix}-${local.region}-${local.zone}"
+  name    = module.helpers.zone == null ? "${var.cluster_prefix}-${module.helpers.region}" : "${var.cluster_prefix}-${module.helpers.region}-${module.helpers.zone}"
   network = "projects/${var.vpc_host_project_id}/global/networks/${var.network}"
-  subnet  = "projects/${var.vpc_host_project_id}/regions/${local.region}/subnetworks/${var.subnet}"
+  subnet  = "projects/${var.vpc_host_project_id}/regions/${module.helpers.region}/subnetworks/${var.subnet}"
 }
