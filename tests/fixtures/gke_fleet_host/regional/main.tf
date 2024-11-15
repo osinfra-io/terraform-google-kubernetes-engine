@@ -6,9 +6,6 @@ terraform {
     google = {
       source = "hashicorp/google"
     }
-    google-beta = {
-      source = "hashicorp/google-beta"
-    }
   }
 }
 
@@ -20,15 +17,19 @@ module "test" {
   enable_deletion_protection   = false
   enable_gke_hub_host          = var.enable_gke_hub_host
   gke_hub_memberships          = var.gke_hub_memberships
-  labels                       = local.labels
-  network                      = "mock-network"
-  node_pools                   = var.node_pools
-  master_ipv4_cidr_block       = var.master_ipv4_cidr_block
-  project                      = var.project
 
-  resource_labels = merge(local.labels, {
+  labels = {
+    "mock-key" = "mock-value"
+  }
+
+  network                = "mock-network"
+  node_pools             = var.node_pools
+  master_ipv4_cidr_block = var.master_ipv4_cidr_block
+  project                = var.project
+
+  resource_labels = {
     region = "mock-region"
-  })
+  }
 
   services_secondary_range_name = "mock-secondary-services"
   subnet                        = "mock-subnet"
