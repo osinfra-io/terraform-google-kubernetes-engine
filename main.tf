@@ -74,7 +74,7 @@ resource "google_service_account" "kubernetes_workload_identity" {
   for_each = var.namespaces
 
   account_id   = "gke-${random_id.this[each.key].hex}-workload-identity"
-  display_name = "Kubernetes ${each.key} namespace Workload Identity"
+  display_name = "Kubernetes ${each.key} namespace workload identity service account"
   project      = var.project
 }
 
@@ -84,7 +84,7 @@ resource "google_service_account" "kubernetes_workload_identity" {
 resource "google_service_account_iam_member" "workload_identity" {
   for_each = var.namespaces
 
-  member             = "serviceAccount:${var.project}.svc.id.goog[${each.key}/workload-identity]"
+  member             = "serviceAccount:${var.project}.svc.id.goog[${each.key}/${each.key}-workload-identity-sa]"
   role               = "roles/iam.workloadIdentityUser"
   service_account_id = google_service_account.kubernetes_workload_identity[each.key].name
 }
