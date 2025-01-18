@@ -184,7 +184,14 @@ resource "google_container_cluster" "this" {
   # when it comes to POD scheduling and locality based load balancing.
 
   node_locations = module.helpers.zone != null ? ["${module.helpers.region}-${module.helpers.zone}"] : null
-  project        = var.project
+
+  node_pool_defaults {
+    node_config_defaults {
+      insecure_kubelet_readonly_port_enabled = "FALSE"
+    }
+  }
+
+  project = var.project
 
   release_channel {
     channel = var.release_channel
@@ -251,7 +258,6 @@ resource "google_container_node_pool" "this" {
     image_type        = each.value.image_type
 
     kubelet_config {
-      cpu_manager_policy                     = "none"
       insecure_kubelet_readonly_port_enabled = "FALSE"
     }
 
@@ -419,11 +425,7 @@ resource "google_kms_key_ring" "cluster_encryption" {
 
 resource "google_project_iam_member" "gke_operations" {
   for_each = toset([
-    "roles/autoscaling.metricsWriter",
-    "roles/logging.logWriter",
-    "roles/monitoring.metricWriter",
-    "roles/monitoring.viewer",
-    "roles/stackdriver.resourceMetadata.writer"
+    "roles/container.defaultNodeServiceAccount"
   ])
 
   member  = "serviceAccount:${google_service_account.gke_operations.email}"
