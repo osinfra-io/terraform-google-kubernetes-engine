@@ -19,6 +19,7 @@ resource "kubernetes_namespace_v1" "this" {
       "gatekeeper-system" = { istio_injection = "disabled" },
       "istio-ingress"     = { istio_injection = "enabled" },
       "istio-system"      = { istio_injection = "disabled" }
+      "istio-test"        = { istio_injection = "enabled" }
     }
   )
 
