@@ -31,6 +31,7 @@ run "gke_fleet_host" {
 
   variables {
     project = "mock-project-host-project"
+    shared_vpc_host_project_id = "mock-vpc-host-project"
   }
 }
 
@@ -86,6 +87,7 @@ run "gke_fleet_member" {
   variables {
     gke_fleet_host_project_id = "mock-fleet-host-project"
     project                   = "mock-project-member-project"
+    shared_vpc_host_project_id = "mock-vpc-host-project"
   }
 }
 

@@ -21,3 +21,8 @@ variable "project" {
   description = "The ID of the project in which the resource belongs"
   type        = string
 }
+
+variable "shared_vpc_host_project_id" {
+  description = "The project ID of the shared VPC host project"
+  type        = string
+}

@@ -19,3 +19,7 @@ variable "namespaces" {
     istio_injection        = optional(string, "disabled")
   }))
 }
+
+variable "shared_vpc_host_project_id" {
+  type = string
+}

@@ -12,6 +12,7 @@ terraform {
 module "test" {
   source = "../../../"
 
-  namespaces = var.namespaces
-  project    = var.project
+  namespaces                 = var.namespaces
+  project                    = var.project
+  shared_vpc_host_project_id = var.shared_vpc_host_project_id
 }

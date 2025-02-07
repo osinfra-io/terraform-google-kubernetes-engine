@@ -7,6 +7,12 @@ data "google_project" "fleet_host" {
   project_id = var.gke_fleet_host_project_id
 }
 
+# Local variable for conditional IAM bindings
+locals {
+  fleet_host_project_defined = var.gke_fleet_host_project_id != ""
+  fleet_host_project_id      = try(data.google_project.fleet_host[0].number, "")
+}
+
 # This section provides an example MCS configuration involving two existing GKE clusters each in a different Shared VPC service project.
 # https://cloud.google.com/kubernetes-engine/docs/how-to/msc-setup-with-shared-vpc-networks#two-service-projects-iam
 
@@ -18,18 +24,18 @@ data "google_project" "fleet_host" {
 resource "google_project_iam_member" "gke_hub_service_agent" {
   count = var.gke_fleet_host_project_id != "" ? 1 : 0
 
-  member  = "serviceAccount:service-${data.google_project.fleet_host[count.index].number}@gcp-sa-gkehub.iam.gserviceaccount.com"
+  member  = "serviceAccount:serviceAccount:service-${local.fleet_host_project_id}@gcp-sa-gkehub.iam.gserviceaccount.com"
   project = var.project
   role    = "roles/gkehub.serviceAgent"
 }
 
-# Create IAM binding granting the fleet host project's MCS service account the MCS Service Agent role on the service cluster's project.
+# Create IAM binding granting the fleet host project MCS service account the MCS Service Agent role on the Shared VPC host project.
 
 resource "google_project_iam_member" "multi_cluster_service_agent" {
-  count = var.gke_fleet_host_project_id != "" ? 1 : 0
+  count = var.gke_fleet_host_project_id == "" ? 1 : 0
 
-  member  = "serviceAccount:service-${data.google_project.fleet_host[count.index].number}@gcp-sa-mcsd.iam.gserviceaccount.com"
-  project = var.project
+  member  = "serviceAccount:serviceAccount:service-${local.fleet_host_project_id}@gcp-sa-mcsd.iam.gserviceaccount.com"
+  project = var.shared_vpc_host_project_id
   role    = "roles/multiclusterservicediscovery.serviceAgent"
 }
 
