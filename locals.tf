@@ -6,5 +6,5 @@ locals {
     for k in values(var.namespaces) : k.google_service_account
   ]))
 
-  is_fleet_host = var.gke_fleet_host_project_id != ""
+  is_fleet_host = var.gke_fleet_host_project_id == ""
 }
