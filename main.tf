@@ -14,7 +14,7 @@ data "google_project" "this" {
 # Create IAM binding granting the fleet host project's GKE Hub service account the GKE Service Agent role on the service cluster's project.
 
 resource "google_project_iam_member" "gke_hub_service_agent" {
-  count = local.is_fleet_host ? 1 : 0
+  count = local.is_fleet_host ? 0 : 1
 
   member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-gkehub.iam.gserviceaccount.com"
   project = var.project
@@ -24,7 +24,7 @@ resource "google_project_iam_member" "gke_hub_service_agent" {
 # Create IAM binding granting the fleet host project MCS service account the MCS Service Agent role on the Shared VPC host project.
 
 resource "google_project_iam_member" "multi_cluster_service_agent" {
-  count = local.is_fleet_host ? 0 : 1
+  count = local.is_fleet_host ? 1 : 0
 
   member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-mcsd.iam.gserviceaccount.com"
   project = var.shared_vpc_host_project_id
