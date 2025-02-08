@@ -5,6 +5,15 @@ data "google_project" "this" {
   project_id = local.is_fleet_host ? var.project : var.gke_fleet_host_project_id
 }
 
+resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
+  count = local.is_fleet_host ? 1 : 0
+
+  name     = "multiclusterservicediscovery"
+  labels   = var.labels
+  location = "global"
+  project  = var.project
+}
+
 # This section provides an example MCS configuration involving two existing GKE clusters each in a different Shared VPC service project.
 # https://cloud.google.com/kubernetes-engine/docs/how-to/msc-setup-with-shared-vpc-networks#two-service-projects-iam
 

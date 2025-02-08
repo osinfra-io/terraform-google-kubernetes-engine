@@ -12,7 +12,12 @@ terraform {
 module "test" {
   source = "../../../"
 
-  gke_fleet_host_project_id  = var.gke_fleet_host_project_id
+  gke_fleet_host_project_id = var.gke_fleet_host_project_id
+
+  labels = {
+    "mock-key" = "mock-value"
+  }
+
   namespaces                 = var.namespaces
   project                    = var.project
   shared_vpc_host_project_id = var.shared_vpc_host_project_id
