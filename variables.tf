@@ -7,6 +7,12 @@ variable "gke_fleet_host_project_id" {
   default     = ""
 }
 
+variable "labels" {
+  description = "A map of key/value pairs to assign to the resources being created"
+  type        = map(string)
+  default     = {}
+}
+
 variable "namespaces" {
   description = "A map of namespaces with the Google service account used for the namespace administrator and whether Istio injection is enabled or disabled"
   default     = {}
@@ -19,5 +25,10 @@ variable "namespaces" {
 
 variable "project" {
   description = "The ID of the project in which the resource belongs"
+  type        = string
+}
+
+variable "shared_vpc_host_project_id" {
+  description = "The project ID of the shared VPC host project"
   type        = string
 }
