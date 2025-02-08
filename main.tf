@@ -1,16 +1,8 @@
 # Google Project Data Source
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project#google_project
 
-data "google_project" "fleet_host" {
-  count = var.gke_fleet_host_project_id != "" ? 1 : 0
-
-  project_id = var.gke_fleet_host_project_id
-}
-
-# Local variable for conditional IAM bindings
-locals {
-  fleet_host_project_defined = var.gke_fleet_host_project_id != ""
-  fleet_host_project_id      = try(data.google_project.fleet_host[0].number, "")
+data "google_project" "this" {
+  project_id = local.is_fleet_host ? var.gke_fleet_host_project_id : var.project
 }
 
 # This section provides an example MCS configuration involving two existing GKE clusters each in a different Shared VPC service project.
@@ -22,9 +14,9 @@ locals {
 # Create IAM binding granting the fleet host project's GKE Hub service account the GKE Service Agent role on the service cluster's project.
 
 resource "google_project_iam_member" "gke_hub_service_agent" {
-  count = var.gke_fleet_host_project_id != "" ? 1 : 0
+  count = local.is_fleet_host ? 1 : 0
 
-  member  = "serviceAccount:serviceAccount:service-${local.fleet_host_project_id}@gcp-sa-gkehub.iam.gserviceaccount.com"
+  member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-gkehub.iam.gserviceaccount.com"
   project = var.project
   role    = "roles/gkehub.serviceAgent"
 }
@@ -32,9 +24,9 @@ resource "google_project_iam_member" "gke_hub_service_agent" {
 # Create IAM binding granting the fleet host project MCS service account the MCS Service Agent role on the Shared VPC host project.
 
 resource "google_project_iam_member" "multi_cluster_service_agent" {
-  count = var.gke_fleet_host_project_id == "" ? 1 : 0
+  count = local.is_fleet_host ? 0 : 1
 
-  member  = "serviceAccount:serviceAccount:service-${local.fleet_host_project_id}@gcp-sa-mcsd.iam.gserviceaccount.com"
+  member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-mcsd.iam.gserviceaccount.com"
   project = var.shared_vpc_host_project_id
   role    = "roles/multiclusterservicediscovery.serviceAgent"
 }
@@ -47,7 +39,7 @@ resource "google_project_iam_member" "multi_cluster_service_agent" {
 # As a W/A run the regional infrastructure first and then the global infrastructure.
 
 resource "google_project_iam_member" "host_project_network_viewer" {
-  count = var.gke_fleet_host_project_id != "" ? 1 : 0
+  count = local.is_fleet_host ? 0 : 1
 
   member  = "serviceAccount:${var.gke_fleet_host_project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
   project = var.project
@@ -55,7 +47,7 @@ resource "google_project_iam_member" "host_project_network_viewer" {
 }
 
 resource "google_project_iam_member" "service_project_network_viewer" {
-  count = var.gke_fleet_host_project_id == "" ? 1 : 0
+  count = local.is_fleet_host ? 1 : 0
 
   member  = "serviceAccount:${var.project}.svc.id.goog[gke-mcs/gke-mcs-importer]"
   project = var.project
