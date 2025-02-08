@@ -308,16 +308,6 @@ resource "google_gke_hub_feature" "multi_cluster_ingress" {
   }
 }
 
-resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
-  count = var.enable_gke_hub_host ? 1 : 0
-
-  name     = "multiclusterservicediscovery"
-  labels   = var.labels
-  location = "global"
-  project  = var.project
-
-}
-
 # Google GKEHub Membership Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_membership
 
