@@ -38,6 +38,8 @@ resource "google_project_iam_member" "multi_cluster_service_agent" {
   member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-mcsd.iam.gserviceaccount.com"
   project = var.shared_vpc_host_project_id
   role    = "roles/multiclusterservicediscovery.serviceAgent"
+
+  depends_on = [google_gke_hub_feature.multi_cluster_service_discovery]
 }
 
 # Create IAM binding granting each project's MCS service account the Network User role for its own project.
