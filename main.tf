@@ -25,7 +25,7 @@ resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
 resource "google_project_iam_member" "gke_hub_service_agent" {
   count = local.is_fleet_host ? 0 : 1
 
-  member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-gkehub.iam.gserviceaccount.com"
+  member  = "serviceAccount:service-${data.google_project.this.number}@gcp-sa-gkehub.iam.gserviceaccount.com"
   project = var.project
   role    = "roles/gkehub.serviceAgent"
 }
@@ -35,7 +35,7 @@ resource "google_project_iam_member" "gke_hub_service_agent" {
 resource "google_project_iam_member" "multi_cluster_service_agent" {
   count = local.is_fleet_host ? 1 : 0
 
-  member  = "serviceAccount:serviceAccount:service-${data.google_project.this.number}@gcp-sa-mcsd.iam.gserviceaccount.com"
+  member  = "serviceAccount:service-${data.google_project.this.number}@gcp-sa-mcsd.iam.gserviceaccount.com"
   project = var.shared_vpc_host_project_id
   role    = "roles/multiclusterservicediscovery.serviceAgent"
 
