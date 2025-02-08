@@ -2,7 +2,7 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project#google_project
 
 data "google_project" "this" {
-  project_id = local.is_fleet_host ? var.gke_fleet_host_project_id : var.project
+  project_id = local.is_fleet_host ? var.project : var.gke_fleet_host_project_id
 }
 
 # This section provides an example MCS configuration involving two existing GKE clusters each in a different Shared VPC service project.
