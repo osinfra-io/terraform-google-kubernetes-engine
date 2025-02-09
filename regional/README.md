@@ -11,7 +11,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 6.16.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.19.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
 
 ## Modules
@@ -33,8 +33,8 @@ No requirements.
 | [google_kms_crypto_key.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key) | resource |
 | [google_kms_crypto_key_iam_member.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key_iam_member) | resource |
 | [google_kms_key_ring.cluster_encryption](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring) | resource |
-| [google_project_iam_member.gke_operations](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_service_account.gke_operations](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
+| [google_project_iam_member.default_node](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_service_account.default_node](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [google_cloud_identity_group_lookup.registry_readers](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/cloud_identity_group_lookup) | data source |
 | [google_container_engine_versions.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/container_engine_versions) | data source |
@@ -73,5 +73,5 @@ No requirements.
 | <a name="output_kms_crypto_key_cluster_boot_disk_encryption_name"></a> [kms\_crypto\_key\_cluster\_boot\_disk\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_boot\_disk\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the boot disk |
 | <a name="output_kms_crypto_key_cluster_database_encryption_name"></a> [kms\_crypto\_key\_cluster\_database\_encryption\_name](#output\_kms\_crypto\_key\_cluster\_database\_encryption\_name) | The name of the Google Cloud KMS crypto key used to encrypt the secrets |
 | <a name="output_kms_key_ring_cluster_encryption_name"></a> [kms\_key\_ring\_cluster\_encryption\_name](#output\_kms\_key\_ring\_cluster\_encryption\_name) | The name of the Google Cloud KMS key ring |
-| <a name="output_service_account_gke_operations_email"></a> [service\_account\_gke\_operations\_email](#output\_service\_account\_gke\_operations\_email) | The email address of the Kubernetes minimum privilege service account for the cluster |
+| <a name="output_service_account_default_node_email"></a> [service\_account\_default\_node\_email](#output\_service\_account\_default\_node\_email) | The email address of the Kubernetes minimum privilege service account for the cluster |
 <!-- END_TF_DOCS -->

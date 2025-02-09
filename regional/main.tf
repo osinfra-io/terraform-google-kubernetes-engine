@@ -29,7 +29,7 @@ resource "google_cloud_identity_group_membership" "registry_readers" {
   group = data.google_cloud_identity_group_lookup.registry_readers.name
 
   preferred_member_key {
-    id = google_service_account.gke_operations.email
+    id = google_service_account.default_node.email
   }
 
   roles { name = "MEMBER" }
@@ -72,7 +72,7 @@ resource "google_container_cluster" "this" {
         disk_type         = var.cluster_autoscaling.disk_type
         image_type        = var.cluster_autoscaling.image_type
         oauth_scopes      = var.cluster_autoscaling.oauth_scopes
-        service_account   = google_service_account.gke_operations.email
+        service_account   = google_service_account.default_node.email
 
         management {
           auto_repair  = true
@@ -269,7 +269,7 @@ resource "google_container_node_pool" "this" {
     }
 
     oauth_scopes    = each.value.oauth_scopes
-    service_account = google_service_account.gke_operations.email
+    service_account = google_service_account.default_node.email
 
     shielded_instance_config {
       enable_integrity_monitoring = true
@@ -413,20 +413,16 @@ resource "google_kms_key_ring" "cluster_encryption" {
 # Project IAM Member Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam_member
 
-resource "google_project_iam_member" "gke_operations" {
-  for_each = toset([
-    "roles/container.defaultNodeServiceAccount"
-  ])
-
-  member  = "serviceAccount:${google_service_account.gke_operations.email}"
+resource "google_project_iam_member" "default_node" {
+  member  = "serviceAccount:${google_service_account.default_node.email}"
   project = var.project
-  role    = each.value
+  role    = "roles/container.defaultNodeServiceAccount"
 }
 
 # Service Account Resource
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
 
-resource "google_service_account" "gke_operations" {
+resource "google_service_account" "default_node" {
   account_id   = "gke-${random_id.this.hex}"
   display_name = "Kubernetes minimum privilege service account for: ${local.name}"
   project      = var.project

@@ -36,7 +36,7 @@ output "kms_crypto_key_cluster_boot_disk_encryption_name" {
   value       = google_kms_crypto_key.this["cluster-boot-disk-encryption"].name
 }
 
-output "service_account_gke_operations_email" {
+output "service_account_default_node_email" {
   description = "The email address of the Kubernetes minimum privilege service account for the cluster"
-  value       = google_service_account.gke_operations.email
+  value       = google_service_account.default_node.email
 }
