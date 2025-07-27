@@ -1,8 +1,8 @@
-# <img align="left" width="45" height="45" src="https://github.com/osinfra-io/terraform-google-kubernetes-engine/assets/1610100/38c94ec5-3cef-4716-9744-791d4df598ba"> Google Cloud Platform - Kubernetes Engine OpenTofu Module
+# <img align="left" width="45" height="45" src="https://github.com/osinfra-io/opentofu-google-kubernetes-engine/assets/1610100/38c94ec5-3cef-4716-9744-791d4df598ba"> Google Cloud Platform - Kubernetes Engine OpenTofu Module
 
-**[GitHub Actions](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions):**
+**[GitHub Actions](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions):**
 
-[![OpenTofu Tests](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/test.yml/badge.svg)](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/test.yml) [![Dependabot](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/dependabot.yml/badge.svg)](https://github.com/osinfra-io/terraform-google-kubernetes-engine/actions/workflows/dependabot.yml)
+[![OpenTofu Tests](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/test.yml/badge.svg)](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/test.yml) [![Dependabot](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/dependabot.yml/badge.svg)](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/dependabot.yml)
 
 **[Infracost](https://www.infracost.io):**
 
@@ -15,14 +15,14 @@
 OpenTofu **example** module for a Google Cloud Platform Kubernetes engine cluster.
 
 > [!NOTE]
-> We do not recommend consuming this module like you might a [public module](https://registry.terraform.io/browse/modules). It is a baseline, something you can fork, potentially maintain, and modify to fit your organization's needs. Using public modules vs. writing your own has various [drivers and trade-offs](https://docs.osinfra.io/fundamentals/architecture-decision-records/adr-0003) that your organization should evaluate.
+> We do not recommend consuming this module like you might a [public module](https://search.opentofu.org). It is a baseline, something you can fork, potentially maintain, and modify to fit your organization's needs. Using public modules vs. writing your own has various [drivers and trade-offs](https://docs.osinfra.io/fundamentals/architecture-decision-records/adr-0003) that your organization should evaluate.
 
 ## 🔩 Usage
 
 > [!TIP]
 > You can check the [tests/fixtures](tests/fixtures) directory for example configurations. These fixtures set up the system for testing by providing all the necessary initial code, thus creating good examples on which to base your configurations.
 
-Google project services must be enabled before using this module. As a best practice, these should be defined in the [terraform-google-project](https://github.com/osinfra-io/terraform-google-project) module. The following services are required:
+Google project services must be enabled before using this module. As a best practice, these should be defined in the [opentofu-google-project](https://github.com/osinfra-io/opentofu-google-project) module. The following services are required:
 
 - `container.googleapis.com`
 - `cloudkms.googleapis.com`

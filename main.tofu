@@ -1,5 +1,5 @@
 # Google Project Data Source
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project#google_project
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/data-sources/project#google_project
 
 data "google_project" "this" {
   project_id = local.is_fleet_host ? var.project : var.gke_fleet_host_project_id
@@ -18,7 +18,7 @@ resource "google_gke_hub_feature" "multi_cluster_service_discovery" {
 # https://cloud.google.com/kubernetes-engine/docs/how-to/msc-setup-with-shared-vpc-networks#two-service-projects-iam
 
 # Google Project IAM Member Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
 
 # Create IAM binding granting the fleet host project's GKE Hub service account the GKE Service Agent role on the service cluster's project.
 
@@ -66,7 +66,7 @@ resource "google_project_iam_member" "service_project_network_viewer" {
 }
 
 # Google Project IAM Member Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_project_iam#google_project_iam_member
 
 resource "google_project_iam_member" "container_deployer" {
   for_each = local.container_deployer_service_accounts
@@ -77,7 +77,7 @@ resource "google_project_iam_member" "container_deployer" {
 }
 
 # Google Service Account Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_service_account
 
 resource "google_service_account" "kubernetes_workload_identity" {
   for_each = var.namespaces
@@ -88,7 +88,7 @@ resource "google_service_account" "kubernetes_workload_identity" {
 }
 
 # Google Service Account IAM Member Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam#google_service_account_iam_member
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_service_account_iam#google_service_account_iam_member
 
 resource "google_service_account_iam_member" "workload_identity" {
   for_each = var.namespaces
@@ -99,7 +99,7 @@ resource "google_service_account_iam_member" "workload_identity" {
 }
 
 # Random ID Resource
-# https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id
+# https://search.opentofu.org/provider/hashicorp/random/latest/docs/resources/id
 
 resource "random_id" "this" {
   for_each = var.namespaces
