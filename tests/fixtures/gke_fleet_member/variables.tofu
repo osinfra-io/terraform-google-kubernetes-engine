@@ -1,5 +1,5 @@
 # Input Variables
-# https://www.terraform.io/language/values/variables
+# https://opentofu.org/docs/language/values/variables
 
 variable "gke_fleet_host_project_id" {
   type = string

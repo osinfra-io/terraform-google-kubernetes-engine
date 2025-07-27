@@ -1,5 +1,5 @@
 # Output Values
-# https://www.terraform.io/language/values/outputs
+# https://opentofu.org/docs/language/values/locals
 
 output "container_deployer_service_accounts" {
   description = "The service accounts for the container deployer"

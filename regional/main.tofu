@@ -52,7 +52,7 @@ resource "google_container_cluster" "this" {
   # checkov:skip=CKV_GCP_66
 
   # Ensure the GKE Metadata Server is Enabled (False Positive)
-  # Removal of the default node pool is a best practice to ensure that all nodes are managed by Terraform.
+  # Removal of the default node pool is a best practice to ensure that all nodes are managed by OpenTofu.
   # The Metadata server is enabled in the google_container_node_pool resource.
   # checkov:skip=CKV_GCP_69
 
@@ -362,9 +362,9 @@ resource "google_kms_crypto_key" "this" {
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 
-  # CryptoKeys cannot be deleted from Google Cloud Platform. Destroying a Terraform-managed CryptoKey will
+  # CryptoKeys cannot be deleted from Google Cloud Platform. Destroying a OpenTofu-managed CryptoKey will
   # remove it from state and delete all CryptoKeyVersions, rendering the key unusable, but will not delete
-  # the resource from the project. When Terraform destroys these keys, any data previously encrypted with
+  # the resource from the project. When OpenTofu destroys these keys, any data previously encrypted with
   # these keys will be irrecoverable. For this reason, it is strongly recommended that you add lifecycle
   # hooks to the resource to prevent accidental destruction.
 
@@ -394,7 +394,7 @@ resource "google_kms_key_ring" "cluster_encryption" {
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 
-  # KeyRings cannot be deleted from Google Cloud Platform. Destroying a Terraform-managed KeyRing will remove it from
+  # KeyRings cannot be deleted from Google Cloud Platform. Destroying a OpenTofu-managed KeyRing will remove it from
   # state but will not delete the resource from the project.
 
   # lifecycle {

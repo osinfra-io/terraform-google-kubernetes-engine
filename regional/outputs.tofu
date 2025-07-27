@@ -1,5 +1,5 @@
 # Output Values
-# https://www.terraform.io/language/values/outputs
+# https://opentofu.org/docs/language/values/locals
 
 output "container_cluster_ca_certificate" {
   description = "Base64 encoded public certificate that is the root of trust for the cluster"

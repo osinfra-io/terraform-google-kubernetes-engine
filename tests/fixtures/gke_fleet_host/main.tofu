@@ -1,5 +1,5 @@
 # Required Providers
-# https://developer.hashicorp.com/terraform/language/providers/requirements
+# https://opentofu.org/docs/language/providers/requirements
 
 terraform {
   required_providers {
@@ -11,8 +11,6 @@ terraform {
 
 module "test" {
   source = "../../../"
-
-  gke_fleet_host_project_id = var.gke_fleet_host_project_id
 
   labels = {
     "mock-key" = "mock-value"
