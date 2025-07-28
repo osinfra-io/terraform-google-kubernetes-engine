@@ -1,5 +1,5 @@
 # Local Values
-# https://www.terraform.io/docs/language/values/locals.html
+# https://opentofu.org/docs/language/values/locals
 
 locals {
   container_deployer_service_accounts = toset(distinct([

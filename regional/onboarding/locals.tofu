@@ -1,5 +1,5 @@
 # Local Values
-# https://www.terraform.io/docs/language/values/locals.html
+# https://opentofu.org/docs/language/values/locals
 
 locals {
   namespace_admin_service_accounts = {

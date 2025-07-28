@@ -1,5 +1,5 @@
 # Google Service Account Data Source
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/data-sources/service_account
 
 data "google_service_account" "workload_identity" {
   for_each = var.namespaces
@@ -8,7 +8,7 @@ data "google_service_account" "workload_identity" {
 }
 
 # Kubernetes Namespace Resource
-# https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1
+# https://search.opentofu.org/provider/hashicorp/kubernetes/latest/docs/resources/namespace_v1
 
 resource "kubernetes_namespace_v1" "gatekeeper-system" {
   metadata {
@@ -43,12 +43,12 @@ resource "kubernetes_namespace_v1" "this" {
 }
 
 # Kubernetes Role Resource
-# https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_v1
+# https://search.opentofu.org/provider/hashicorp/kubernetes/latest/docs/resources/role_v1
 
 resource "kubernetes_role_v1" "namespace_admin" {
 
   # Minimize wildcard use in Roles and ClusterRoles
-  # https://github.com/osinfra-io/terraform-google-kubernetes-engine/issues/76
+  # https://github.com/osinfra-io/opentofu-google-kubernetes-engine/issues/76
   # checkov:skip=CKV_K8S_49
 
   for_each = var.namespaces
@@ -66,7 +66,7 @@ resource "kubernetes_role_v1" "namespace_admin" {
 }
 
 # Kubernetes Role Binding Resource
-# https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding_v1
+# https://search.opentofu.org/provider/hashicorp/kubernetes/latest/docs/resources/role_binding_v1
 
 resource "kubernetes_role_binding_v1" "namespace_admin" {
   for_each = local.namespace_admin_service_accounts
@@ -89,7 +89,7 @@ resource "kubernetes_role_binding_v1" "namespace_admin" {
 }
 
 # Kubernetes Service Account Resource
-# https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account_v1
+# https://search.opentofu.org/provider/hashicorp/kubernetes/latest/docs/resources/service_account_v1
 
 resource "kubernetes_service_account_v1" "workload_identity" {
   for_each = var.namespaces

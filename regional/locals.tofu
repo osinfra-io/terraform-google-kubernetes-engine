@@ -1,5 +1,5 @@
-# Terraform Local Values
-# https://www.terraform.io/docs/language/values/locals.html
+# Local Values
+# https://opentofu.org/docs/language/values/locals
 
 locals {
 

@@ -1,5 +1,5 @@
 # Google Cloud Identity Group Lookup Data Source
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/cloud_identity_group_lookup
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/data-sources/cloud_identity_group_lookup
 
 data "google_cloud_identity_group_lookup" "registry_readers" {
   group_key {
@@ -8,7 +8,7 @@ data "google_cloud_identity_group_lookup" "registry_readers" {
 }
 
 # Google Container Engine Versions Data Source
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/container_engine_versions
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/data-sources/container_engine_versions
 
 data "google_container_engine_versions" "this" {
   project  = var.project
@@ -16,14 +16,14 @@ data "google_container_engine_versions" "this" {
 }
 
 # Google Project Data Source
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/data-sources/project
 
 data "google_project" "this" {
   project_id = var.project
 }
 
 # Google Cloud Identity Group Membership
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_identity_group_membership
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/cloud_identity_group_membership
 
 resource "google_cloud_identity_group_membership" "registry_readers" {
   group = data.google_cloud_identity_group_lookup.registry_readers.name
@@ -36,7 +36,7 @@ resource "google_cloud_identity_group_membership" "registry_readers" {
 }
 
 # Google Container Cluster Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/container_cluster
 
 resource "google_container_cluster" "this" {
 
@@ -52,7 +52,7 @@ resource "google_container_cluster" "this" {
   # checkov:skip=CKV_GCP_66
 
   # Ensure the GKE Metadata Server is Enabled (False Positive)
-  # Removal of the default node pool is a best practice to ensure that all nodes are managed by Terraform.
+  # Removal of the default node pool is a best practice to ensure that all nodes are managed by OpenTofu.
   # The Metadata server is enabled in the google_container_node_pool resource.
   # checkov:skip=CKV_GCP_69
 
@@ -230,7 +230,7 @@ resource "google_container_cluster" "this" {
 }
 
 # Google Container Node Pool Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/container_node_pool
 
 resource "google_container_node_pool" "this" {
   for_each = var.node_pools
@@ -291,7 +291,7 @@ resource "google_container_node_pool" "this" {
 }
 
 # Google GKEHub Feature Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_feature
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/gke_hub_feature
 
 resource "google_gke_hub_feature" "multi_cluster_ingress" {
   count = var.enable_gke_hub_host ? 1 : 0
@@ -309,7 +309,7 @@ resource "google_gke_hub_feature" "multi_cluster_ingress" {
 }
 
 # Google GKEHub Membership Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/gke_hub_membership
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/gke_hub_membership
 
 resource "google_gke_hub_membership" "host" {
   count = var.enable_gke_hub_host ? 1 : 0
@@ -346,7 +346,7 @@ resource "google_gke_hub_membership" "clusters" {
 }
 
 # KMS CryptoKey Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/kms_crypto_key
 
 resource "google_kms_crypto_key" "this" {
 
@@ -362,9 +362,9 @@ resource "google_kms_crypto_key" "this" {
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 
-  # CryptoKeys cannot be deleted from Google Cloud Platform. Destroying a Terraform-managed CryptoKey will
+  # CryptoKeys cannot be deleted from Google Cloud Platform. Destroying a OpenTofu-managed CryptoKey will
   # remove it from state and delete all CryptoKeyVersions, rendering the key unusable, but will not delete
-  # the resource from the project. When Terraform destroys these keys, any data previously encrypted with
+  # the resource from the project. When OpenTofu destroys these keys, any data previously encrypted with
   # these keys will be irrecoverable. For this reason, it is strongly recommended that you add lifecycle
   # hooks to the resource to prevent accidental destruction.
 
@@ -374,7 +374,7 @@ resource "google_kms_crypto_key" "this" {
 }
 
 # KMS CryptoKey IAM Member Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_kms_crypto_key_iam
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_kms_crypto_key_iam
 
 resource "google_kms_crypto_key_iam_member" "this" {
   for_each = local.kms_crypto_keys
@@ -385,7 +385,7 @@ resource "google_kms_crypto_key_iam_member" "this" {
 }
 
 # KMS Key Ring Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/kms_key_ring
 
 resource "google_kms_key_ring" "cluster_encryption" {
   location = module.helpers.region
@@ -394,7 +394,7 @@ resource "google_kms_key_ring" "cluster_encryption" {
 
   # We can't use the lifecycle block to prevent destroy on this resource for testing purposes.
 
-  # KeyRings cannot be deleted from Google Cloud Platform. Destroying a Terraform-managed KeyRing will remove it from
+  # KeyRings cannot be deleted from Google Cloud Platform. Destroying a OpenTofu-managed KeyRing will remove it from
   # state but will not delete the resource from the project.
 
   # lifecycle {
@@ -411,7 +411,7 @@ resource "google_kms_key_ring" "cluster_encryption" {
 # https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa
 
 # Project IAM Member Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam_member
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_project_iam_member
 
 resource "google_project_iam_member" "default_node" {
   member  = "serviceAccount:${google_service_account.default_node.email}"
@@ -420,7 +420,7 @@ resource "google_project_iam_member" "default_node" {
 }
 
 # Service Account Resource
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
+# https://search.opentofu.org/provider/hashicorp/google/latest/docs/resources/google_service_account
 
 resource "google_service_account" "default_node" {
   account_id   = "gke-${random_id.this.hex}"
@@ -429,7 +429,7 @@ resource "google_service_account" "default_node" {
 }
 
 # Random ID Resource
-# https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id
+# https://search.opentofu.org/provider/hashicorp/random/latest/docs/resources/id
 
 resource "random_id" "this" {
   prefix      = "tf"

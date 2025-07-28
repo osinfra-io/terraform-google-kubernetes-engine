@@ -1,5 +1,5 @@
 # Required Providers
-# https://developer.hashicorp.com/terraform/language/providers/requirements
+# https://opentofu.org/docs/language/providers/requirements
 
 terraform {
   required_providers {
@@ -13,7 +13,7 @@ terraform {
 }
 
 # Remote State Data Source
-# https://www.terraform.io/language/state/remote-state-data
+# https://opentofu.org/docs/language/state/remote
 
 data "terraform_remote_state" "main" {
   backend   = "gcs"
