@@ -1,5 +1,5 @@
 # Output Values
-# https://opentofu.org/docs/language/values/locals
+# https://opentofu.org/docs/language/values/outputs
 
 output "container_deployer_service_accounts" {
   description = "The service accounts for the container deployer"
