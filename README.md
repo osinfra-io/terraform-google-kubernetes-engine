@@ -62,14 +62,14 @@ Links to documentation and other resources required to develop and iterate in th
 
 ### 🔍 Tests
 
-All tests are [mocked](https://developer.hashicorp.com/terraform/language/tests/mocking) allowing us to test the module without creating infrastructure or requiring credentials. The trade-offs are acceptable in favor of speed and simplicity. In a OpenTofu test, a mocked provider or resource will generate fake data for all computed attributes that would normally be provided by the underlying provider APIs.
+All tests are [mocked](https://opentofu.org/docs/cli/commands/test/#the-mock_provider-blocks) allowing us to test the module without creating infrastructure or requiring credentials. The trade-offs are acceptable in favor of speed and simplicity. In an OpenTofu test, a mocked provider or resource will generate fake data for all computed attributes that would normally be provided by the underlying provider APIs.
 
 ```none
-terraform init
+tofu init
 ```
 
 ```none
-terraform test
+tofu test
 ```
 
 ## 📓 OpenTofu Documentation
