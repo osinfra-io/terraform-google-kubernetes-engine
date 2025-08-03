@@ -4,12 +4,6 @@
 
 [![OpenTofu Tests](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/test.yml/badge.svg)](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/test.yml) [![Dependabot](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/dependabot.yml/badge.svg)](https://github.com/osinfra-io/opentofu-google-kubernetes-engine/actions/workflows/dependabot.yml)
 
-**[Infracost](https://www.infracost.io):**
-
-[![infracost](https://img.shields.io/endpoint?url=https://dashboard.api.infracost.io/shields/json/cbeecfe3-576f-4553-984c-e451a575ee47/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494/branch/a863d75f-3eaa-49c4-a28b-2de0e18da95d)](https://dashboard.infracost.io/org/osinfra-io/repos/b4d909ac-2f7e-4c12-92c9-fe6759755494?tab=settings)
-
-💵 Monthly estimates based on Infracost baseline costs.
-
 ## Repository Description
 
 OpenTofu **example** module for a Google Cloud Platform Kubernetes engine cluster.
@@ -40,11 +34,10 @@ Our focus is on the core fundamental practice of platform engineering, Infrastru
 
 To avoid slowing down stream-aligned teams, we want to open up the possibility for contributions. The Open Source Infrastructure (as Code) model allows team members external to the platform team to contribute with only a slight increase in cognitive load. This section is for developers who want to contribute to this repository, describing the tools used, the skills, and the knowledge required, along with OpenTofu documentation.
 
-See the [documentation](https://docs.osinfra.io/fundamentals/development-setup) for setting up a local development environment.
+See the [documentation](https://docs.osinfra.io/fundamentals/development-setup) for setting up a local development environment.ment.
 
 ### 🛠️ Tools
 
-- [infracost](https://github.com/infracost/infracost)
 - [osinfra-pre-commit-hooks](https://github.com/osinfra-io/pre-commit-hooks)
 - [pre-commit](https://github.com/pre-commit/pre-commit)
 
@@ -70,6 +63,15 @@ tofu init
 
 ```none
 tofu test
+```
+
+### 📦 Release
+
+To release a new version, simply push a new tag to the repository. The tag should be in the format `vX.Y.Z` where `X`, `Y`, and `Z` are integers.
+
+```none
+git tag vX.Y.Z
+git push origin vX.Y.Z
 ```
 
 ## 📓 OpenTofu Documentation
